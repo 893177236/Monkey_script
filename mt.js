@@ -7,7 +7,7 @@
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
 // @grant        none
-
+// @supportURL   https://github.com/893177236/Monkey_script
 // ==/UserScript==
 
 (function() {
