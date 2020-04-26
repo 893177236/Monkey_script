@@ -171,6 +171,14 @@
         document.getElementsByClassName("comiis_mh_tit cl")[1].getElementsByTagName("a")[0].href="https://bbs.binmt.cc/page-4.html";}catch(err){}
     }
     
+    function show_black(){//这是将bbs代码让别人看不显示看见
+        var hide = document.getElementsByTagName('font');
+        for(i = 0;i<hide.length;i++)
+        {
+            a[i].color="Black";
+        }
+    }
+    
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
@@ -186,6 +194,7 @@
             link();//开启链接识别
             reviews();//开启点评
             new_thread();//开启替换
+            show_black();//开启显示隐藏
         }
     }//function np()的结束处
    np();
