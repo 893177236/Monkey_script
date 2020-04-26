@@ -13,8 +13,6 @@
 (function() {
     'use strict';
 
-
-
     function Latest_publication(){//这是添加最新发表（电脑专用）
         var ele = document.createElement('li');
         var url = window.location.href;
@@ -122,7 +120,6 @@
                          let newstr = str.match(pattern)[0];
                          quanju.push(newstr);}}
                 xhr.send();
-
                 if(quanju[cishu].match('离线')){
                     cishu = cishu+1;
                     var imi2 = document.createElement('img');
@@ -139,12 +136,8 @@
                     imi.border="0";
                     imi.style='float:right';
                     sss[ll].insertAdjacentElement('afterbegin',imi);}
-
              }
-
           }
-
-
     }//这是function online_status()结尾处
 
     function reviews(){//这是添加点评（手机专用）
@@ -162,33 +155,23 @@
                     var oa = document.createElement('a');
                     var ob = document.createElement('i');
                     var lm = document.getElementsByClassName("bottom_zhan y")[cishu2];
-
                     oa.href = reviews_href;
                     oa.className = "f_c dialog";
                     ob.style = "content: url(https://cdn2.bbs.binmt.cc/template/comiis_mi/img/cmmnt.gif);height: 14px;";
                     ob.className = "comiis_font";
                     ob.innerHTML = "";
-
                     oa.appendChild(ob);
                     lm.insertAdjacentElement('afterBegin',oa);
                     }//这是for的结束处
-
-
                 }//这是 if(hongbao.length ==0)的else结束处
-
-
-
     }
 
-    function new_thread(){
+    function new_thread(){//这是替换链接
         try{
         document.getElementsByClassName("comiis_mh_tit cl")[1].getElementsByTagName("a")[0].href="https://bbs.binmt.cc/page-4.html";}catch(err){}
-
-
-
-
     }
-    function np(){
+    
+    function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
             //电脑
@@ -196,7 +179,6 @@
             link();//开启链接识别
                 if(window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)){
                     //online_status();//开启探测在线状态,不需要显示在线状态就注释此行
-
                 }
         }
         else{
@@ -204,13 +186,8 @@
             link();//开启链接识别
             reviews();//开启点评
             new_thread();//开启替换
-
         }
-
     }//function np()的结束处
    np();
-
-
-
 
 })();
