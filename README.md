@@ -7,4 +7,7 @@
 * 识别帖子和评论中的网页链接，可以直接点击访问，无需长按进行跳转；
 * 替换主页面的按钮链接，从最热变成最新；
 # 如何在手机上使用油猴
-* <a href="https://baiqi.lanzous.com/iby71sb" target="_blank">蓝奏云</a>
+手机浏览器|链接|简介
+--|:--:|--
+Kiwi浏览器|[蓝奏云](https://baiqi.lanzous.com/iby71sb)|可以安装电脑上的扩展，包括Edge和Chrome应用商店的插件，使用电脑版插件需切换UA
+X浏览器|[官网](https://www.xbext.com/)|支持从GreasyFork获取脚本和自定义脚本进行安装
