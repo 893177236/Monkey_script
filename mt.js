@@ -173,9 +173,10 @@
     
     function show_black(){//这是将bbs代码让别人看不显示看见
         var hide = document.getElementsByTagName('font');
+        var i = 0;
         for(i = 0;i<hide.length;i++)
         {
-            a[i].color="Black";
+            hide[i].color="Black";
         }
     }
     
