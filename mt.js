@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.6.3
+// @version      0.6.4
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -157,7 +157,7 @@
                     var lm = document.getElementsByClassName("bottom_zhan y")[cishu2];
                     oa.href = reviews_href;
                     oa.className = "f_c dialog";
-                    ob.style = "content: url(https://cdn2.bbs.binmt.cc/template/comiis_mi/img/cmmnt.gif);height: 14px;";
+                    ob.style = "content: url(https://s1.ax1x.com/2020/04/26/Jcq8VU.png);height: 15px;";
                     ob.className = "comiis_font";
                     ob.innerHTML = "";
                     oa.appendChild(ob);
