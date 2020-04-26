@@ -7,4 +7,4 @@
 * 识别帖子和评论中的网页链接，可以直接点击访问，无需长按进行跳转；
 * 替换主页面的按钮链接，从最热变成最新；
 # 如何在手机上使用油猴
-* [蓝奏云](https://baiqi.lanzous.com/iby71sb)
+* <a href="https://baiqi.lanzous.com/iby71sb" target="_blank">蓝奏云</a>
