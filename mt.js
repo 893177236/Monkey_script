@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.6.5
+// @version      0.6.6
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -181,12 +181,12 @@
     }
     
     function collect(){//这是添加收藏按钮
-        var collect_href = document.querySelector("#k_favorite").href;
-        var collect_id = document.querySelector("#k_favorite").id;
-        var collect_title = document.querySelector("#k_favorite").title;
+        var own_formhash = document.querySelector("#scform > input[type=hidden]:nth-child(1)").value;
+        var collect_href_id = window.location.href.match('thread-(.*?)-')[1];
+        var collect_href = 'https:\/\/bbs.binmt.cc\/home.php?mod=spacecp&ac=favorite&type=thread&id='+collect_href_id+'&formhash='+own_formhash;
         var new_collect = document.createElement('span');
         var old_Suspended = document.getElementById("scrolltop");
-        new_collect.innerHTML = '<a href="'+collect_href+'" id="'+collect_id+'" onclick="showWindow(this.id, this.href, \'get\', 0);" onmouseover="this.title = $(\'favoritenumber\').innerHTML + \' 人收藏\'" title="'+collect_title+'"><img src="https:\/\/s1.ax1x.com\/2020\/04\/29\/JTk3lD.gif" height="26" width="26" style="position:absolute;top:10px;left:11px"><\/a>';
+        new_collect.innerHTML = '<a href="'+collect_href+'" id="k_favorite" onclick="showWindow(this.id, this.href, \'get\', 0);" onmouseover="this.title = $(\'favoritenumber\').innerHTML + \' 人收藏\'" ><img src="https:\/\/s1.ax1x.com\/2020\/04\/29\/JTk3lD.gif" height="26" width="26" style="position:absolute;top:10px;left:11px"><\/a>';
         old_Suspended.insertAdjacentElement('afterBegin',new_collect);
     }
     
