@@ -180,18 +180,30 @@
         }
     }
     
+    function collect(){//这是添加收藏按钮
+        var collect_href = document.querySelector("#k_favorite").href;
+        var collect_id = document.querySelector("#k_favorite").id;
+        var collect_title = document.querySelector("#k_favorite").title;
+        var new_collect = document.createElement('span');
+        var old_Suspended = document.getElementById("scrolltop");
+        new_collect.innerHTML = '<a href="'+collect_href+'" id="'+collect_id+'" onclick="showWindow(this.id, this.href, \'get\', 0);" onmouseover="this.title = $(\'favoritenumber\').innerHTML + \' 人收藏\'" title="'+collect_title+'"><img src="https:\/\/s1.ax1x.com\/2020\/04\/29\/JTk3lD.gif" height="26" width="26" style="position:absolute;top:10px;left:11px"><\/a>';
+        old_Suspended.insertAdjacentElement('afterBegin',new_collect);
+        console.log(new_collect);
+    }
+    
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
-            //电脑
+            //电脑功能
             Latest_publication();//开启最新发表标签
             link();//开启链接识别
-                if(window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)){
-                    //online_status();//开启探测在线状态,不需要显示在线状态就注释此行
-                }
+            if(window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)){
+                    //online_status();//开启探测在线状态,不需要显示在线状态就注释此行,默认不开启
+            }
+            collect();//开启收藏按钮
         }
         else{
-            //手机
+            //手机功能
             link();//开启链接识别
             reviews();//开启点评
             new_thread();//开启替换
