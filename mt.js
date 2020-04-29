@@ -188,7 +188,6 @@
         var old_Suspended = document.getElementById("scrolltop");
         new_collect.innerHTML = '<a href="'+collect_href+'" id="'+collect_id+'" onclick="showWindow(this.id, this.href, \'get\', 0);" onmouseover="this.title = $(\'favoritenumber\').innerHTML + \' 人收藏\'" title="'+collect_title+'"><img src="https:\/\/s1.ax1x.com\/2020\/04\/29\/JTk3lD.gif" height="26" width="26" style="position:absolute;top:10px;left:11px"><\/a>';
         old_Suspended.insertAdjacentElement('afterBegin',new_collect);
-        console.log(new_collect);
     }
     
     function np(){//这是入口
