@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.6.6
+// @version      0.6.7
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -176,7 +176,9 @@
         var i = 0;
         for(i = 0;i<hide.length;i++)
         {
-            hide[i].color="Black";
+            hide[i].removeAttribute('color');
+            hide[i].removeAttribute('style');
+            hide[i].removeAttribute('size');
         }
     }
     
@@ -203,7 +205,7 @@
         }
         else{
             //手机功能
-            link();//开启链接识别
+            //link();//开启链接识别
             reviews();//开启点评
             new_thread();//开启替换
             show_black();//开启显示隐藏
