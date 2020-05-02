@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.6.8
+// @version      0.6.8.2
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -183,7 +183,7 @@
         
               
         var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
-        var rule = /<br>|&nbsp;|<font>|<strike>|<strong>|<i>|<u>/g;
+        var rule = /<br>|&nbsp;|<font>|<strike>|<strong>|<i>|<u>|align=".*"/g;
         var j = 0;
         for(j=0;j<content.length;j++)
         {
