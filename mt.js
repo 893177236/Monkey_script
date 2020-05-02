@@ -181,14 +181,20 @@
             hide[i].removeAttribute('size');
         }//颜色
         
-        var content = document.getElementsByClassName("comiis_a comiis_message_table cl");
+              
+        var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
         var rule = /<br>|&nbsp;|<font>|<strike>|<strong>|<i>|<u>/g;
         var j = 0;
         for(j=0;j<content.length;j++)
         {
             content[j].innerHTML = content[j].innerHTML.replace(rule,'');
 
-        }//字体效果
+        }//评论区的字体效果
+
+        var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");
+        h_content[0].innerHTML = h_content[0].innerHTML.replace(rule,'');
+        //帖子内容的字体效果
+        
     }
     
     function collect(){//这是添加收藏按钮
