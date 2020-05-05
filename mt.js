@@ -183,7 +183,7 @@
         
               
         var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
-        var rule = /<br>|&nbsp;|<font>|<strike>|<strong>|<i>|<u>|align=".*"/g;
+        var rule = /<br>|&nbsp;|<font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
         var j = 0;
         for(j=0;j<content.length;j++)
         {
