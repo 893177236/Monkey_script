@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.6.8.3
+// @version      0.6.8.4
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -20,9 +20,10 @@
         ele.innerHTML = '<a href="https:\/\/bbs.binmt.cc\/forum.php?mod=guide&view=newthread" hidefocus="true" title="最新发表">最新发表<\/a>';
         document.getElementsByClassName("wp comiis_nvbox cl")[0].children[1].appendChild(ele);
         if(url=='https:\/\/bbs.binmt.cc\/forum.php?mod=guide&view=newthread')
-        {
+        {   
+            document.getElementById("mn_forum_10").children[0].style="background: url(";
             ele.style.cssText='background: url("https:\/\/cdn2.bbs.binmt.cc\/template\/comiis_mi\/img\/nv_a.png") repeat-x 50% -50px;';
-
+            
         }
     }//这是function Latest_publication()结尾处
 
