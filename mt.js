@@ -39,7 +39,7 @@
         a.innerHTML='<button class="comiis_btn formdialog bg_c f_f" id="postsubmit2">发表(空标题)<\/button>';
         b.parentElement.insertBefore(a,b);
         document.getElementsByClassName("flex f17")[0].children[0].parentNode.hidden=true;
-        document.getElementsByClassName("flex f17")[0].children[0].value="😃";
+        document.getElementsByClassName("flex f17")[0].children[0].value="😊";
         }
     }
 
