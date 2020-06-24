@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.6.8.5
+// @version      0.6.8.6
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -11,6 +11,8 @@
 // @grant        none
 // @supportURL   https://github.com/893177236/Monkey_script
 // ==/UserScript==
+
+
 
 (function() {
     'use strict';
@@ -22,38 +24,50 @@
         ele.innerHTML = '<a href="https:\/\/bbs.binmt.cc\/forum.php?mod=guide&view=newthread" hidefocus="true" title="最新发表">最新发表<\/a>';
         document.getElementsByClassName("wp comiis_nvbox cl")[0].children[1].appendChild(ele);
         if(url=='https:\/\/bbs.binmt.cc\/forum.php?mod=guide&view=newthread')
-        {   
+        {
             document.getElementById("mn_forum_10").children[0].style="background: url(";
             ele.style.cssText='background: url("https:\/\/cdn2.bbs.binmt.cc\/template\/comiis_mi\/img\/nv_a.png") repeat-x 50% -50px;';
-            
+
         }
     }//这是function Latest_publication()结尾处
+
+    function insert_empty_title(){
+        if(location.href.match(/mod=post&action=newthread&fid=50/g)!=null){
+        var a = document.createElement("div");
+        var b = document.querySelector("#postform > div > div:nth-child(5)");
+        a.className="comiis_btnbox cl";
+        a.innerHTML='<button class="comiis_btn formdialog bg_c f_f" id="postsubmit2">发表(空标题)<\/button>';
+        b.parentElement.insertBefore(a,b);
+        document.getElementsByClassName("flex f17")[0].children[0].parentNode.hidden=true;
+        document.getElementsByClassName("flex f17")[0].children[0].value="";
+        }
+    }
 
     function test(){
         if(location.href.match(/bbs.binmt.cc\/thread/g)!=null)
         {
             var a = document.createElement("li");
-            a.class="f_b";
+            a.className="f_b";
             a.innerHTML='<p>去除帖子字体效果(未开启)</p><input type="checkbox" name="vehicle" value="postfont"style="zoom:120%;width: 110px;">';
             document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(a);
             if(localStorage.checked!=null)//判断复选框点击状态
-                {
-                    document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > input[type=checkbox]").checked=true;
-                    document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > p").innerText="去除帖子字体效果(已开启)";
-                    var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;//字体正则
-                    var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");//定位到复选框js路径
-                    h_content[0].innerHTML = h_content[0].innerHTML.replace(rule,'');//清除帖子里的字体效果
-                }
+            {
+                document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > input[type=checkbox]").checked=true;
+                document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > p").innerText="去除帖子字体效果(已开启)";
+                var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;//字体正则
+                var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");//定位到复选框js路径
+                h_content[0].innerHTML = h_content[0].innerHTML.replace(rule,'');//清除帖子里的字体效果
+            }
             document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > input[type=checkbox]").onclick=function()
             {
 
                 Storage.set = function(name, val)
                 {
-                        localStorage.setItem(name, val);
+                    localStorage.setItem(name, val);
                 }//定义函数用于设置localStorge
                 Storage.get = function(name)
                 {
-                        return localStorage.getItem(name);
+                    return localStorage.getItem(name);
                 }//定义函数用户获取localStorge
 
                 if(document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > input[type=checkbox]").checked)
@@ -269,7 +283,8 @@
             reviews();//开启点评
             new_thread();//开启替换
             show_black();//开启显示隐藏
-            test();
+            test();//自定义设置（在帖子里右上角）
+            insert_empty_title();//发表水贴无需标题
         }
     }//function np()的结束处
    np();
