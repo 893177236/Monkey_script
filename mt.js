@@ -2,10 +2,12 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.6.8.4
+// @version      0.6.8.5
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
+// @compatible        edge Beta/Dev/Candy 测试通过
+// @compatible        火狐 测试通过
 // @grant        none
 // @supportURL   https://github.com/893177236/Monkey_script
 // ==/UserScript==
@@ -27,6 +29,48 @@
         }
     }//这是function Latest_publication()结尾处
 
+    function test(){
+        var a = document.createElement("li");
+        a.class="f_b";
+        a.innerHTML='<p>去除帖子字体效果(未开启)</p><input type="checkbox" name="vehicle" value="postfont"style="zoom:120%;width: 110px;">';
+        document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(a);
+        if(localStorage.checked!=null)//判断复选框点击状态
+            {
+                document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > input[type=checkbox]").checked=true;
+                document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > p").innerText="去除帖子字体效果(已开启)";
+                var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;//字体正则
+                var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");//定位到复选框js路径
+                h_content[0].innerHTML = h_content[0].innerHTML.replace(rule,'');//清除帖子里的字体效果
+            }
+        document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > input[type=checkbox]").onclick=function()
+        {
+
+            Storage.set = function(name, val)
+            {
+                    localStorage.setItem(name, val);
+            }//定义函数用于设置localStorge
+            Storage.get = function(name)
+            {
+                    return localStorage.getItem(name);
+            }//定义函数用户获取localStorge
+
+            if(document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > input[type=checkbox]").checked)
+            {
+                var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;//字体正则
+                var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");//定位到复选框js路径
+                h_content[0].innerHTML = h_content[0].innerHTML.replace(rule,'');//清除帖子里的字体效果
+                document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > p").innerText="去除帖子字体效果(已开启)";
+                Storage.set("checked","true");
+            }else
+            {
+                document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > p").innerText="关闭，刷新网页";
+                localStorage.removeItem('checked');
+                location.reload();//刷新网页
+
+            }
+        };
+
+    }
     function link(){//这是把链接点亮（手机电脑都可）
         var clearLink, excludedTags, filter, linkMixInit, linkPack, linkify, observePage, observer, setLink, url_regexp, xpath;
         url_regexp = /((https?:\/\/|www\.)[\x21-\x7e]+[\w\/]|(\w[\w._-]+\.(com|cn|org|net|info|tv|cc))(\/[\x21-\x7e]*[\w\/])?|ed2k:\/\/[\x21-\x7e]+\|\/|thunder:\/\/[\x21-\x7e]+=)/gi;
@@ -192,9 +236,7 @@
 
         }//评论区的字体效果
 
-        var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");
-        h_content[0].innerHTML = h_content[0].innerHTML.replace(rule,'');
-        //帖子内容的字体效果
+
         
     }
     
@@ -225,6 +267,7 @@
             reviews();//开启点评
             new_thread();//开启替换
             show_black();//开启显示隐藏
+            test();
         }
     }//function np()的结束处
    np();
