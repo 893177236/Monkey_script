@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.7.0.1
+// @version      0.7.1.1
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -17,7 +17,7 @@
 (function() {
     'use strict';
 
-    function Latest_publication(){
+    function Latest_publication(){//这是添加最新发表（电脑专用）
         var ele = document.createElement('li');
         var url = window.location.href;
         ele.id = "latest_publication";
@@ -29,7 +29,7 @@
             ele.style.cssText='background: url("https:\/\/cdn2.bbs.binmt.cc\/template\/comiis_mi\/img\/nv_a.png") repeat-x 50% -50px;';
 
         }
-    }
+    }//这是function Latest_publication()结尾处
 
     function insert_empty_title(){
         if(location.href.match(/mod=post&action=newthread&fid=50/g)!=null){
@@ -47,7 +47,7 @@
         }
     }
 
-    function remove_post_content_font_special(){
+    function remove_post_content_font_special(){//去除帖子内容字体特效
         var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
         var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");
         h_content[0].innerHTML = h_content[0].innerHTML.replace(rule,'');
@@ -83,7 +83,7 @@
            }
 
     }
-    function set_css(){
+    function set_css(){//实现复选框的css样式
         var a = document.createElement("style");
         var b = document.getElementsByTagName("style")[0];
         a.innerHTML = `body{background:#000;margin:0;padding:0;}
@@ -140,11 +140,11 @@ input[type="checkbox"].switch_1{
 	-webkit-transition: all .2s ease-in-out;
 	transition: all .2s ease-in-out;
   }
-  
+
   input[type="checkbox"].switch_1:checked{
 	background: #0ebeff;
   }
-  
+
   input[type="checkbox"].switch_1:after{
 	position: absolute;
 	content: "";
@@ -160,11 +160,11 @@ input[type="checkbox"].switch_1{
 	-webkit-transition: all .2s ease-in-out;
 	transition: all .2s ease-in-out;
   }
-  
+
   input[type="checkbox"].switch_1:checked:after{
 	left: calc(100% - 1.5em);
   }
-	
+
 /* Switch 1 Specific Style End */
 
 
@@ -232,7 +232,7 @@ input[type="checkbox"].switch_2:checked:after{
 
 /* Switch 2 Specific Style End */
 
-	
+
 /* Switch 3 Specific Style Start */
 
 .box_3{
@@ -434,13 +434,28 @@ svg.checkbox .is_unchecked{
   -webkit-transform: translateX(-190%) translateY(-30%) scale(0);
           transform: translateX(-190%) translateY(-30%) scale(0);
 }
+.beauty-select{
+    background-color: #fff;
+    height:28px;
+    width:180px;
+    padding:0 10px;
+    line-height:28px;
+    border: 1px solid #ececec;
+    background: url(w.png) no-repeat;
+    background-position: 95% 50%;
+
+    -webkit-appearance: none;  /*去掉样式 for chrome*/
+                appearance:none;/*去掉样式*/
+                -moz-appearance:none;/*去掉样式*/
+}
+
 `;
         b.parentElement.insertBefore(a,b);
 
 
     }
 
-    function set_select_clicked(){
+    function set_select_clicked(){//设置下拉列表点击事件
         document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").onclick=function(){
         var a = document.getElementsByClassName("switch_1")[0];//获取复选框位置
         var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;//获取下拉列表value
@@ -492,7 +507,7 @@ svg.checkbox .is_unchecked{
 
     }
 
-    function set_checked_clicked(){
+    function set_checked_clicked(){//设置复选框点击事件
         document.getElementsByClassName("switch_1")[0].onclick=function(){
             var a = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;//获取当前下拉列表value
             var b = localStorage.getItem(a);//获取本地数据
@@ -596,24 +611,27 @@ svg.checkbox .is_unchecked{
         b.appendChild(a);
 
     }
-    
     function insert_checked_select(){
 
         if(location.href.match(/bbs.binmt.cc\/thread/g)!=null)
         {
             var c = document.createElement("li");
+            var f = document.createElement("li");
             c.className="f_b";
-            c.innerHTML='<select style="vertical-align: top;">'+
+            f.className="f_b";
+            f.style="text-align: center;";
+            c.innerHTML='<select style="vertical-align: top;" class="beauty-select">'+
                         '<option value="v1">移除帖子字体效果<\/option>'+
                         '<option value="v2">开启识别链接<\/option>'+
                         '<option value="v3">移除评论区字体效果<\/option>'+
                         '<option value="v4">开启回复一键隐藏<\/option>'+
                         '<option value="v5">开启灌水帖隐藏标题<\/option>'+
-                        '<option value="v6">开启点评<\/option>'+
-                        '<\/select><input type="checkbox" class="switch_1">';
+                        '<option value="v6">开启点评<\/option><\/select>';
+            f.innerHTML='<input type="checkbox" class="switch_1">';
             document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(c);
-            var a = document.getElementsByClassName("switch_1")[0];
-            var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
+            document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(f);
+            var a = document.getElementsByClassName("switch_1")[0];//获取复选框位置
+            var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;//获取下拉列表value
             switch(b){
                 case "v1":
                     if(localStorage.v1!=null){
@@ -663,7 +681,7 @@ svg.checkbox .is_unchecked{
     }
 
 
-    function link(){
+    function link(){//这是把链接点亮（手机电脑都可）
         var clearLink, excludedTags, filter, linkMixInit, linkPack, linkify, observePage, observer, setLink, url_regexp, xpath;
         url_regexp = /((https?:\/\/|www\.)[\x21-\x7e]+[\w\/]|(\w[\w._-]+\.(com|cn|org|net|info|tv|cc))(\/[\x21-\x7e]*[\w\/])?|ed2k:\/\/[\x21-\x7e]+\|\/|thunder:\/\/[\x21-\x7e]+=)/gi;
         clearLink = function(a) {
@@ -737,9 +755,9 @@ svg.checkbox .is_unchecked{
         };
         setTimeout(clearlinkE, 1500);
         setTimeout(linkMixInit, 100);
-    }
+    }//这里是function link()结尾处
 
-    function online_status(){
+    function online_status(){//这是添加在线状态（电脑专用）
         var quanju = [];
         var cishu = 0;
         for(var sss = document.getElementsByClassName("pls favatar"),ll =0 ; ll<sss.length;ll++){
@@ -751,6 +769,7 @@ svg.checkbox .is_unchecked{
                 xhr.open("GET",sendmessageurl,false);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {
+                        //显示请求结果
                          let pattern = /正在.*]/g;
                          let str = xhr.responseText;
                          let newstr = str.match(pattern)[0];
@@ -774,18 +793,20 @@ svg.checkbox .is_unchecked{
                     sss[ll].insertAdjacentElement('afterbegin',imi);}
              }
           }
-    }
+    }//这是function online_status()结尾处
 
-    function reviews(){
+    function reviews(){//这是添加点评（手机专用）
             var hongbao = document.getElementsByClassName("bottom_zhan y");
             if(hongbao.length ==0){}
             else{
                 var cishu2 = 0;
                 var replyhref = hongbao[cishu2].getElementsByTagName('a')[1].href;
                 var page = replyhref.match('&page=(.*)')[1];
+                //console.log(page);
                 for(cishu2 =0;cishu2<hongbao.length;cishu2++){
                     var rewardhref = hongbao[cishu2].getElementsByTagName('a')[0].href.replace('rate','comment');
                     var reviews_href = rewardhref + '&extra=page%3D1&page=' + page;
+                    //console.log(rewardhref)
                     var oa = document.createElement('a');
                     var ob = document.createElement('i');
                     var lm = document.getElementsByClassName("bottom_zhan y")[cishu2];
@@ -796,16 +817,16 @@ svg.checkbox .is_unchecked{
                     ob.innerHTML = "";
                     oa.appendChild(ob);
                     lm.insertAdjacentElement('afterBegin',oa);
-                    }
-                }
+                    }//这是for的结束处
+                }//这是 if(hongbao.length ==0)的else结束处
     }
 
-    function new_thread(){
+    function new_thread(){//这是替换链接
         try{
         document.getElementsByClassName("comiis_mh_tit cl")[1].getElementsByTagName("a")[0].href="https://bbs.binmt.cc/page-4.html";}catch(err){}
     }
     
-    function show_black(){
+    function show_black(){//这是将bbs代码让别人看不显示看见
         var hide = document.getElementsByTagName('font');
         var i = 0;
         for(i = 0;i<hide.length;i++)
@@ -813,7 +834,7 @@ svg.checkbox .is_unchecked{
             hide[i].removeAttribute('color');
             hide[i].removeAttribute('style');
             hide[i].removeAttribute('size');
-        }
+        }//颜色
         
               
         var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
@@ -823,13 +844,13 @@ svg.checkbox .is_unchecked{
         {
             content[j].innerHTML = content[j].innerHTML.replace(rule,'');
 
-        }
+        }//评论区的字体效果
 
 
         
     }
     
-    function collect(){
+    function collect(){//这是添加收藏按钮
         var own_formhash = document.querySelector("#scform > input[type=hidden]:nth-child(1)").value;
         var collect_href_id = window.location.href.match('thread-(.*?)-')[1];
         var collect_href = 'https:\/\/bbs.binmt.cc\/home.php?mod=spacecp&ac=favorite&type=thread&id='+collect_href_id+'&formhash='+own_formhash;
@@ -839,7 +860,7 @@ svg.checkbox .is_unchecked{
         old_Suspended.insertAdjacentElement('afterBegin',new_collect);
     }
 
-    function reply_space(){
+    function reply_space(){//这是回复别人添加一键空格
         var a = document.getElementsByClassName("fastre");
         var i =0;
         for(i=0;i<a.length;i++){
@@ -852,7 +873,7 @@ svg.checkbox .is_unchecked{
 
     }
 
-    function quick_reply(){
+    function quick_reply(){//用于帖子快速回复添加一键空格
         document.querySelector("#scrolltop > span:nth-child(2) > a").onclick=function()
         {
             showWindow('reply', this.href);var a = document.querySelector("#postsubmit");
@@ -863,14 +884,14 @@ svg.checkbox .is_unchecked{
 
     }
 
-    function user_level(){
+    function user_level(){//在积分旁边显示用户等级
         var a = document.getElementsByClassName("pls favatar");
         var i = 0;
         var e = "0级";
         for(i=0;i<a.length;i++){
-            var b = a[i].getElementsByTagName("em")[1].outerText;
-            var c = a[i].getElementsByTagName("tr")[0];
-            var d = document.createElement("td");
+            var b = a[i].getElementsByTagName("em")[1].outerText;//获取用户组
+            var c = a[i].getElementsByTagName("tr")[0];//获取新建元素位置
+            var d = document.createElement("td");//创建新建元素
             switch(b){
                 case "幼儿园":
                     e = "1级";
@@ -916,32 +937,39 @@ svg.checkbox .is_unchecked{
         if(localStorage.v6){if(location.href.match(/bbs.binmt.cc\/thread-/g)){reviews();}}
 
     }
-    function np(){
+    function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
-            Latest_publication();
-            link();
+            //电脑功能
+            Latest_publication();//开启最新发表标签
+            link();//开启链接识别
             if(window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)){
-                    //online_status();
+                    //online_status();//开启探测在线状态,不需要显示在线状态就注释此行,默认不开启
             }
-            collect();
-            reply_space();
-            quick_reply();
-            user_level();
+            collect();//开启收藏按钮
+            reply_space();//开启回复框加一键空格
+            quick_reply();//开启快速回复框一键空格
+            user_level();//开启识别用户等级
         }
         else{
-            new_thread();
+            //手机功能
+            //
+            new_thread();//开启替换
             mobile_all_setting();
-            insert_checked_select();
+            //插入元素
+            insert_checked_select();//自定义设置（在帖子里右上角）
             set_display_last_click();
-            insert_tips();
+            insert_tips();//提示
+            //插入元素
+
+            //设置点击事件和css
             set_css();
             set_select_clicked();
             set_checked_clicked();
 
 
         }
-    }
+    }//function np()的结束处
    np();
 
 })();
