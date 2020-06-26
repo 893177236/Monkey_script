@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.7.1.2
+// @version      99999
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -12,12 +12,9 @@
 // @supportURL   https://github.com/893177236/Monkey_script
 // ==/UserScript==
 
-
-
 (function() {
     'use strict';
-
-    function Latest_publication(){
+    function Latest_publication(){）
         var ele = document.createElement('li');
         var url = window.location.href;
         ele.id = "latest_publication";
@@ -27,10 +24,8 @@
         {
             document.getElementById("mn_forum_10").children[0].style="background: url(";
             ele.style.cssText='background: url("https:\/\/cdn2.bbs.binmt.cc\/template\/comiis_mi\/img\/nv_a.png") repeat-x 50% -50px;';
-
         }
     }
-
     function insert_empty_title(){
         if(location.href.match(/mod=post&action=newthread&fid=50/g)!=null){
         var a = document.createElement("div");
@@ -41,20 +36,17 @@
         document.getElementById("postsubmit2").onclick=function()
             {
                 document.getElementsByClassName("flex f17")[0].children[0].parentNode.hidden=true;
-                document.getElementsByClassName("flex f17")[0].children[0].value="🤣";
+                document.getElementsByClassName("flex f17")[0].children[0].value="😊";
             }
 
         }
     }
-
     function remove_post_content_font_special(){
         var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
         var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");
         h_content[0].innerHTML = h_content[0].innerHTML.replace(rule,'');
     }
-
     function apply_none(){
-
         if(location.href.match(/bbs.binmt.cc\/thread/g)!=null)
         {
             var a = document.createElement("span");
@@ -87,8 +79,6 @@
         var a = document.createElement("style");
         var b = document.getElementsByTagName("style")[0];
         a.innerHTML = `body{background:#000;margin:0;padding:0;}
-
-
 .wrapper{
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -100,7 +90,6 @@
 	-webkit-transform: translateY(-50%);
 	        transform: translateY(-50%);
 }
-
 .switch_box{
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -118,9 +107,6 @@
 	    -ms-flex: 1;
 	        flex: 1;
 }
-
-/* Switch 1 Specific Styles Start */
-
 .box_1{
 	background: #eee;
 }
@@ -164,24 +150,15 @@ input[type="checkbox"].switch_1{
   input[type="checkbox"].switch_1:checked:after{
 	left: calc(100% - 1.5em);
   }
-
-/* Switch 1 Specific Style End */
-
-
-
-/* Switch 4 Specific Style Start */
-
 .box_4{
 	background: #eee;
 }
-
 .input_wrapper{
   width: 80px;
   height: 40px;
   position: relative;
   cursor: pointer;
 }
-
 .input_wrapper input[type="checkbox"]{
   width: 80px;
   height: 40px;
@@ -196,7 +173,6 @@ input[type="checkbox"].switch_1{
   -webkit-transition: all .2s;
   transition: all .2s;
 }
-
 .input_wrapper input[type="checkbox"]:after{
   position: absolute;
   content: "";
@@ -210,7 +186,6 @@ input[type="checkbox"].switch_1{
   -webkit-transition: all .35s;
   transition: all .35s;
 }
-
 .input_wrapper svg{
   position: absolute;
   top: 50%;
@@ -221,35 +196,28 @@ input[type="checkbox"].switch_1{
   transition: all .35s;
   z-index: 1;
 }
-
 .input_wrapper .is_checked{
   width: 18px;
   left: 18%;
   -webkit-transform: translateX(190%) translateY(-30%) scale(0);
           transform: translateX(190%) translateY(-30%) scale(0);
 }
-
 .input_wrapper .is_unchecked{
   width: 15px;
   right: 10%;
   -webkit-transform: translateX(0) translateY(-30%) scale(1);
           transform: translateX(0) translateY(-30%) scale(1);
 }
-
-/* Checked State */
 .input_wrapper input[type="checkbox"]:checked{
   background: #23da87;
 }
-
 .input_wrapper input[type="checkbox"]:checked:after{
   left: calc(100% - 37px);
 }
-
 .input_wrapper input[type="checkbox"]:checked + .is_checked{
   -webkit-transform: translateX(0) translateY(-30%) scale(1);
           transform: translateX(0) translateY(-30%) scale(1);
 }
-
 .input_wrapper input[type="checkbox"]:checked ~ .is_unchecked{
   -webkit-transform: translateX(-190%) translateY(-30%) scale(0);
           transform: translateX(-190%) translateY(-30%) scale(0);
@@ -263,22 +231,19 @@ input[type="checkbox"].switch_1{
     border: 1px solid #ececec;
     background: url(w.png) no-repeat;
     background-position: 95% 50%;
-
     -webkit-appearance: none;  /*去掉样式 for chrome*/
-                appearance:none;/*去掉样式*/
-                -moz-appearance:none;/*去掉样式*/
+    appearance:none;/*去掉样式*/
+    -moz-appearance:none;/*去掉样式*/
 }
-
 `;
         b.parentElement.insertBefore(a,b);
 
 
     }
-
-    function set_select_clicked(){//设置下拉列表点击事件
+    function set_select_clicked(){
         document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").onclick=function(){
-        var a = document.getElementsByClassName("switch_1")[0];//获取复选框位置
-        var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;//获取下拉列表value
+        var a = document.getElementsByClassName("switch_1")[0];
+        var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
         switch(b){
             case "v1":
                 if(localStorage.v1){
@@ -322,11 +287,66 @@ input[type="checkbox"].switch_1{
                     a.checked = false;
                 }
                 break;
+            case "v7":
+                if(localStorage.v7){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
+            case "v8":
+                if(localStorage.v8){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
+            case "v9":
+                if(localStorage.v9){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
+            case "v10":
+                if(localStorage.v10){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
+           case "v11":
+                if(localStorage.v11){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
+           case "v12":
+                if(localStorage.v12){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
+           case "v13":
+                if(localStorage.v13){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
+           case "v14":
+                if(localStorage.v14){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
         }
         }
 
     }
-
     function set_checked_clicked(){
         document.getElementsByClassName("switch_1")[0].onclick=function(){
             var a = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
@@ -380,15 +400,78 @@ input[type="checkbox"].switch_1{
                     }
                     localStorage.setItem("last","v6");
                     break;
-
+                case "v7":
+                    if(b){
+                        localStorage.removeItem('v7');
+                    }else{
+                        localStorage.setItem("v7", "true");
+                    }
+                    localStorage.setItem("last","v7");
+                    break;
+                case "v8":
+                    if(b){
+                        localStorage.removeItem('v8');
+                    }else{
+                        localStorage.setItem("v8", "true");
+                    }
+                    localStorage.setItem("last","v8");
+                    break;
+                case "v9":
+                    if(b){
+                        localStorage.removeItem('v9');
+                    }else{
+                        localStorage.setItem("v9", "true");
+                    }
+                    localStorage.setItem("last","v9");
+                    break;
+                case "v10":
+                    if(b){
+                        localStorage.removeItem('v10');
+                    }else{
+                        localStorage.setItem("v10", "true");
+                    }
+                    localStorage.setItem("last","v10");
+                    break;
+                case "v11":
+                    if(b){
+                        localStorage.removeItem('v11');
+                    }else{
+                        localStorage.setItem("v11", "true");
+                    }
+                    localStorage.setItem("last","v11");
+                    break;
+                case "v12":
+                    if(b){
+                        localStorage.removeItem('v12');
+                    }else{
+                        localStorage.setItem("v12", "true");
+                    }
+                    localStorage.setItem("last","v12");
+                    break;
+                case "v13":
+                    if(b){
+                        localStorage.removeItem('v13');
+                    }else{
+                        localStorage.setItem("v13", "true");
+                    }
+                    localStorage.setItem("last","v13");
+                    break;
+                case "v14":
+                    if(b){
+                        localStorage.removeItem('v14');
+                    }else{
+                        localStorage.setItem("v14", "true");
+                    }
+                    localStorage.setItem("last","v14");
+                    break;
             }
             location.reload();
 
         }
 
     }
-
     function set_display_last_click(){
+        try{
         var a = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select");
         var b = localStorage.last;
         var c = document.getElementsByClassName("switch_1")[0];
@@ -417,19 +500,49 @@ input[type="checkbox"].switch_1{
                 a.value=b;
                 if(localStorage.v6){c.checked=true;}else{c.checked=false;};
                 break;
-
+            case "v7":
+                a.value=b;
+                if(localStorage.v7){c.checked=true;}else{c.checked=false;};
+                break;
+            case "v8":
+                a.value=b;
+                if(localStorage.v8){c.checked=true;}else{c.checked=false;};
+                break;
+            case "v9":
+                a.value=b;
+                if(localStorage.v9){c.checked=true;}else{c.checked=false;};
+                break;
+            case "v10":
+                a.value=b;
+                if(localStorage.v10){c.checked=true;}else{c.checked=false;};
+                break;
+            case "v11":
+                a.value=b;
+                if(localStorage.v11){c.checked=true;}else{c.checked=false;};
+                break;
+            case "v12":
+                a.value=b;
+                if(localStorage.v12){c.checked=true;}else{c.checked=false;};
+                break;
+            case "v13":
+                a.value=b;
+                if(localStorage.v13){c.checked=true;}else{c.checked=false;};
+                break;
+            case "v14":
+                a.value=b;
+                if(localStorage.v14){c.checked=true;}else{c.checked=false;};
+                break;
         }
-
-
+        }catch(err){}
     }
-
     function insert_tips(){
+        try{
         var a = document.createElement("li");
         var b = document.querySelector("#comiis_menu_vtr_menu > ul");
         a.className="f_b";
         a.innerHTML='<p style="text-align: center;">Tip:点击按钮将自动刷新<\/p>';
         b.appendChild(a);
-
+        }catch(err){}
     }
     function insert_checked_select(){
 
@@ -446,7 +559,16 @@ input[type="checkbox"].switch_1{
                         '<option value="v3">移除评论区字体效果<\/option>'+
                         '<option value="v4">开启回复一键隐藏<\/option>'+
                         '<option value="v5">开启灌水帖隐藏标题<\/option>'+
-                        '<option value="v6">开启点评<\/option><\/select>';
+                        '<option value="v6">开启点评<\/option>'+
+                        '<option value="v7">关闭逆向教程<\/option>'+
+                        '<option value="v8">关闭资源共享<\/option>'+
+                        '<option value="v9">关闭休闲灌水<\/option>'+
+                        '<option value="v10">关闭求助问答<\/option>'+
+                        '<option value="v11">关闭综合交流<\/option>'+
+                        '<option value="v12">关闭编程开发<\/option>'+
+                        '<option value="v13">关闭玩机教程<\/option>'+
+                        '<option value="v14">关闭建议反馈<\/option>'+
+                        '<\/select>';
             f.innerHTML='<input type="checkbox" class="switch_1">';
             document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(c);
             document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(f);
@@ -495,12 +617,65 @@ input[type="checkbox"].switch_1{
                         a.checked = false;
                     }
                     break;
+                case "v7":
+                    if(localStorage.v7!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
+                case "v8":
+                    if(localStorage.v8!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
+                case "v9":
+                    if(localStorage.v9!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
+                case "v10":
+                    if(localStorage.v10!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
+                case "v11":
+                    if(localStorage.v11!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
+                case "v12":
+                    if(localStorage.v12!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
+                case "v13":
+                    if(localStorage.v13!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
+                case "v14":
+                    if(localStorage.v14!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
         }
-
         }
     }
-
-
     function link(){
         var clearLink, excludedTags, filter, linkMixInit, linkPack, linkify, observePage, observer, setLink, url_regexp, xpath;
         url_regexp = /((https?:\/\/|www\.)[\x21-\x7e]+[\w\/]|(\w[\w._-]+\.(com|cn|org|net|info|tv|cc))(\/[\x21-\x7e]*[\w\/])?|ed2k:\/\/[\x21-\x7e]+\|\/|thunder:\/\/[\x21-\x7e]+=)/gi;
@@ -576,7 +751,6 @@ input[type="checkbox"].switch_1{
         setTimeout(clearlinkE, 1500);
         setTimeout(linkMixInit, 100);
     }
-
     function online_status(){
         var quanju = [];
         var cishu = 0;
@@ -584,7 +758,6 @@ input[type="checkbox"].switch_1{
             var sendmessage = sss[ll].getElementsByClassName("comiis_o cl")
             if(sendmessage.length==0){}else{
                 var sendmessageurl = sendmessage[0].getElementsByTagName('a')[1].href;
-
                 let xhr = new XMLHttpRequest();
                 xhr.open("GET",sendmessageurl,false);
                 xhr.onreadystatechange = function() {
@@ -613,7 +786,6 @@ input[type="checkbox"].switch_1{
              }
           }
     }
-
     function reviews(){
             var hongbao = document.getElementsByClassName("bottom_zhan y");
             if(hongbao.length ==0){}
@@ -637,12 +809,10 @@ input[type="checkbox"].switch_1{
                     }
                 }
     }
-
     function new_thread(){
         try{
         document.getElementsByClassName("comiis_mh_tit cl")[1].getElementsByTagName("a")[0].href="https://bbs.binmt.cc/page-4.html";}catch(err){}
     }
-    
     function show_black(){
         var hide = document.getElementsByTagName('font');
         var i = 0;
@@ -652,21 +822,14 @@ input[type="checkbox"].switch_1{
             hide[i].removeAttribute('style');
             hide[i].removeAttribute('size');
         }
-        
-              
         var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
         var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
         var j = 0;
         for(j=0;j<content.length;j++)
         {
             content[j].innerHTML = content[j].innerHTML.replace(rule,'');
-
         }
-
-
-        
     }
-    
     function collect(){
         var own_formhash = document.querySelector("#scform > input[type=hidden]:nth-child(1)").value;
         var collect_href_id = window.location.href.match('thread-(.*?)-')[1];
@@ -686,8 +849,6 @@ input[type="checkbox"].switch_1{
             setTimeout('document.querySelector("#moreconf").innerHTML=document.querySelector("#moreconf").innerHTML+\'<button type="button" id = "insertspace" style="float: left;">一键空格<\/button>\';document.querySelector("#insertspace").onclick=function(){document.querySelector("#postmessage").value="           "}'
              ,150)}
         }
-
-
     }
 
     function quick_reply(){
@@ -697,8 +858,6 @@ input[type="checkbox"].switch_1{
             setTimeout(
                 'document.querySelector("#moreconf").innerHTML=document.querySelector("#moreconf").innerHTML+\'<button type="button" id = "insertspace2" style="float: left;">一键空格<\/button>\';document.querySelector("#insertspace2").onclick=function(){document.querySelector("#postmessage").value=document.querySelector("#postmessage").value+"           ";}'
             ,200)}
-
-
     }
 
     function user_level(){
@@ -737,22 +896,61 @@ input[type="checkbox"].switch_1{
                 case "管理员":case "信息监察员":
                     e = "9级";
                     break;
-
-
             }
             d.innerHTML = '<p><a class="dj">'+e+'<\/a><\/p>Lv';
             c.appendChild(d);
         }
 
     }
-        function mobile_all_setting(){
-        if(localStorage.v1){if(location.href.match(/bbs.binmt.cc\/thread-/g)){remove_post_content_font_special();}}
-        if(localStorage.v2){link();}
-        if(localStorage.v3){if(location.href.match(/bbs.binmt.cc\/thread-/g)){show_black();}}
-        if(localStorage.v4){apply_none();}
-        if(localStorage.v5){if(location.href.match(/forum\.php\?mod=post\&action=newthread/g)){insert_empty_title();}}
-        if(localStorage.v6){if(location.href.match(/bbs.binmt.cc\/thread-/g)){reviews();}}
 
+    function dom_modify(){
+        try{
+        document.addEventListener('DOMNodeInserted',function(e){
+            var a = document.getElementsByClassName("forumlist_li comiis_znalist bg_f b_t b_b comiis_list_readimgs");
+            var b = document.getElementsByClassName("forumlist_li_time");
+            var i = 0;
+            for(i=0;i<a.length;i++){
+                var c = b[i].textContent;
+                switch(c.match(/休闲灌水|求助问答|逆向教程|资源共享|综合交流|编程开发|玩机教程|建议反馈/g)[0]){
+                    case "逆向教程":
+                        if(localStorage.v7){a[i].remove()};
+                        break;
+                    case "资源共享":
+                        if(localStorage.v8){a[i].remove()};
+                        break;
+                    case "休闲灌水":
+                        if(localStorage.v9){a[i].remove()};
+                        break;
+                    case "求助问答":
+                        if(localStorage.v10){a[i].remove()};
+                        break;
+                    case "综合交流":
+                        if(localStorage.v11){a[i].remove()};
+                        break;
+                    case "编程开发":
+                        if(localStorage.v12){a[i].remove()};
+                        break;
+                    case "玩机教程":
+                        if(localStorage.v13){a[i].remove()};
+                        break;
+                    case "建议反馈":
+                        if(localStorage.v14){a[i].remove()};
+                        break;
+                }
+        }
+        },false);
+
+
+        }catch(err){}
+    }
+        function mobile_all_setting(){
+            if(localStorage.v1){if(location.href.match(/bbs.binmt.cc\/thread-/g)){remove_post_content_font_special();}};
+            if(localStorage.v2){link();};
+            if(localStorage.v3){if(location.href.match(/bbs.binmt.cc\/thread-/g)){show_black();}};
+            if(localStorage.v4){apply_none();};
+            if(localStorage.v5){if(location.href.match(/forum\.php\?mod=post\&action=newthread/g)){insert_empty_title();}};
+            if(localStorage.v6){if(location.href.match(/bbs.binmt.cc\/thread-/g)){reviews();}};
+            if(location.href.match(/bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g)){dom_modify();};
     }
     function np(){
         var usa = navigator.userAgent.match('Windows');
@@ -760,7 +958,6 @@ input[type="checkbox"].switch_1{
             Latest_publication();
             link();
             if(window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)){
-                    //online_status();
             }
             collect();
             reply_space();
@@ -776,10 +973,7 @@ input[type="checkbox"].switch_1{
             set_css();
             set_select_clicked();
             set_checked_clicked();
-
-
         }
     }
    np();
-
 })();
