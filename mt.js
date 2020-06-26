@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      0.7.1.1
+// @version      0.7.1.2
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -17,7 +17,7 @@
 (function() {
     'use strict';
 
-    function Latest_publication(){//这是添加最新发表（电脑专用）
+    function Latest_publication(){
         var ele = document.createElement('li');
         var url = window.location.href;
         ele.id = "latest_publication";
@@ -29,7 +29,7 @@
             ele.style.cssText='background: url("https:\/\/cdn2.bbs.binmt.cc\/template\/comiis_mi\/img\/nv_a.png") repeat-x 50% -50px;';
 
         }
-    }//这是function Latest_publication()结尾处
+    }
 
     function insert_empty_title(){
         if(location.href.match(/mod=post&action=newthread&fid=50/g)!=null){
@@ -47,7 +47,7 @@
         }
     }
 
-    function remove_post_content_font_special(){//去除帖子内容字体特效
+    function remove_post_content_font_special(){
         var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
         var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");
         h_content[0].innerHTML = h_content[0].innerHTML.replace(rule,'');
@@ -83,7 +83,7 @@
            }
 
     }
-    function set_css(){//实现复选框的css样式
+    function set_css(){
         var a = document.createElement("style");
         var b = document.getElementsByTagName("style")[0];
         a.innerHTML = `body{background:#000;margin:0;padding:0;}
@@ -167,186 +167,6 @@ input[type="checkbox"].switch_1{
 
 /* Switch 1 Specific Style End */
 
-
-/* Switch 2 Specific Style Start */
-
-.box_2{
-	background: #666;
-}
-
-input[type="checkbox"].switch_2{
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  width: 100px;
-  height: 8px;
-  background: #444;
-  border-radius: 5px;
-  position: relative;
-  outline: 0;
-  cursor: pointer;
-}
-
-input[type="checkbox"].switch_2:before,
-input[type="checkbox"].switch_2:after{
-  position: absolute;
-  content: "";
-  -webkit-transition: all .25s;
-  transition: all .25s;
-}
-
-input[type="checkbox"].switch_2:before{
-  width: 40px;
-  height: 40px;
-  background: #ccc;
-  border: 5px solid #666;
-  border-radius: 50%;
-  top: 50%;
-  left: 0;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
-
-input[type="checkbox"].switch_2:after{
-  width: 30px;
-  height: 30px;
-  background: #666;
-  border-radius: 50%;
-  top: 50%;
-  left: 10px;
-  -webkit-transform: scale(1) translateY(-50%);
-          transform: scale(1) translateY(-50%);
-  -webkit-transform-origin: 50% 50%;
-          transform-origin: 50% 50%;
-}
-
-input[type="checkbox"].switch_2:checked:before{
-  left: calc(100% - 35px);
-}
-
-input[type="checkbox"].switch_2:checked:after{
-  left: 75px;
-  -webkit-transform: scale(0);
-          transform: scale(0);
-}
-
-/* Switch 2 Specific Style End */
-
-
-/* Switch 3 Specific Style Start */
-
-.box_3{
-	background: #19232b;
-}
-
-.toggle_switch{
-  width: 100px;
-  height: 45px;
-  position: relative;
-}
-
-input[type="checkbox"].switch_3{
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  outline: 0;
-  z-index: 1;
-}
-
-svg.checkbox .outer-ring{
-  stroke-dasharray: 375;
-  stroke-dashoffset: 375;
-  -webkit-animation: resetRing .35s ease-in-out forwards;
-          animation: resetRing .35s ease-in-out forwards;
-}
-
-input[type="checkbox"].switch_3:checked + svg.checkbox .outer-ring{
-  -webkit-animation: animateRing .35s ease-in-out forwards;
-          animation: animateRing .35s ease-in-out forwards;
-}
-
-input[type="checkbox"].switch_3:checked + svg.checkbox .is_checked{
-  opacity: 1;
-  -webkit-transform: translateX(0) rotate(0deg);
-          transform: translateX(0) rotate(0deg);
-}
-
-input[type="checkbox"].switch_3:checked + svg.checkbox .is_unchecked{
-  opacity: 0;
-  -webkit-transform: translateX(-200%) rotate(180deg);
-          transform: translateX(-200%) rotate(180deg);
-}
-
-
-svg.checkbox{
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-svg.checkbox .is_checked{
-  opacity: 0;
-  fill: yellow;
-  -webkit-transform-origin: 50% 50%;
-          transform-origin: 50% 50%;
-  -webkit-transform: translateX(200%) rotate(45deg);
-          transform: translateX(200%) rotate(45deg);
-  -webkit-transition: all .35s;
-  transition: all .35s;
-}
-
-svg.checkbox .is_unchecked{
-  opacity: 1;
-  fill: #fff;
-  -webkit-transform-origin: 50% 50%;
-          transform-origin: 50% 50%;
-  -webkit-transform: translateX(0) rotate(0deg);
-          transform: translateX(0) rotate(0deg);
-  -webkit-transition: all .35s;
-  transition: all .35s;
-}
-
-@-webkit-keyframes animateRing{
-  to{
-    stroke-dashoffset: 0;
-    stroke: #b0aa28;
-  }
-}
-
-@keyframes animateRing{
-  to{
-    stroke-dashoffset: 0;
-    stroke: #b0aa28;
-  }
-}
-
-@-webkit-keyframes resetRing{
-  to{
-    stroke-dashoffset: 0;
-    stroke: #233043;
-  }
-}
-
-@keyframes resetRing{
-  to{
-    stroke-dashoffset: 0;
-    stroke: #233043;
-  }
-}
-
-/* Switch 3 Specific Style End */
 
 
 /* Switch 4 Specific Style Start */
@@ -461,42 +281,42 @@ svg.checkbox .is_unchecked{
         var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;//获取下拉列表value
         switch(b){
             case "v1":
-                if(localStorage.v1!=null){
+                if(localStorage.v1){
                     a.checked = true;
                 }else{
                     a.checked = false;
                 }
                 break;
             case "v2":
-                if(localStorage.v2!=null){
+                if(localStorage.v2){
                     a.checked = true;
                 }else{
                     a.checked = false;
                 }
                 break;
             case "v3":
-                if(localStorage.v3!=null){
+                if(localStorage.v3){
                     a.checked = true;
                 }else{
                     a.checked = false;
                 }
                 break;
             case "v4":
-                if(localStorage.v4!=null){
+                if(localStorage.v4){
                     a.checked = true;
                 }else{
                     a.checked = false;
                 }
                 break;
             case "v5":
-                if(localStorage.v5!=null){
+                if(localStorage.v5){
                     a.checked = true;
                 }else{
                     a.checked = false;
                 }
                 break;
             case "v6":
-                if(localStorage.v6!=null){
+                if(localStorage.v6){
                     a.checked = true;
                 }else{
                     a.checked = false;
@@ -507,10 +327,10 @@ svg.checkbox .is_unchecked{
 
     }
 
-    function set_checked_clicked(){//设置复选框点击事件
+    function set_checked_clicked(){
         document.getElementsByClassName("switch_1")[0].onclick=function(){
-            var a = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;//获取当前下拉列表value
-            var b = localStorage.getItem(a);//获取本地数据
+            var a = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
+            var b = localStorage.getItem(a);
             switch(a){
                 case "v1":
                     if(b){
@@ -630,8 +450,8 @@ svg.checkbox .is_unchecked{
             f.innerHTML='<input type="checkbox" class="switch_1">';
             document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(c);
             document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(f);
-            var a = document.getElementsByClassName("switch_1")[0];//获取复选框位置
-            var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;//获取下拉列表value
+            var a = document.getElementsByClassName("switch_1")[0];
+            var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
             switch(b){
                 case "v1":
                     if(localStorage.v1!=null){
@@ -681,7 +501,7 @@ svg.checkbox .is_unchecked{
     }
 
 
-    function link(){//这是把链接点亮（手机电脑都可）
+    function link(){
         var clearLink, excludedTags, filter, linkMixInit, linkPack, linkify, observePage, observer, setLink, url_regexp, xpath;
         url_regexp = /((https?:\/\/|www\.)[\x21-\x7e]+[\w\/]|(\w[\w._-]+\.(com|cn|org|net|info|tv|cc))(\/[\x21-\x7e]*[\w\/])?|ed2k:\/\/[\x21-\x7e]+\|\/|thunder:\/\/[\x21-\x7e]+=)/gi;
         clearLink = function(a) {
@@ -755,9 +575,9 @@ svg.checkbox .is_unchecked{
         };
         setTimeout(clearlinkE, 1500);
         setTimeout(linkMixInit, 100);
-    }//这里是function link()结尾处
+    }
 
-    function online_status(){//这是添加在线状态（电脑专用）
+    function online_status(){
         var quanju = [];
         var cishu = 0;
         for(var sss = document.getElementsByClassName("pls favatar"),ll =0 ; ll<sss.length;ll++){
@@ -769,7 +589,6 @@ svg.checkbox .is_unchecked{
                 xhr.open("GET",sendmessageurl,false);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {
-                        //显示请求结果
                          let pattern = /正在.*]/g;
                          let str = xhr.responseText;
                          let newstr = str.match(pattern)[0];
@@ -793,20 +612,18 @@ svg.checkbox .is_unchecked{
                     sss[ll].insertAdjacentElement('afterbegin',imi);}
              }
           }
-    }//这是function online_status()结尾处
+    }
 
-    function reviews(){//这是添加点评（手机专用）
+    function reviews(){
             var hongbao = document.getElementsByClassName("bottom_zhan y");
             if(hongbao.length ==0){}
             else{
                 var cishu2 = 0;
                 var replyhref = hongbao[cishu2].getElementsByTagName('a')[1].href;
                 var page = replyhref.match('&page=(.*)')[1];
-                //console.log(page);
                 for(cishu2 =0;cishu2<hongbao.length;cishu2++){
                     var rewardhref = hongbao[cishu2].getElementsByTagName('a')[0].href.replace('rate','comment');
                     var reviews_href = rewardhref + '&extra=page%3D1&page=' + page;
-                    //console.log(rewardhref)
                     var oa = document.createElement('a');
                     var ob = document.createElement('i');
                     var lm = document.getElementsByClassName("bottom_zhan y")[cishu2];
@@ -817,16 +634,16 @@ svg.checkbox .is_unchecked{
                     ob.innerHTML = "";
                     oa.appendChild(ob);
                     lm.insertAdjacentElement('afterBegin',oa);
-                    }//这是for的结束处
-                }//这是 if(hongbao.length ==0)的else结束处
+                    }
+                }
     }
 
-    function new_thread(){//这是替换链接
+    function new_thread(){
         try{
         document.getElementsByClassName("comiis_mh_tit cl")[1].getElementsByTagName("a")[0].href="https://bbs.binmt.cc/page-4.html";}catch(err){}
     }
     
-    function show_black(){//这是将bbs代码让别人看不显示看见
+    function show_black(){
         var hide = document.getElementsByTagName('font');
         var i = 0;
         for(i = 0;i<hide.length;i++)
@@ -834,7 +651,7 @@ svg.checkbox .is_unchecked{
             hide[i].removeAttribute('color');
             hide[i].removeAttribute('style');
             hide[i].removeAttribute('size');
-        }//颜色
+        }
         
               
         var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
@@ -844,13 +661,13 @@ svg.checkbox .is_unchecked{
         {
             content[j].innerHTML = content[j].innerHTML.replace(rule,'');
 
-        }//评论区的字体效果
+        }
 
 
         
     }
     
-    function collect(){//这是添加收藏按钮
+    function collect(){
         var own_formhash = document.querySelector("#scform > input[type=hidden]:nth-child(1)").value;
         var collect_href_id = window.location.href.match('thread-(.*?)-')[1];
         var collect_href = 'https:\/\/bbs.binmt.cc\/home.php?mod=spacecp&ac=favorite&type=thread&id='+collect_href_id+'&formhash='+own_formhash;
@@ -860,7 +677,7 @@ svg.checkbox .is_unchecked{
         old_Suspended.insertAdjacentElement('afterBegin',new_collect);
     }
 
-    function reply_space(){//这是回复别人添加一键空格
+    function reply_space(){
         var a = document.getElementsByClassName("fastre");
         var i =0;
         for(i=0;i<a.length;i++){
@@ -873,7 +690,7 @@ svg.checkbox .is_unchecked{
 
     }
 
-    function quick_reply(){//用于帖子快速回复添加一键空格
+    function quick_reply(){
         document.querySelector("#scrolltop > span:nth-child(2) > a").onclick=function()
         {
             showWindow('reply', this.href);var a = document.querySelector("#postsubmit");
@@ -884,14 +701,14 @@ svg.checkbox .is_unchecked{
 
     }
 
-    function user_level(){//在积分旁边显示用户等级
+    function user_level(){
         var a = document.getElementsByClassName("pls favatar");
         var i = 0;
         var e = "0级";
         for(i=0;i<a.length;i++){
-            var b = a[i].getElementsByTagName("em")[1].outerText;//获取用户组
-            var c = a[i].getElementsByTagName("tr")[0];//获取新建元素位置
-            var d = document.createElement("td");//创建新建元素
+            var b = a[i].getElementsByTagName("em")[1].outerText;
+            var c = a[i].getElementsByTagName("tr")[0];
+            var d = document.createElement("td");
             switch(b){
                 case "幼儿园":
                     e = "1级";
@@ -937,39 +754,32 @@ svg.checkbox .is_unchecked{
         if(localStorage.v6){if(location.href.match(/bbs.binmt.cc\/thread-/g)){reviews();}}
 
     }
-    function np(){//这是入口
+    function np(){
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
-            //电脑功能
-            Latest_publication();//开启最新发表标签
-            link();//开启链接识别
+            Latest_publication();
+            link();
             if(window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)){
-                    //online_status();//开启探测在线状态,不需要显示在线状态就注释此行,默认不开启
+                    //online_status();
             }
-            collect();//开启收藏按钮
-            reply_space();//开启回复框加一键空格
-            quick_reply();//开启快速回复框一键空格
-            user_level();//开启识别用户等级
+            collect();
+            reply_space();
+            quick_reply();
+            user_level();
         }
         else{
-            //手机功能
-            //
-            new_thread();//开启替换
+            new_thread();
             mobile_all_setting();
-            //插入元素
-            insert_checked_select();//自定义设置（在帖子里右上角）
+            insert_checked_select();
             set_display_last_click();
-            insert_tips();//提示
-            //插入元素
-
-            //设置点击事件和css
+            insert_tips();
             set_css();
             set_select_clicked();
             set_checked_clicked();
 
 
         }
-    }//function np()的结束处
+    }
    np();
 
 })();
