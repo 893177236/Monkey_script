@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      1.7.2.2
+// @version      1.7.2.3
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -976,7 +976,9 @@ input[type="checkbox"].switch_1{
             var i = 0;
             for(i=0;i<a.length;i++){
                 var c = b[i].textContent;
-                switch(c.match(/休闲灌水|求助问答|逆向教程|资源共享|综合交流|编程开发|玩机教程|建议反馈/g)[0]){
+		try{
+                var d = c.match(/休闲灌水|求助问答|逆向教程|资源共享|综合交流|编程开发|玩机教程|建议反馈/g)[0];}catch(err){}
+                switch(d){
                     case "逆向教程":
                         if(localStorage.v7){a[i].remove()};
                         break;
