@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛各种方便操作
-// @version      1.7.3.8
+// @version      1.7.3.9
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -1059,16 +1059,17 @@ input[type="checkbox"].switch_1{
 		    document.querySelector("#blacklistall").textContent=localStorage.blacklist;
 		}catch(err){}
     }
-	function uid_display(){//显示帖子人的uid
-	    try{
-            	var a = document.createElement("a");
-            	var b = document.getElementsByClassName("comiis_postli_top bg_f b_t")[0].getElementsByTagName("a")[0].href.match(/\d+/)[0];
-          	var c = document.getElementsByClassName("comiis_verify")[0];
-         	a.style = `font: 13px 隶书;background: rgb(255, 118, 0);margin-left: 4px;padding: 0px 3px;color: white;float: left;margin-top: 1px;height: 14px;line-height: 15px;border-radius: 1.5px;`;
-         	a.innerHTML="uid："+b;
-          	c.parentElement.insertBefore(a,c);
-	    }catch(err){}
-
+    function uid_display(){//显示帖子人的uid
+            var a = document.getElementsByClassName("comiis_verify");
+            var i =0;
+            for(i =0;i<a.length;i++)
+            {
+                var b = document.createElement("a");
+                var c = document.getElementsByClassName("comiis_postli_top bg_f b_t")[i].getElementsByTagName("a")[0].href.match(/\d+/)[0];//每组uid
+                b.style = `font: 13px 隶书;background: rgb(255, 118, 0);margin-left: 4px;padding: 0px 3px;color: white;float: left;margin-top: 1px;height: 14px;line-height: 15px;`;
+                b.innerHTML="uid："+c;
+                a[i].parentElement.insertBefore(b,a[i]);
+            }
     }
         function mobile_all_setting(){
             if(localStorage.v1){if(location.href.match(/bbs.binmt.cc\/thread-/g)){remove_post_content_font_special()}}
