@@ -1064,7 +1064,7 @@ input[type="checkbox"].switch_1{
             	var a = document.createElement("a");
             	var b = document.getElementsByClassName("comiis_postli_top bg_f b_t")[0].getElementsByTagName("a")[0].href.match(/\d+/)[0];
           	var c = document.getElementsByClassName("comiis_verify")[0];
-         	a.style = `font: 13px"隶书";background: #ff7600;margin-left: 4px;padding: 0px 3px;color: white;`;
+         	a.style = `font: 13px 隶书;background: rgb(255, 118, 0);margin-left: 4px;padding: 0px 3px;color: white;float: left;margin-top: 1px;height: 14px;line-height: 15px;`;
          	a.innerHTML="uid："+b;
           	c.parentElement.insertBefore(a,c);
 	    }catch(err){}
