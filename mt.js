@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
-// @description  为导航栏新添加一个最新发表标签
-// @version      1.7.3.4
+// @description  MT论坛各种方便操作
+// @version      1.7.3.6
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -377,6 +377,13 @@ input[type="checkbox"].switch_1{
                     a.checked = false;
                 }
                 break;
+	   case "v15":
+                if(localStorage.v15){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
         }
         }
 
@@ -499,7 +506,14 @@ input[type="checkbox"].switch_1{
                     }
                     localStorage.setItem("last","v14");
                     break;
-
+                case "v15":
+                    if(b){
+                        localStorage.removeItem('v15');
+                    }else{
+                        localStorage.setItem("v15", "true");
+                    }
+                    localStorage.setItem("last","v15");
+                    break;
 
             }
             location.reload();
@@ -570,7 +584,10 @@ input[type="checkbox"].switch_1{
                 a.value=b;
                 if(localStorage.v14){c.checked=true;}else{c.checked=false;};
                 break;
-
+            case "v15":
+                a.value=b;
+                if(localStorage.v15){c.checked=true;}else{c.checked=false;};
+                break;
         }
         }catch(err){}
 
@@ -610,6 +627,7 @@ input[type="checkbox"].switch_1{
                         '<option value="v12">关闭编程开发<\/option>'+
                         '<option value="v13">关闭玩机教程<\/option>'+
                         '<option value="v14">关闭建议反馈<\/option>'+
+		        '<option value="v15">显示帖子的uid<\/option>'+
                         '<\/select>';
             f.innerHTML='<input type="checkbox" class="switch_1">';
             document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(c);
@@ -715,7 +733,14 @@ input[type="checkbox"].switch_1{
                         a.checked = false;
                     }
                     break;
-        }
+                case "v15":
+                    if(localStorage.v15!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
+	    }
 
         }
     }
@@ -1034,15 +1059,27 @@ input[type="checkbox"].switch_1{
 		    document.querySelector("#blacklistall").textContent=localStorage.blacklist;
 		}catch(err){}
     }
+	function uid_display(){//显示帖子人的uid
+	    try{
+            	var a = document.createElement("a");
+            	var b = document.getElementsByClassName("comiis_postli_top bg_f b_t")[0].getElementsByTagName("a")[0].href.match(/\d+/)[0];
+          	var c = document.getElementsByClassName("comiis_verify")[0];
+         	a.style = `font: 13px"隶书";background: #ff7600;margin-left: 4px;padding: 0px 3px;color: white;`;
+         	a.innerHTML="uid："+b;
+          	c.parentElement.insertBefore(a,c);
+	    }catch(err){}
+
+    }
         function mobile_all_setting(){
-            if(localStorage.v1){if(location.href.match(/bbs.binmt.cc\/thread-/g)){remove_post_content_font_special();}};
-            if(localStorage.v2){link();};
-            if(localStorage.v3){if(location.href.match(/bbs.binmt.cc\/thread-/g)){show_black();}};
-            if(localStorage.v4){apply_none();};
-            if(localStorage.v5){if(location.href.match(/forum\.php\?mod=post\&action=newthread/g)){insert_empty_title();}};
-            if(localStorage.v6){if(location.href.match(/bbs.binmt.cc\/thread-/g)){reviews();}};
+            if(localStorage.v1){if(location.href.match(/bbs.binmt.cc\/thread-/g)){remove_post_content_font_special()}}
+	    if(localStorage.v2){link()}
+            if(localStorage.v3){if(location.href.match(/bbs.binmt.cc\/thread-/g)){show_black();}}
+            if(localStorage.v4){apply_none()}
+            if(localStorage.v5){if(location.href.match(/forum\.php\?mod=post\&action=newthread/g)){insert_empty_title()}}
+            if(localStorage.v6){if(location.href.match(/bbs.binmt.cc\/thread-/g)){reviews()}}
+	    if(localStorage.v15){if(location.href.match(/bbs.binmt.cc\/thread-/g)){uid_display()}}
             if(location.href.match(/bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g)){dom_modify();};
-            if(location.href.match(/forum.php\?mod=guide&view/g)){document.querySelector("#forum > div.comiis_body > div.comiis_bodybox > div:nth-child(2)").remove();};
+            if(location.href.match(/forum.php\?mod=guide&view/g)){document.querySelector("#forum > div.comiis_body > div.comiis_bodybox > div:nth-child(2)").remove()}
             if(location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)){insert_blacklist()}
     }
     function np(){//这是入口
@@ -1060,6 +1097,7 @@ input[type="checkbox"].switch_1{
         }
         else{
             try{new_thread();}catch(err){}
+            try{uid_display()}catch(err){console.log(err)}
             try{mobile_all_setting();}catch(err){}
             try{insert_checked_select();}catch(err){}
             try{set_display_last_click();}catch(err){}
