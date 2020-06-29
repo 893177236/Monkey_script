@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛各种方便操作
-// @version      1.7.3.9
+// @version      1.7.4.0
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -1066,20 +1066,33 @@ input[type="checkbox"].switch_1{
             {
                 var b = document.createElement("a");
                 var c = document.getElementsByClassName("comiis_postli_top bg_f b_t")[i].getElementsByTagName("a")[0].href.match(/\d+/)[0];//每组uid
-                b.style = `font: 13px 隶书;background: rgb(255, 118, 0);margin-left: 4px;padding: 0px 3px;color: white;float: left;margin-top: 1px;height: 14px;line-height: 15px;`;
+                b.style = `font: 13px 隶书;background: rgb(255, 118, 0);margin-left: 4px;padding: 0px 3px;color: white;float: left;margin-top: 1px;height: 14px;line-height: 15px;border-radius: 1.5px;`;
                 b.innerHTML="uid："+c;
                 a[i].parentElement.insertBefore(b,a[i]);
             }
     }
+    function remove_blacklist_user(){
+        try{
+            var a = document.getElementsByClassName("comiis_postli comiis_list_readimgs nfqsqi");//所有评论本体
+            var i = 0;
+            for(i=0;i<a.length;i++){
+                var b = a[i].getElementsByClassName("postli_top_tximg bg_e")[0].href.match(/\d+/)[0];//本体里的href里面的uid
+                if(b==localStorage.blacklist){
+                    a[i].remove();
+                }
+            }
+
+        }catch(err){}
+    }
         function mobile_all_setting(){
             if(localStorage.v1){if(location.href.match(/bbs.binmt.cc\/thread-/g)){remove_post_content_font_special()}}
 	    if(localStorage.v2){link()}
-            if(localStorage.v3){if(location.href.match(/bbs.binmt.cc\/thread-/g)){show_black();}}
+            if(localStorage.v3){if(location.href.match(/bbs.binmt.cc\/thread-/g)){show_black()}}
             if(localStorage.v4){apply_none()}
             if(localStorage.v5){if(location.href.match(/forum\.php\?mod=post\&action=newthread/g)){insert_empty_title()}}
             if(localStorage.v6){if(location.href.match(/bbs.binmt.cc\/thread-/g)){reviews()}}
-	    if(localStorage.v15){if(location.href.match(/bbs.binmt.cc\/thread-/g)){uid_display()}}
-            if(location.href.match(/bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g)){dom_modify();};
+	    if(localStorage.v15){if(location.href.match(/bbs.binmt.cc\/thread-/g)){uid_display();remove_blacklist_user()}}
+            if(location.href.match(/bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g)){dom_modify()};
             if(location.href.match(/forum.php\?mod=guide&view/g)){document.querySelector("#forum > div.comiis_body > div.comiis_bodybox > div:nth-child(2)").remove()}
             if(location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)){insert_blacklist()}
     }
