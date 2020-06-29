@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  为导航栏新添加一个最新发表标签
-// @version      1.7.2.3
+// @version      1.7.3.3
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -969,6 +969,7 @@ input[type="checkbox"].switch_1{
     }
 
     function dom_modify(){
+	try{var g = localStorage.blacklist.split(",");}catch(err){}
         try{
         document.addEventListener('DOMNodeInserted',function(e){
             var a = document.getElementsByClassName("forumlist_li comiis_znalist bg_f b_t b_b comiis_list_readimgs");//帖子总体
@@ -976,8 +977,8 @@ input[type="checkbox"].switch_1{
             var i = 0;
             for(i=0;i<a.length;i++){
                 var c = b[i].textContent;
-		try{
-                var d = c.match(/休闲灌水|求助问答|逆向教程|资源共享|综合交流|编程开发|玩机教程|建议反馈/g)[0];}catch(err){}
+		try{var d = c.match(/休闲灌水|求助问答|逆向教程|资源共享|综合交流|编程开发|玩机教程|建议反馈/g)[0];}catch(err){}
+		try{var f = a[i].getElementsByTagName("a")[0].href.match(/\d+/)[0]}catch(err){}//当前for一层的uid
                 switch(d){
                     case "逆向教程":
                         if(localStorage.v7){a[i].remove()};
@@ -1004,11 +1005,34 @@ input[type="checkbox"].switch_1{
                         if(localStorage.v14){a[i].remove()};
                         break;
                 }
-        }
-        },false);
+		    if(g.length>0){
+                    	for(j=0;j<g.length;j++){
+                        	if(g[j]==f){
+                         	   a[i].remove()
+                      			}
+                    		}
+               		}
+       	   }//for处
+        },false);//function(e)处
 
 
         }catch(err){}
+    }
+	function insert_blacklist(){//在个人信息页面添加一个拉黑名单
+            //当前页面是否是个人信息页面
+        	try{
+		    var a = document.querySelector("#home > div.comiis_body > div.comiis_bodybox > form > div.comiis_crezz.comiis_input_style.mt15.b_t.bg_f.cl");
+		    var b = document.createElement("li");
+		    var c = document.createElement("li");
+		    b.className = "comiis_stylitit bg_e b_b f_c cl";//标题
+		    c.className = "comiis_styli b_b cl";//输入框
+		    b.innerHTML = "黑名单";
+		    c.innerHTML = `<textarea name="blacklist" id="blacklistall" class="comiis_pxs" style="width:90%;resize:none;opacity: 0.7;" placeholder="输入想要拉黑的用户的uid，多个uid用逗号分隔，如1234,5678,9231"></textarea>`;
+		    a.appendChild(b);
+		    a.appendChild(c);
+		    document.getElementById("profilesubmitbtn").addEventListener("click",function(){var a =document.querySelector("#blacklistall").value;localStorage.setItem("blacklist", a)})//给保存追加点击事件本地保存黑名单
+		    document.querySelector("#blacklistall").textContent=localStorage.blacklist;
+		}catch(err){}
     }
         function mobile_all_setting(){
             if(localStorage.v1){if(location.href.match(/bbs.binmt.cc\/thread-/g)){remove_post_content_font_special();}};
@@ -1018,7 +1042,8 @@ input[type="checkbox"].switch_1{
             if(localStorage.v5){if(location.href.match(/forum\.php\?mod=post\&action=newthread/g)){insert_empty_title();}};
             if(localStorage.v6){if(location.href.match(/bbs.binmt.cc\/thread-/g)){reviews();}};
             if(location.href.match(/bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g)){dom_modify();};
-
+            if(location.href.match(/forum.php\?mod=guide&view/g)){document.querySelector("#forum > div.comiis_body > div.comiis_bodybox > div:nth-child(2)").remove();};
+            if(location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)){insert_blacklist()}
     }
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
@@ -1034,14 +1059,14 @@ input[type="checkbox"].switch_1{
             user_level();
         }
         else{
-            new_thread();
-            mobile_all_setting();
-            insert_checked_select();
-            set_display_last_click();
-            insert_tips();
-            set_css();
-            set_select_clicked();
-            set_checked_clicked();
+            try{new_thread();}catch(err){}
+            try{mobile_all_setting();}catch(err){}
+            try{insert_checked_select();}catch(err){}
+            try{set_display_last_click();}catch(err){}
+            try{insert_tips();}catch(err){}
+            try{set_css();}catch(err){}
+            try{set_select_clicked();}catch(err){}
+            try{set_checked_clicked();}catch(err){}
 
 
         }
