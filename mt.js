@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛各种方便操作
-// @version      1.7.4.1
+// @version      1.7.5.1
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -1084,6 +1084,26 @@ input[type="checkbox"].switch_1{
 
         }catch(err){}
     }
+    function replace_a(){
+        var i =0;
+        var a=document.getElementsByClassName("comiis_messages comiis_aimg_show cl");
+        var rul = /space-uid-(.*?).html/;
+        for(i =0;i<a.length;i++){
+            try{
+                var b=a[i].getElementsByTagName("a");//a标签
+            }catch(err){}
+            var j=0;
+            for(j=0;j<b.length;j++){
+                try{
+                    var c = b[j].href.match(rul);//匹配空间链接
+                    if(c){
+                        b[j].href = "https://bbs.binmt.cc/home.php?mod=space&uid="+c[1]+"&do=profile&from=space";
+                    }
+                }catch(err){}
+            }
+        }
+
+    }
         function mobile_all_setting(){
             if(localStorage.v1){if(location.href.match(/bbs.binmt.cc\/thread-/g)){remove_post_content_font_special()}}
 	    if(localStorage.v2){link()}
@@ -1110,14 +1130,15 @@ input[type="checkbox"].switch_1{
             user_level();
         }
         else{
-            try{new_thread();}catch(err){}
-            try{mobile_all_setting();}catch(err){}
-            try{insert_checked_select();}catch(err){}
-            try{set_display_last_click();}catch(err){}
-            try{insert_tips();}catch(err){}
-            try{set_css();}catch(err){}
-            try{set_select_clicked();}catch(err){}
-            try{set_checked_clicked();}catch(err){}
+	    try{replace_a()}catch(err){}
+            try{new_thread()}catch(err){}
+            try{mobile_all_setting()}catch(err){}
+            try{insert_checked_select()}catch(err){}
+            try{set_display_last_click()}catch(err){}
+            try{insert_tips()}catch(err){}
+            try{set_css()}catch(err){}
+            try{set_select_clicked()}catch(err){}
+            try{set_checked_clicked()}catch(err){}
 
 
         }
