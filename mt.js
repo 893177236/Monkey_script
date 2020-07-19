@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛各种方便操作
-// @version      1.7.5.2
+// @version      1.7.5.3
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -904,12 +904,12 @@ input[type="checkbox"].switch_1{
         var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
 	var text = document.getElementsByClassName("comiis_a comiis_message_table cl");
         var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
-        var j = 0;
-        for(j=0;j<content.length;j++)
+        var j = 0,k=1;
+        for(j=0;j<content.length;j++&k++)
         {
             content[j].innerHTML = content[j].innerHTML.replace(rule,'');
 	    content[j].style="padding:0px";
-            text[j].style="padding:0px 56px";
+            text[k].style="padding:0px 56px";
         }
 
 
