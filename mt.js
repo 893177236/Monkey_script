@@ -902,12 +902,14 @@ input[type="checkbox"].switch_1{
         
               
         var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
+	var text = document.getElementsByClassName("comiis_a comiis_message_table cl");
         var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
         var j = 0;
         for(j=0;j<content.length;j++)
         {
             content[j].innerHTML = content[j].innerHTML.replace(rule,'');
-
+	    content[j].style="padding:0px";
+            text[j].style="padding:0px 56px";
         }
 
 
