@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛各种方便操作
-// @version      1.7.5.3
+// @version      1.7.5.4
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -605,7 +605,7 @@ input[type="checkbox"].switch_1{
     }
     function insert_checked_select(){
 
-        if(location.href.match(/bbs.binmt.cc\/thread/g)!=null)
+        if(location.href.match(/bbs.binmt.cc\/(thread|forum)/g)!=null)
         {
             var c = document.createElement("li");
             var f = document.createElement("li");
