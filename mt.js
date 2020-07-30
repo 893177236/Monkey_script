@@ -1,15 +1,17 @@
 // ==UserScript==
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
-// @description  MT论坛各种方便操作
-// @version      1.7.5.4
+// @description  MT论坛优化
+// @version      1.7.5.5
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
-// @compatible        edge Beta/Dev/Candy 测试通过
-// @compatible        火狐 测试通过
+// @compatible   edge Beta/Dev/Candy 测试通过
+// @compatible   火狐 测试通过
+// @compatible   Yandex 测试通过
 // @grant        none
 // @supportURL   https://github.com/893177236/Monkey_script
+// @require	 http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js
 // ==/UserScript==
 
 
@@ -384,6 +386,13 @@ input[type="checkbox"].switch_1{
                     a.checked = false;
                 }
                 break;
+	    case "v16":
+                if(localStorage.v16){
+                    a.checked = true;
+                }else{
+                    a.checked = false;
+                }
+                break;
         }
         }
 
@@ -514,6 +523,14 @@ input[type="checkbox"].switch_1{
                     }
                     localStorage.setItem("last","v15");
                     break;
+		case "v16":
+                    if(b){
+                        localStorage.removeItem('v16');
+                    }else{
+                        localStorage.setItem("v16", "true");
+                    }
+                    localStorage.setItem("last","v16");
+                    break;
 
             }
             location.reload();
@@ -588,6 +605,10 @@ input[type="checkbox"].switch_1{
                 a.value=b;
                 if(localStorage.v15){c.checked=true;}else{c.checked=false;};
                 break;
+	    case "v16":
+                a.value=b;
+                if(localStorage.v16){c.checked=true;}else{c.checked=false;};
+                break;
         }
         }catch(err){}
 
@@ -628,6 +649,7 @@ input[type="checkbox"].switch_1{
                         '<option value="v13">关闭玩机教程<\/option>'+
                         '<option value="v14">关闭建议反馈<\/option>'+
 		        '<option value="v15">显示帖子的uid<\/option>'+
+		    	'<option value="v16">恢复图片宽度<\/option>'+
                         '<\/select>';
             f.innerHTML='<input type="checkbox" class="switch_1">';
             document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(c);
@@ -735,6 +757,13 @@ input[type="checkbox"].switch_1{
                     break;
                 case "v15":
                     if(localStorage.v15!=null){
+                        a.checked = true;
+                    }else{
+                        a.checked = false;
+                    }
+                    break;
+		case "v16":
+                    if(localStorage.v16!=null){
                         a.checked = true;
                     }else{
                         a.checked = false;
@@ -1106,6 +1135,25 @@ input[type="checkbox"].switch_1{
         }
 
     }
+    function img_width(){
+        try{
+            var img = $("img");
+            var img_num = 0;
+            var window_width = window.screen.width;
+            for(img_num=0;img_num<img.length;img_num++){
+                if(img[img_num].id!=""){
+                    console.log(img[img_num].width);
+                    if(img[img_num].width>window_width){
+                        img[img_num].style.width="100%";
+                    }
+                }
+            }
+            console.log(window_width);
+        }catch(err){
+            console.log(err);
+        }
+
+    }
         function mobile_all_setting(){
             if(localStorage.v1){if(location.href.match(/bbs.binmt.cc\/thread-/g)){remove_post_content_font_special()}}
 	    if(localStorage.v2){link()}
@@ -1117,6 +1165,7 @@ input[type="checkbox"].switch_1{
             if(location.href.match(/bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g)){dom_modify()};
             if(location.href.match(/forum.php\?mod=guide&view/g)){document.querySelector("#forum > div.comiis_body > div.comiis_bodybox > div:nth-child(2)").remove()}
             if(location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)){insert_blacklist()}
+	    if(localStorage.v16){if(location.href.match(/bbs.binmt.cc\/thread-/g)){img_width()}}
     }
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
