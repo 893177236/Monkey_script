@@ -12,7 +12,6 @@
 // @grant        none
 // @supportURL   https://github.com/893177236/Monkey_script
 // @require	 http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js
-// @require      https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/common_u.js?EPT:formatted
 // ==/UserScript==
 
 
@@ -88,9 +87,11 @@
     }
     function set_css(){
         var a = document.createElement("style");
-        var b = document.getElementsByTagName("style")[0];
+        var b = document.head;
+	var c = document.createElement("script");
+       
         a.innerHTML = `body{background:#000;margin:0;padding:0;}
-
+ 	c.src = "https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/common_u.js?EPT:formatted";
 
 .wrapper{
 	display: -webkit-box;
@@ -272,8 +273,8 @@ input[type="checkbox"].switch_1{
 }
 
 `;
-        b.parentElement.insertBefore(a,b);
-
+        b.appendChild(b);
+	b.appendChild(c);
 
     }
 
