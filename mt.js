@@ -89,7 +89,7 @@
         var a = document.createElement("style");
         var b = document.head;
 	var c = document.createElement("script");
-       c.src = "https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/common_u.js?EPT:formatted";
+       c.src = "https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/common_u.js?EPT:formatted";//可能是论坛引入的js么有加载，顾重新引入
         a.innerHTML = `body{background:#000;margin:0;padding:0;}
  	
 .wrapper{
