@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.5.8
+// @version      1.7.5.9
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -89,7 +89,12 @@
         var a = document.createElement("style");
         var b = document.head;
 	var c = document.createElement("script");
-       c.src = "https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/common_u.js?EPT:formatted";//可能是论坛引入的js么有加载，顾重新引入
+	var image = document.createElement("script");
+	var file = document.createElement("script");
+	c.src = "https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/common_u.js?EPT:formatted";//可能是论坛引入的js么有加载，顾重新引入
+	image.src = "https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/buildfileupload.js?EPT"; 
+	file.src="https://cdn.bbs.binmt.cc/static/js/mobile/ajaxfileupload.js?EPT";
+     
         a.innerHTML = `body{background:#000;margin:0;padding:0;}
  	
 .wrapper{
@@ -274,6 +279,8 @@ input[type="checkbox"].switch_1{
 `;
         b.appendChild(a);//把a看成b弄错了
 	b.appendChild(c);
+	b.appendChild(image);
+	b.appendChild(file);
 
     }
 
