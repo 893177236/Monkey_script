@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.5.5
+// @version      1.7.5.6
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -12,6 +12,7 @@
 // @grant        none
 // @supportURL   https://github.com/893177236/Monkey_script
 // @require	 http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js
+// @require      https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/common_u.js?EPT:formatted
 // ==/UserScript==
 
 
