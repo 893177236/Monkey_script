@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.6.4
+// @version      1.7.6.5
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -293,37 +293,21 @@ input[type="checkbox"].switch_1{
         }else{
             a.checked = false;
         }
-        localStorage.setItem("last",b);
-       
         }
 
     }
     function set_select_change_clicked(){
     	$('.beauty-select').change(function(){
-		   var select_value = $('.beauty-select').val();
+	   var select_value = $('.beauty-select').val();
            var a = document.getElementsByClassName("switch_1")[0];
+	   localStorage.setItem("last",select_value);
            if(localStorage.getItem(select_value)){
                 a.checked = true;
            }else{
                 a.checked = false;
            }
 	});
-	$('.beauty-select').val('v1').trigger('change');
-	$('.beauty-select').val('v2').trigger('change');
-	$('.beauty-select').val('v3').trigger('change');
-	$('.beauty-select').val('v4').trigger('change');
-	$('.beauty-select').val('v5').trigger('change');
-	$('.beauty-select').val('v6').trigger('change');
-	$('.beauty-select').val('v7').trigger('change');
-	$('.beauty-select').val('v8').trigger('change');
-	$('.beauty-select').val('v9').trigger('change');
-	$('.beauty-select').val('v10').trigger('change');
-	$('.beauty-select').val('v11').trigger('change');
-	$('.beauty-select').val('v12').trigger('change');
-	$('.beauty-select').val('v13').trigger('change');
-	$('.beauty-select').val('v14').trigger('change');
-	$('.beauty-select').val('v15').trigger('change');
-	$('.beauty-select').val('v16').trigger('change');
+
     }
     function set_checked_clicked(){
         document.getElementsByClassName("switch_1")[0].onclick=function(){
