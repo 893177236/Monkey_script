@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.6.5
+// @version      1.7.6.6
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -827,7 +827,7 @@ input[type="checkbox"].switch_1{
             try{insert_checked_select()}catch(err){console.log("insert_checked_select()加载失败")}
             try{insert_tips()}catch(err){console.log("insert_tips()加载失败")}
 	    try{set_css()}catch(err){console.log("set_css()加载失败")}
-	    try{$(function(){set_display_last_click()})}catch(err){console.log("set_display_last_click()加载失败")}
+	    try{set_display_last_click()}catch(err){console.log("set_display_last_click()加载失败")}
             try{set_select_clicked()}catch(err){console.log("set_select_clicked()加载失败")}
             try{set_checked_clicked()}catch(err){console.log("set_checked_clicked()加载失败")}
 	    try{set_select_change_clicked()}catch(err){}try{ios_js_css()}catch(err){console.log("set_select_change_clicked()加载失败")}
