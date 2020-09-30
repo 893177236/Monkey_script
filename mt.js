@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.6.1
+// @version      1.7.6.2
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -583,7 +583,7 @@ input[type="checkbox"].switch_1{
                         icon: "https://whitesev.gitee.io/static_resource/ios_loading/img/check.png"
                     });
             }
-            location.reload();
+            setTimeout(function(){location.reload()},2000);
 
         }
 
