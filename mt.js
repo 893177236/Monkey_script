@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.6.2
+// @version      1.7.6.3
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -288,120 +288,13 @@ input[type="checkbox"].switch_1{
         document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").onclick=function(){
         var a = document.getElementsByClassName("switch_1")[0];
         var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
-        switch(b){
-            case "v1":
-                if(localStorage.v1){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-            case "v2":
-                if(localStorage.v2){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-            case "v3":
-                if(localStorage.v3){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-            case "v4":
-                if(localStorage.v4){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-            case "v5":
-                if(localStorage.v5){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-            case "v6":
-                if(localStorage.v6){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-            case "v7":
-                if(localStorage.v7){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-            case "v8":
-                if(localStorage.v8){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-            case "v9":
-                if(localStorage.v9){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-            case "v10":
-                if(localStorage.v10){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-           case "v11":
-                if(localStorage.v11){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-           case "v12":
-                if(localStorage.v12){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-           case "v13":
-                if(localStorage.v13){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-           case "v14":
-                if(localStorage.v14){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-	   case "v15":
-                if(localStorage.v15){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
-	    case "v16":
-                if(localStorage.v16){
-                    a.checked = true;
-                }else{
-                    a.checked = false;
-                }
-                break;
+	if(localStorage.getItem(b)){
+            a.checked = true;
+        }else{
+            a.checked = false;
         }
+        localStorage.setItem("last",b);
+       
         }
 
     }
@@ -436,136 +329,10 @@ input[type="checkbox"].switch_1{
         document.getElementsByClassName("switch_1")[0].onclick=function(){
             var a = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
             var b = localStorage.getItem(a);
-            switch(a){
-                case "v1":
-                    if(b){
-                        localStorage.removeItem('v1');
-                    }else{
-                        localStorage.setItem("v1", "true");
-                    }
-                    localStorage.setItem("last","v1");
-                    break;
-                case "v2":
-                    if(b){
-                        localStorage.removeItem('v2');
-                    }else{
-                        localStorage.setItem("v2", "true");
-                    }
-                    localStorage.setItem("last","v2");
-                    break;
-                case "v3":
-                    if(b){
-                        localStorage.removeItem('v3');
-                    }else{
-                        localStorage.setItem("v3", "true");
-                    }
-                    localStorage.setItem("last","v3");
-                    break;
-                case "v4":
-                    if(b){
-                        localStorage.removeItem('v4');
-                    }else{
-                        localStorage.setItem("v4", "true");
-                    }
-                    localStorage.setItem("last","v4");
-                    break;
-                case "v5":
-                    if(b){
-                        localStorage.removeItem('v5');
-                    }else{
-                        localStorage.setItem("v5", "true");
-                    }
-                    localStorage.setItem("last","v5");
-                    break;
-                case "v6":
-                    if(b){
-                        localStorage.removeItem('v6');
-                    }else{
-                        localStorage.setItem("v6", "true");
-                    }
-                    localStorage.setItem("last","v6");
-                    break;
-                case "v7":
-                    if(b){
-                        localStorage.removeItem('v7');
-                    }else{
-                        localStorage.setItem("v7", "true");
-                    }
-                    localStorage.setItem("last","v7");
-                    break;
-                case "v8":
-                    if(b){
-                        localStorage.removeItem('v8');
-                    }else{
-                        localStorage.setItem("v8", "true");
-                    }
-                    localStorage.setItem("last","v8");
-                    break;
-                case "v9":
-                    if(b){
-                        localStorage.removeItem('v9');
-                    }else{
-                        localStorage.setItem("v9", "true");
-                    }
-                    localStorage.setItem("last","v9");
-                    break;
-                case "v10":
-                    if(b){
-                        localStorage.removeItem('v10');
-                    }else{
-                        localStorage.setItem("v10", "true");
-                    }
-                    localStorage.setItem("last","v10");
-                    break;
-                case "v11":
-                    if(b){
-                        localStorage.removeItem('v11');
-                    }else{
-                        localStorage.setItem("v11", "true");
-                    }
-                    localStorage.setItem("last","v11");
-                    break;
-                case "v12":
-                    if(b){
-                        localStorage.removeItem('v12');
-                    }else{
-                        localStorage.setItem("v12", "true");
-                    }
-                    localStorage.setItem("last","v12");
-                    break;
-                case "v13":
-                    if(b){
-                        localStorage.removeItem('v13');
-                    }else{
-                        localStorage.setItem("v13", "true");
-                    }
-                    localStorage.setItem("last","v13");
-                    break;
-                case "v14":
-                    if(b){
-                        localStorage.removeItem('v14');
-                    }else{
-                        localStorage.setItem("v14", "true");
-                    }
-                    localStorage.setItem("last","v14");
-                    break;
-                case "v15":
-                    if(b){
-                        localStorage.removeItem('v15');
-                    }else{
-                        localStorage.setItem("v15", "true");
-                    }
-                    localStorage.setItem("last","v15");
-                    break;
-		case "v16":
-                    if(b){
-                        localStorage.removeItem('v16');
-                    }else{
-                        localStorage.setItem("v16", "true");
-                    }
-                    localStorage.setItem("last","v16");
-                    break;
-
+	    if(b){
+                localStorage.removeItem(a);
+            }else{
+                localStorage.setItem(a, "true");
             }
 	    var c = localStorage.getItem(a);
             var d = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").selectedIndex;//当前索引值
@@ -590,89 +357,23 @@ input[type="checkbox"].switch_1{
     }
 
     function set_display_last_click(){
-        try{
         var a = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select");
         var b = localStorage.last;
         var c = document.getElementsByClassName("switch_1")[0];
-        switch(b){
-            case "v1":
-                a.value=b;
-                if(localStorage.v1){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v2":
-                a.value=b;
-                if(localStorage.v2){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v3":
-                a.value=b;
-                if(localStorage.v3){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v4":
-                a.value=b;
-                if(localStorage.v4){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v5":
-                a.value=b;
-                if(localStorage.v5){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v6":
-                a.value=b;
-                if(localStorage.v6){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v7":
-                a.value=b;
-                if(localStorage.v7){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v8":
-                a.value=b;
-                if(localStorage.v8){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v9":
-                a.value=b;
-                if(localStorage.v9){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v10":
-                a.value=b;
-                if(localStorage.v10){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v11":
-                a.value=b;
-                if(localStorage.v11){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v12":
-                a.value=b;
-                if(localStorage.v12){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v13":
-                a.value=b;
-                if(localStorage.v13){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v14":
-                a.value=b;
-                if(localStorage.v14){c.checked=true;}else{c.checked=false;};
-                break;
-            case "v15":
-                a.value=b;
-                if(localStorage.v15){c.checked=true;}else{c.checked=false;};
-                break;
-	    case "v16":
-                a.value=b;
-                if(localStorage.v16){c.checked=true;}else{c.checked=false;};
-                break;
+	a.value=b;
+        if(localStorage.getItem(b)){
+            c.checked=true;
+        }else{
+            c.checked=false;
         }
-        }catch(err){}
-
-
     }
 
     function insert_tips(){
-        try{
         var a = document.createElement("li");
         var b = document.querySelector("#comiis_menu_vtr_menu > ul");
         a.className="f_b";
         a.innerHTML='<p style="text-align: center;">Tip:点击按钮将自动刷新<\/p>';
         b.appendChild(a);
-        }catch(err){}
     }
     function insert_checked_select(){
 
@@ -706,121 +407,11 @@ input[type="checkbox"].switch_1{
             document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(f);
             var a = document.getElementsByClassName("switch_1")[0];
             var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
-            switch(b){
-                case "v1":
-                    if(localStorage.v1!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v2":
-                    if(localStorage.v2!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v3":
-                    if(localStorage.v3!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v4":
-                    if(localStorage.v4!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v5":
-                    if(localStorage.v5!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v6":
-                    if(localStorage.v6!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v7":
-                    if(localStorage.v7!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v8":
-                    if(localStorage.v8!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v9":
-                    if(localStorage.v9!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v10":
-                    if(localStorage.v10!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v11":
-                    if(localStorage.v11!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v12":
-                    if(localStorage.v12!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v13":
-                    if(localStorage.v13!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v14":
-                    if(localStorage.v14!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-                case "v15":
-                    if(localStorage.v15!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-		case "v16":
-                    if(localStorage.v16!=null){
-                        a.checked = true;
-                    }else{
-                        a.checked = false;
-                    }
-                    break;
-	    }
-
+	    if(localStorage.getItem(b)!=null){
+	        a.checked = true;
+            }else{
+                a.checked = false;
+            }
         }
     }
 
@@ -1246,16 +837,16 @@ input[type="checkbox"].switch_1{
             user_level();
         }
         else{
-	    try{replace_a()}catch(err){}
-            try{new_thread()}catch(err){}
-            try{mobile_all_setting()}catch(err){}
-            try{insert_checked_select()}catch(err){}
-            try{set_display_last_click()}catch(err){}
-            try{insert_tips()}catch(err){}
-            try{set_css()}catch(err){}
-            try{set_select_clicked()}catch(err){}
-            try{set_checked_clicked()}catch(err){}
-	    try{set_select_change_clicked()}catch(err){}try{ios_js_css()}catch(err){console.log("仿ios加载图标jq加载资源失败")}
+	    try{replace_a()}catch(err){console.log("replace_a()加载失败")}
+            try{new_thread()}catch(err){console.log("new_thread()加载失败")}
+            try{mobile_all_setting()}catch(err){console.log("mobile_all_setting()加载失败")}
+            try{insert_checked_select()}catch(err){console.log("insert_checked_select()加载失败")}
+            try{insert_tips()}catch(err){console.log("insert_tips()加载失败")}
+	    try{set_css()}catch(err){console.log("set_css()加载失败")}
+	    try{set_display_last_click()}catch(err){console.log("set_display_last_click()加载失败")}
+            try{set_select_clicked()}catch(err){console.log("set_select_clicked()加载失败")}
+            try{set_checked_clicked()}catch(err){console.log("set_checked_clicked()加载失败")}
+	    try{set_select_change_clicked()}catch(err){}try{ios_js_css()}catch(err){console.log("set_select_change_clicked()加载失败")}
 
 
         }
