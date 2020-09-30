@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.6.0
+// @version      1.7.6.1
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -566,6 +566,22 @@ input[type="checkbox"].switch_1{
                     localStorage.setItem("last","v16");
                     break;
 
+            }
+	    var c = localStorage.getItem(a);
+            var d = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").selectedIndex;//当前索引值
+            var e = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").options[d].text;//当前索引对应的文本
+            if(c){
+                iosOverlay({
+                        text: e+"已开启",
+                        duration: 2000,
+                        icon: "https://whitesev.gitee.io/static_resource/ios_loading/img/check.png"
+                    });
+            }else{
+                iosOverlay({
+                        text: e+"已关闭",
+                        duration: 2000,
+                        icon: "https://whitesev.gitee.io/static_resource/ios_loading/img/check.png"
+                    });
             }
             location.reload();
 
@@ -1201,6 +1217,21 @@ input[type="checkbox"].switch_1{
             if(location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)){insert_blacklist()}
 	    if(localStorage.v16){if(location.href.match(/bbs.binmt.cc\/thread-/g)){img_width()}}
     }
+	function ios_js_css(){
+        var ios_js = document.createElement("script");
+        var ios_css = document.createElement("link");
+
+        ios_js.src="https://whitesev.gitee.io/static_resource/ios_loading/js/iosOverlay.js";
+
+        ios_js.type = "text/javascript";
+
+        ios_css.rel = "stylesheet";
+        ios_css.type = "text/css";
+        ios_css.href ="https://whitesev.gitee.io/static_resource/ios_loading/css/iosOverlay.css";
+
+        document.head.appendChild(ios_js);
+        document.head.appendChild(ios_css);
+    }
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
@@ -1224,7 +1255,7 @@ input[type="checkbox"].switch_1{
             try{set_css()}catch(err){}
             try{set_select_clicked()}catch(err){}
             try{set_checked_clicked()}catch(err){}
-	    try{set_select_change_clicked()}catch(err){}
+	    try{set_select_change_clicked()}catch(err){}try{ios_js_css()}catch(err){console.log("仿ios加载图标jq加载资源失败")}
 
 
         }
