@@ -818,7 +818,6 @@ input[type="checkbox"].switch_1{
         document.head.appendChild(b);
     }
     function get_more_pages(){
-                var i = 1;
         var comiis_num = 1;
         function comiis_list_page(){
             if(comiis_num < 10){
@@ -849,7 +848,7 @@ input[type="checkbox"].switch_1{
         setTimeout(function(){comiis_list_page()},1000);
         setTimeout(function(){comiis_list_page()},1300);
         setTimeout(function(){comiis_list_page()},1600);
-        setTimeout(function(){comiis_list_page()},200);
+        setTimeout(function(){comiis_list_page()},2000);
         setTimeout(function(){comiis_list_page()},2300);
         setTimeout(function(){comiis_list_page()},2600);
         setTimeout(function(){comiis_list_page()},3000);
