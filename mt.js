@@ -97,190 +97,190 @@
      
         a.innerHTML = `body{background:#000;margin:0;padding:0;}
  	
-.wrapper{
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	width: 400px;
-	margin: 50vh auto 0;
-	-ms-flex-wrap: wrap;
-	    flex-wrap: wrap;
-	-webkit-transform: translateY(-50%);
-	        transform: translateY(-50%);
-}
+	.wrapper{
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		width: 400px;
+		margin: 50vh auto 0;
+		-ms-flex-wrap: wrap;
+		    flex-wrap: wrap;
+		-webkit-transform: translateY(-50%);
+			transform: translateY(-50%);
+	}
 
-.switch_box{
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	max-width: 200px;
-	min-width: 200px;
-	height: 200px;
-	-webkit-box-pack: center;
-	    -ms-flex-pack: center;
-	        justify-content: center;
-	-webkit-box-align: center;
-	    -ms-flex-align: center;
-	        align-items: center;
-	-webkit-box-flex: 1;
-	    -ms-flex: 1;
-	        flex: 1;
-}
+	.switch_box{
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		max-width: 200px;
+		min-width: 200px;
+		height: 200px;
+		-webkit-box-pack: center;
+		    -ms-flex-pack: center;
+			justify-content: center;
+		-webkit-box-align: center;
+		    -ms-flex-align: center;
+			align-items: center;
+		-webkit-box-flex: 1;
+		    -ms-flex: 1;
+			flex: 1;
+	}
 
-/* Switch 1 Specific Styles Start */
+	/* Switch 1 Specific Styles Start */
 
-.box_1{
-	background: #eee;
-}
+	.box_1{
+		background: #eee;
+	}
 
-input[type="checkbox"].switch_1{
-	font-size: 14px;
-	-webkit-appearance: none;
-	   -moz-appearance: none;
-	        appearance: none;
-	width: 3.5em;
-	height: 1.5em;
-	background: #ddd;
-	border-radius: 3em;
-	position: relative;
-	cursor: pointer;
-	outline: none;
-	-webkit-transition: all .2s ease-in-out;
-	transition: all .2s ease-in-out;
-  }
+	input[type="checkbox"].switch_1{
+		font-size: 14px;
+		-webkit-appearance: none;
+		   -moz-appearance: none;
+			appearance: none;
+		width: 3.5em;
+		height: 1.5em;
+		background: #ddd;
+		border-radius: 3em;
+		position: relative;
+		cursor: pointer;
+		outline: none;
+		-webkit-transition: all .2s ease-in-out;
+		transition: all .2s ease-in-out;
+	  }
 
-  input[type="checkbox"].switch_1:checked{
-	background: #0ebeff;
-  }
+	  input[type="checkbox"].switch_1:checked{
+		background: #0ebeff;
+	  }
 
-  input[type="checkbox"].switch_1:after{
-	position: absolute;
-	content: "";
-	width: 1.5em;
-	height: 1.5em;
-	border-radius: 50%;
-	background: #fff;
-	-webkit-box-shadow: 0 0 .25em rgba(0,0,0,.3);
-	        box-shadow: 0 0 .25em rgba(0,0,0,.3);
-	-webkit-transform: scale(.7);
-	        transform: scale(.7);
-	left: 0;
-	-webkit-transition: all .2s ease-in-out;
-	transition: all .2s ease-in-out;
-  }
+	  input[type="checkbox"].switch_1:after{
+		position: absolute;
+		content: "";
+		width: 1.5em;
+		height: 1.5em;
+		border-radius: 50%;
+		background: #fff;
+		-webkit-box-shadow: 0 0 .25em rgba(0,0,0,.3);
+			box-shadow: 0 0 .25em rgba(0,0,0,.3);
+		-webkit-transform: scale(.7);
+			transform: scale(.7);
+		left: 0;
+		-webkit-transition: all .2s ease-in-out;
+		transition: all .2s ease-in-out;
+	  }
 
-  input[type="checkbox"].switch_1:checked:after{
-	left: calc(100% - 1.5em);
-  }
+	  input[type="checkbox"].switch_1:checked:after{
+		left: calc(100% - 1.5em);
+	  }
 
-/* Switch 1 Specific Style End */
+	/* Switch 1 Specific Style End */
 
 
-/* Switch 4 Specific Style Start */
+	/* Switch 4 Specific Style Start */
 
-.box_4{
-	background: #eee;
-}
+	.box_4{
+		background: #eee;
+	}
 
-.input_wrapper{
-  width: 80px;
-  height: 40px;
-  position: relative;
-  cursor: pointer;
-}
+	.input_wrapper{
+	  width: 80px;
+	  height: 40px;
+	  position: relative;
+	  cursor: pointer;
+	}
 
-.input_wrapper input[type="checkbox"]{
-  width: 80px;
-  height: 40px;
-  cursor: pointer;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  background: #315e7f;
-  border-radius: 2px;
-  position: relative;
-  outline: 0;
-  -webkit-transition: all .2s;
-  transition: all .2s;
-}
+	.input_wrapper input[type="checkbox"]{
+	  width: 80px;
+	  height: 40px;
+	  cursor: pointer;
+	  -webkit-appearance: none;
+	     -moz-appearance: none;
+		  appearance: none;
+	  background: #315e7f;
+	  border-radius: 2px;
+	  position: relative;
+	  outline: 0;
+	  -webkit-transition: all .2s;
+	  transition: all .2s;
+	}
 
-.input_wrapper input[type="checkbox"]:after{
-  position: absolute;
-  content: "";
-  top: 3px;
-  left: 3px;
-  width: 34px;
-  height: 34px;
-  background: #dfeaec;
-  z-index: 2;
-  border-radius: 2px;
-  -webkit-transition: all .35s;
-  transition: all .35s;
-}
+	.input_wrapper input[type="checkbox"]:after{
+	  position: absolute;
+	  content: "";
+	  top: 3px;
+	  left: 3px;
+	  width: 34px;
+	  height: 34px;
+	  background: #dfeaec;
+	  z-index: 2;
+	  border-radius: 2px;
+	  -webkit-transition: all .35s;
+	  transition: all .35s;
+	}
 
-.input_wrapper svg{
-  position: absolute;
-  top: 50%;
-  -webkit-transform-origin: 50% 50%;
-          transform-origin: 50% 50%;
-  fill: #fff;
-  -webkit-transition: all .35s;
-  transition: all .35s;
-  z-index: 1;
-}
+	.input_wrapper svg{
+	  position: absolute;
+	  top: 50%;
+	  -webkit-transform-origin: 50% 50%;
+		  transform-origin: 50% 50%;
+	  fill: #fff;
+	  -webkit-transition: all .35s;
+	  transition: all .35s;
+	  z-index: 1;
+	}
 
-.input_wrapper .is_checked{
-  width: 18px;
-  left: 18%;
-  -webkit-transform: translateX(190%) translateY(-30%) scale(0);
-          transform: translateX(190%) translateY(-30%) scale(0);
-}
+	.input_wrapper .is_checked{
+	  width: 18px;
+	  left: 18%;
+	  -webkit-transform: translateX(190%) translateY(-30%) scale(0);
+		  transform: translateX(190%) translateY(-30%) scale(0);
+	}
 
-.input_wrapper .is_unchecked{
-  width: 15px;
-  right: 10%;
-  -webkit-transform: translateX(0) translateY(-30%) scale(1);
-          transform: translateX(0) translateY(-30%) scale(1);
-}
+	.input_wrapper .is_unchecked{
+	  width: 15px;
+	  right: 10%;
+	  -webkit-transform: translateX(0) translateY(-30%) scale(1);
+		  transform: translateX(0) translateY(-30%) scale(1);
+	}
 
-/* Checked State */
-.input_wrapper input[type="checkbox"]:checked{
-  background: #23da87;
-}
+	/* Checked State */
+	.input_wrapper input[type="checkbox"]:checked{
+	  background: #23da87;
+	}
 
-.input_wrapper input[type="checkbox"]:checked:after{
-  left: calc(100% - 37px);
-}
+	.input_wrapper input[type="checkbox"]:checked:after{
+	  left: calc(100% - 37px);
+	}
 
-.input_wrapper input[type="checkbox"]:checked + .is_checked{
-  -webkit-transform: translateX(0) translateY(-30%) scale(1);
-          transform: translateX(0) translateY(-30%) scale(1);
-}
+	.input_wrapper input[type="checkbox"]:checked + .is_checked{
+	  -webkit-transform: translateX(0) translateY(-30%) scale(1);
+		  transform: translateX(0) translateY(-30%) scale(1);
+	}
 
-.input_wrapper input[type="checkbox"]:checked ~ .is_unchecked{
-  -webkit-transform: translateX(-190%) translateY(-30%) scale(0);
-          transform: translateX(-190%) translateY(-30%) scale(0);
-}
-.beauty-select{
-    background-color: #fff;
-    height:28px;
-    width:180px;
-    padding:0 10px;
-    line-height:28px;
-    border: 1px solid #ececec;
-    background: url(w.png) no-repeat;
-    background-position: 95% 50%;
+	.input_wrapper input[type="checkbox"]:checked ~ .is_unchecked{
+	  -webkit-transform: translateX(-190%) translateY(-30%) scale(0);
+		  transform: translateX(-190%) translateY(-30%) scale(0);
+	}
+	.beauty-select{
+	    background-color: #fff;
+	    height:28px;
+	    width:180px;
+	    padding:0 10px;
+	    line-height:28px;
+	    border: 1px solid #ececec;
+	    background: url(w.png) no-repeat;
+	    background-position: 95% 50%;
 
-    -webkit-appearance: none;  /*去掉样式 for chrome*/
-                appearance:none;/*去掉样式*/
-                -moz-appearance:none;/*去掉样式*/
-}
+	    -webkit-appearance: none;  /*去掉样式 for chrome*/
+			appearance:none;/*去掉样式*/
+			-moz-appearance:none;/*去掉样式*/
+	}
 
-`;
-        b.appendChild(a);//把a看成b弄错了
-	b.appendChild(c);
-	b.appendChild(image);
-	b.appendChild(file);
+	`;
+		b.appendChild(a);//把a看成b弄错了
+		b.appendChild(c);
+		b.appendChild(image);
+		b.appendChild(file);
 
     }
 
@@ -856,7 +856,6 @@ input[type="checkbox"].switch_1{
         setTimeout(function(){comiis_list_page()},3600);
         $(function(){$(window).off("scroll")});
 
-    }
     }
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
