@@ -817,6 +817,12 @@ input[type="checkbox"].switch_1{
         document.head.appendChild(a);
         document.head.appendChild(b);
     }
+    function get_more_pages(){
+        var i = 0;
+        for(i=0;i<10;i++){
+            comiis_list_page();
+        }
+    }
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
@@ -832,6 +838,7 @@ input[type="checkbox"].switch_1{
             try{set_PC_js()}catch(err){console.log("set_PC_js()加载失败")}
         }
         else{
+	    try{get_more_pages()}catch(err){console.log("get_more_pages()加载失败")}
 	    try{replace_a()}catch(err){console.log("replace_a()加载失败")}
             try{new_thread()}catch(err){console.log("new_thread()加载失败")}
             try{mobile_all_setting()}catch(err){console.log("mobile_all_setting()加载失败")}
