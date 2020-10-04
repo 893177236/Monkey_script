@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.6.8
+// @version      1.7.6.9
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -817,46 +817,6 @@
         document.head.appendChild(a);
         document.head.appendChild(b);
     }
-    function get_more_pages(){
-        var comiis_num = 1;
-        function comiis_list_page(){
-            if(comiis_num < 10){
-                $('.comiis_multi_box').html('<div class="comiis_loadbtn f_d">正在加载...</div>');
-                $.ajax({
-                    type:'GET',
-                    url: 'plugin.php?id=comiis_app_portal&pid=4&page=' + (comiis_num + 1) + '&inajax=1',
-                    dataType:'xml',
-                }).success(function(s) {
-                    if(typeof(s.lastChild.firstChild.nodeValue) != "undefined"){
-                        $('#list_new').append(s.lastChild.firstChild.nodeValue);
-                        if(comiis_num >= 10){
-                            $('.comiis_multi_box').html('<div class="comiis_loadbtn f_d">亲，已经到底了！</div>');
-                        }else{
-                            $('.comiis_multi_box').html('<a href="javascript:;" onclick="comiis_list_page()" class="comiis_loadbtn bg_e f_d">点击加载更多</a>');
-                        }
-                    }else{
-                        $('.comiis_multi_box').html('<a href="javascript:;" onclick="comiis_list_page()" class="comiis_loadbtn bg_e f_d">重新加载</a>');
-                    }
-                }).error(function() {
-                    $('.comiis_multi_box').html('<a href="javascript:;" onclick="comiis_list_page()" class="comiis_loadbtn bg_e f_d">重新加载</a>');
-                });
-            }else{
-                $('.comiis_multi_box').html('<div class="comiis_loadbtn f_d">亲，已经到底了！</div>');
-            }
-            comiis_num++;
-        }
-        setTimeout(function(){comiis_list_page()},1000);
-        setTimeout(function(){comiis_list_page()},1300);
-        setTimeout(function(){comiis_list_page()},1600);
-        setTimeout(function(){comiis_list_page()},2000);
-        setTimeout(function(){comiis_list_page()},2300);
-        setTimeout(function(){comiis_list_page()},2600);
-        setTimeout(function(){comiis_list_page()},3000);
-        setTimeout(function(){comiis_list_page()},3300);
-        setTimeout(function(){comiis_list_page()},3600);
-        $(function(){$(window).off("scroll")});
-
-    }
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
@@ -872,7 +832,6 @@
             try{set_PC_js()}catch(err){console.log("set_PC_js()加载失败")}
         }
         else{
-	    try{get_more_pages()}catch(err){console.log("get_more_pages()加载失败")}
 	    try{replace_a()}catch(err){console.log("replace_a()加载失败")}
             try{new_thread()}catch(err){console.log("new_thread()加载失败")}
             try{mobile_all_setting()}catch(err){console.log("mobile_all_setting()加载失败")}
