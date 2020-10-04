@@ -861,15 +861,15 @@ input[type="checkbox"].switch_1{
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
-	    try{Latest_publication();}catch(err){console.log("Latest_publication()加载失败")}
-            try{link();}catch(err){console.log("link()加载失败")}
+	    try{Latest_publication()}catch(err){console.log("Latest_publication()加载失败")}
+            try{link()}catch(err){console.log("link()加载失败")}
             if(window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)){
                     //online_status();//开启探测在线状态,不需要显示在线状态就注释此行,默认不开启
             }
-            try{collect();}catch(err){console.log("collect()加载失败")}
-            try{reply_space();}catch(err){console.log("reply_space()加载失败")}
-            try{quick_reply();}catch(err){console.log("quick_reply()加载失败")}
-            try{user_level();}catch(err){console.log("user_level()加载失败")}
+            try{collect()}catch(err){console.log("collect()加载失败")}
+            try{reply_space()}catch(err){console.log("reply_space()加载失败")}
+            try{quick_reply()}catch(err){console.log("quick_reply()加载失败")}
+            try{user_level()}catch(err){console.log("user_level()加载失败")}
             try{set_PC_js()}catch(err){console.log("set_PC_js()加载失败")}
         }
         else{
