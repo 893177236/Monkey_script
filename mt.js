@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.6.6
+// @version      1.7.6.7
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -792,7 +792,7 @@ input[type="checkbox"].switch_1{
             if(location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)){insert_blacklist()}
 	    if(localStorage.v16){if(location.href.match(/bbs.binmt.cc\/thread-/g)){img_width()}}
     }
-	function ios_js_css(){
+    function ios_js_css(){
         var ios_js = document.createElement("script");
         var ios_css = document.createElement("link");
 
@@ -807,18 +807,29 @@ input[type="checkbox"].switch_1{
         document.head.appendChild(ios_js);
         document.head.appendChild(ios_css);
     }
+    function set_PC_js(){
+        var a = document.createElement("script");
+        var b = document.createElement("script");
+        a.src = "https://cdn2.bbs.binmt.cc/static/js/smilies.js?x6L";
+        b.src = "https://cdn2.bbs.binmt.cc/static/js/common.js?x6L";
+        a.type = "text/javascript";
+        b.type = "text/javascript";
+        document.head.appendChild(a);
+        document.head.appendChild(b);
+    }
     function np(){//这是入口
         var usa = navigator.userAgent.match('Windows');
         if(usa != null){
-            Latest_publication();
-            link();
+	    try{Latest_publication();}catch(err){console.log("Latest_publication()加载失败")}
+            try{link();}catch(err){console.log("link()加载失败")}
             if(window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)){
                     //online_status();//开启探测在线状态,不需要显示在线状态就注释此行,默认不开启
             }
-            collect();
-            reply_space();
-            quick_reply();
-            user_level();
+            try{collect();}catch(err){console.log("collect()加载失败")}
+            try{reply_space();}catch(err){console.log("reply_space()加载失败")}
+            try{quick_reply();}catch(err){console.log("quick_reply()加载失败")}
+            try{user_level();}catch(err){console.log("user_level()加载失败")}
+            try{set_PC_js()}catch(err){console.log("set_PC_js()加载失败")}
         }
         else{
 	    try{replace_a()}catch(err){console.log("replace_a()加载失败")}
