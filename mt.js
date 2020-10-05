@@ -13,7 +13,7 @@
 // @supportURL   https://github.com/893177236/Monkey_script
 // @require	 http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js
 // ==/UserScript==
-// @compatible   只是测试了一下idea的push2
+// @compatible   只是测试了一下idea的push23
 
 (function() {
     'use strict';
