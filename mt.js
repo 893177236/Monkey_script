@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.6.9
+// @version      1.7.7.0
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -13,7 +13,6 @@
 // @supportURL   https://github.com/893177236/Monkey_script
 // @require	 http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js
 // ==/UserScript==
-// @compatible   格式化代码
 
 (function () {
     'use strict';
@@ -815,7 +814,7 @@
 
     }
 
-    function img_width() {
+    function img_width() {//图片宽度
         try {
             var img = $("img");
             var img_num = 0;
@@ -836,18 +835,21 @@
     }
 
     function mobile_all_setting() {
-        if (localStorage.v1) {
+        if (location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)) {
+            insert_blacklist()
+        }
+        if (localStorage.v6) {
             if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                remove_post_content_font_special()
+                reviews()
+            }
+        }
+        if (localStorage.v16) {
+            if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
+                img_width()
             }
         }
         if (localStorage.v2) {
             link()
-        }
-        if (localStorage.v3) {
-            if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                show_black()
-            }
         }
         if (localStorage.v4) {
             apply_none()
@@ -855,11 +857,6 @@
         if (localStorage.v5) {
             if (location.href.match(/forum\.php\?mod=post\&action=newthread/g)) {
                 insert_empty_title()
-            }
-        }
-        if (localStorage.v6) {
-            if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                reviews()
             }
         }
         if (localStorage.v15) {
@@ -872,18 +869,22 @@
         if (location.href.match(/bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g)) {
             dom_modify()
         }
-        ;
         if (location.href.match(/forum.php\?mod=guide&view/g)) {
             document.querySelector("#forum > div.comiis_body > div.comiis_bodybox > div:nth-child(2)").remove()
         }
-        if (location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)) {
-            insert_blacklist()
-        }
-        if (localStorage.v16) {
+        if (localStorage.v1) {
             if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                img_width()
+                remove_post_content_font_special()
             }
         }
+
+        if (localStorage.v3) {
+            if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
+                show_black()
+            }
+        }
+
+
     }
 
     function ios_js_css() {
