@@ -9,9 +9,10 @@
 // @compatible   edge Beta/Dev/Candy 测试通过
 // @compatible   火狐 测试通过
 // @compatible   Yandex 测试通过
-// @grant        none
+// @grant        GM_addStyle
+// @run-at       document-start
 // @supportURL   https://github.com/893177236/Monkey_script
-// @require	 http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js
+// @require	     http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js
 // ==/UserScript==
 
 (function () {
@@ -556,19 +557,12 @@
             hide[i].removeAttribute('style');
             hide[i].removeAttribute('size');
         }
-
-
         var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
-        var text = document.getElementsByClassName("comiis_a comiis_message_table cl");
         var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
         var j = 0, k = 1;
         for (j = 0; j < content.length; j++ & k++) {
             content[j].innerHTML = content[j].innerHTML.replace(rule, '');
-            content[j].style = "padding:0px";
-            text[k].style = "padding:0px 56px";
         }
-
-
     }
 
     function collect() {
@@ -918,102 +912,109 @@
         var usa = navigator.userAgent.match('Windows');
         if (usa != null) {
             try {
-                Latest_publication()
-            } catch (err) {
-                console.log("Latest_publication()加载失败")
-            }
-            try {
-                link()
-            } catch (err) {
-                console.log("link()加载失败")
-            }
-            if (window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)) {
-                //online_status();//开启探测在线状态,不需要显示在线状态就注释此行,默认不开启
-            }
-            try {
-                collect()
-            } catch (err) {
-                console.log("collect()加载失败")
-            }
-            try {
-                reply_space()
-            } catch (err) {
-                console.log("reply_space()加载失败")
-            }
-            try {
-                quick_reply()
-            } catch (err) {
-                console.log("quick_reply()加载失败")
-            }
-            try {
-                user_level()
-            } catch (err) {
-                console.log("user_level()加载失败")
-            }
-            try {
                 set_PC_js()
             } catch (err) {
                 console.log("set_PC_js()加载失败")
             }
+            $(document).ready(function () {
+                try {
+                    Latest_publication()
+                } catch (err) {
+                    console.log("Latest_publication()加载失败")
+                }
+                try {
+                    link()
+                } catch (err) {
+                    console.log("link()加载失败")
+                }
+                if (window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)) {
+                    //online_status();//开启探测在线状态,不需要显示在线状态就注释此行,默认不开启
+                }
+                try {
+                    collect()
+                } catch (err) {
+                    console.log("collect()加载失败")
+                }
+                try {
+                    reply_space()
+                } catch (err) {
+                    console.log("reply_space()加载失败")
+                }
+                try {
+                    quick_reply()
+                } catch (err) {
+                    console.log("quick_reply()加载失败")
+                }
+                try {
+                    user_level()
+                } catch (err) {
+                    console.log("user_level()加载失败")
+                }
+            });
         } else {
-            try {
-                replace_a()
-            } catch (err) {
-                console.log("replace_a()加载失败")
-            }
-            try {
-                new_thread()
-            } catch (err) {
-                console.log("new_thread()加载失败")
-            }
-            try {
-                mobile_all_setting()
-            } catch (err) {
-                console.log("mobile_all_setting()加载失败")
-            }
-            try {
-                insert_checked_select()
-            } catch (err) {
-                console.log("insert_checked_select()加载失败")
-            }
-            try {
-                insert_tips()
-            } catch (err) {
-                console.log("insert_tips()加载失败")
-            }
             try {
                 set_css()
             } catch (err) {
                 console.log("set_css()加载失败")
             }
-            try {
-                set_display_last_click()
-            } catch (err) {
-                console.log("set_display_last_click()加载失败")
-            }
-            try {
-                set_select_clicked()
-            } catch (err) {
-                console.log("set_select_clicked()加载失败")
-            }
-            try {
-                set_checked_clicked()
-            } catch (err) {
-                console.log("set_checked_clicked()加载失败")
-            }
-            try {
-                set_select_change_clicked()
-            } catch (err) {
-            }
-            try {
-                ios_js_css()
-            } catch (err) {
-                console.log("set_select_change_clicked()加载失败")
-            }
-
+            $(document).ready(function () {
+                try {
+                    replace_a()
+                } catch (err) {
+                    console.log("replace_a()加载失败")
+                }
+                try {
+                    new_thread()
+                } catch (err) {
+                    console.log("new_thread()加载失败")
+                }
+                try {
+                    mobile_all_setting()
+                } catch (err) {
+                    console.log("mobile_all_setting()加载失败");
+                    console.log(err)
+                }
+                try {
+                    insert_checked_select()
+                } catch (err) {
+                    console.log("insert_checked_select()加载失败")
+                }
+                try {
+                    insert_tips()
+                } catch (err) {
+                    console.log("insert_tips()加载失败")
+                }
+                try {
+                    set_display_last_click()
+                } catch (err) {
+                    console.log("set_display_last_click()加载失败")
+                }
+                try {
+                    set_select_clicked()
+                } catch (err) {
+                    console.log("set_select_clicked()加载失败")
+                }
+                try {
+                    set_checked_clicked()
+                } catch (err) {
+                    console.log("set_checked_clicked()加载失败")
+                }
+                try {
+                    set_select_change_clicked()
+                } catch (err) {
+                }
+                try {
+                    ios_js_css()
+                } catch (err) {
+                    console.log("set_select_change_clicked()加载失败")
+                }
+            })
 
         }
     }//function np()的结束处
-    np();
+    GM_addStyle(".f_d.y,.top_user.f_b,.comiis_a.comiis_message_table.cl,.f_c.dialog>i,.bg_f.b_ok,.bg_f.f_c.b_ok.comiis_openrebox>i,.bg_f.f_c.b_ok.comiis_openrebox>em,.comiis_font.f_b,.comiis_font.bg_e.b_l{font-weight:100};.comiis_message.bg_f.view_all.cl.message{font-weight:100;padding:0px}");
+    $(document).ready(function () {
+        np()
+    });
 
 })();
