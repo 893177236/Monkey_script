@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.7.0
+// @version      1.7.8.0
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -10,6 +10,8 @@
 // @compatible   火狐 测试通过
 // @compatible   Yandex 测试通过
 // @grant        GM_addStyle
+// @grant        GM_setValue
+// @grant        GM_getValue
 // @run-at       document-start
 // @supportURL   https://github.com/893177236/Monkey_script
 // @require	     http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js
@@ -52,6 +54,40 @@
         h_content[0].innerHTML = h_content[0].innerHTML.replace(rule, '');
     }
 
+    function getLocalTime() {
+        let GM_myDate = new Date;
+        let GM_year = GM_myDate.getFullYear(); //获取当前年
+        let GM_mon = GM_myDate.getMonth() + 1; //获取当前月
+        let GM_date = GM_myDate.getDate();
+        let GM_alldate = GM_year.toString() + GM_mon.toString() + GM_date.toString();
+        GM_alldate = parseInt(GM_alldate);
+        return GM_alldate
+    }
+
+    function mt_getFormHash_pc() {
+        let mt_formhash = document.querySelector("input[name=formhash]").value;
+        return mt_formhash;
+    }
+
+    function mt_getFormHash_mobile() {
+        let mt_formhash = document.querySelector("div[class=sidenv_exit]>a").href.match(/formhash=(.*)&/)[1]
+        return mt_formhash;
+    }
+
+    function auto_sign(mt_formhash) { //mt签到
+        if (mt_formhash != null) {
+            let GM_localTime = getLocalTime();
+            $.get("/k_misign-sign.html?operation=qiandao&format=button&formhash=" + mt_formhash + "&inajax=1&ajaxtarget=midaben_sign", function (data, status) {
+                console.log(data.responseText);
+                GM_setValue("mt_sign", GM_localTime);
+                location.reload();
+            });
+        } else {
+            console.log("获取账号formhash失败")
+        }
+
+    }
+
     function apply_none() {
 
         if (location.href.match(/bbs.binmt.cc\/thread/g) != null) {
@@ -85,7 +121,7 @@
         var c = document.createElement("script");
         var image = document.createElement("script");
         var file = document.createElement("script");
-        c.src = "https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/common_u.js?EPT:formatted";//可能是论坛引入的js么有加载，顾重新引入
+        c.src = "https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/common_u.js?EPT:formatted"; //可能是论坛引入的js么有加载，顾重新引入
         image.src = "https://cdn2.bbs.binmt.cc/template/comiis_app/comiis/js/buildfileupload.js?EPT";
         file.src = "https://cdn.bbs.binmt.cc/static/js/mobile/ajaxfileupload.js?EPT";
 
@@ -271,7 +307,7 @@
 	}
 
 	`;
-        b.appendChild(a);//把a看成b弄错了
+        b.appendChild(a); //把a看成b弄错了
         b.appendChild(c);
         b.appendChild(image);
         b.appendChild(file);
@@ -315,8 +351,8 @@
                 localStorage.setItem(a, "true");
             }
             var c = localStorage.getItem(a);
-            var d = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").selectedIndex;//当前索引值
-            var e = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").options[d].text;//当前索引对应的文本
+            var d = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").selectedIndex; //当前索引值
+            var e = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").options[d].text; //当前索引对应的文本
             if (c) {
                 iosOverlay({
                     text: e + "已开启",
@@ -369,6 +405,7 @@
             c.innerHTML = '<select style="vertical-align: top;" class="beauty-select">' +
                 '<option value="v1">移除帖子字体效果<\/option>' +
                 '<option value="v2">开启识别链接<\/option>' +
+                '<option value="v17">开启自动签到<\/option>' +
                 '<option value="v3">移除评论区字体效果<\/option>' +
                 '<option value="v4">开启回复一键隐藏<\/option>' +
                 '<option value="v5">开启灌水帖隐藏标题<\/option>' +
@@ -385,8 +422,10 @@
                 '<option value="v16">恢复图片宽度<\/option>' +
                 '<\/select>';
             f.innerHTML = '<input type="checkbox" class="switch_1">';
-            document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(c);
-            document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(f);
+            // document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(c);
+            // document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(f);
+            document.getElementById("comiis_menu_vtr_menu").children.appendChild(c);
+            document.getElementById("comiis_menu_vtr_menu").children.appendChild(f);
             var a = document.getElementsByClassName("switch_1")[0];
             var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
             if (localStorage.getItem(b) != null) {
@@ -430,7 +469,8 @@
                         return linkPack(a, b + 1E4)
                     },
                     15)
-            } else for (e = c = b, d = a.snapshotLength; b <= d ? c <= d : c >= d; e = b <= d ? ++c : --c) setLink(a.snapshotItem(e))
+            } else
+                for (e = c = b, d = a.snapshotLength; b <= d ? c <= d : c >= d; e = b <= d ? ++c : --c) setLink(a.snapshotItem(e))
         };
         linkify = function (a) {
             a = document.evaluate(xpath, a, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
@@ -438,11 +478,11 @@
         };
         observePage = function (a) {
             for (a = document.createTreeWalker(a, NodeFilter.SHOW_TEXT, {
-                    acceptNode: function (a) {
-                        if (!filter.test(a.parentNode.localName)) return NodeFilter.FILTER_ACCEPT
-                    }
-                },
-                !1); a.nextNode();) setLink(a.currentNode)
+                        acceptNode: function (a) {
+                            if (!filter.test(a.parentNode.localName)) return NodeFilter.FILTER_ACCEPT
+                        }
+                    },
+                    !1); a.nextNode();) setLink(a.currentNode)
         };
         observer = new window.MutationObserver(function (a) {
             var b, c;
@@ -480,8 +520,7 @@
         var cishu = 0;
         for (var sss = document.getElementsByClassName("pls favatar"), ll = 0; ll < sss.length; ll++) {
             var sendmessage = sss[ll].getElementsByClassName("comiis_o cl")
-            if (sendmessage.length == 0) {
-            } else {
+            if (sendmessage.length == 0) {} else {
                 var sendmessageurl = sendmessage[0].getElementsByTagName('a')[1].href;
 
                 let xhr = new XMLHttpRequest();
@@ -518,8 +557,7 @@
 
     function reviews() {
         var hongbao = document.getElementsByClassName("bottom_zhan y");
-        if (hongbao.length == 0) {
-        } else {
+        if (hongbao.length == 0) {} else {
             var cishu2 = 0;
             var replyhref = hongbao[cishu2].getElementsByTagName('a')[1].href;
             var page = replyhref.match('&page=(.*)')[1];
@@ -545,8 +583,7 @@
     function new_thread() {
         try {
             document.getElementsByClassName("comiis_mh_tit cl")[1].getElementsByTagName("a")[0].href = "https://bbs.binmt.cc/page-4.html";
-        } catch (err) {
-        }
+        } catch (err) {}
     }
 
     function show_black() {
@@ -559,7 +596,8 @@
         }
         var content = document.getElementsByClassName("comiis_message bg_f view_all cl message");
         var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
-        var j = 0, k = 1;
+        var j = 0,
+            k = 1;
         for (j = 0; j < content.length; j++ & k++) {
             content[j].innerHTML = content[j].innerHTML.replace(rule, '');
         }
@@ -581,8 +619,7 @@
         for (i = 0; i < a.length; i++) {
             a[i].onclick = function () {
                 showWindow('reply', this.href);
-                setTimeout('document.querySelector("#moreconf").innerHTML=document.querySelector("#moreconf").innerHTML+\'<button type="button" id = "insertspace" style="float: left;">一键空格<\/button>\';document.querySelector("#insertspace").onclick=function(){document.querySelector("#postmessage").value="           "}'
-                    , 150)
+                setTimeout('document.querySelector("#moreconf").innerHTML=document.querySelector("#moreconf").innerHTML+\'<button type="button" id = "insertspace" style="float: left;">一键空格<\/button>\';document.querySelector("#insertspace").onclick=function(){document.querySelector("#postmessage").value="           "}', 150)
             }
         }
 
@@ -594,8 +631,7 @@
             showWindow('reply', this.href);
             var a = document.querySelector("#postsubmit");
             setTimeout(
-                'document.querySelector("#moreconf").innerHTML=document.querySelector("#moreconf").innerHTML+\'<button type="button" id = "insertspace2" style="float: left;">一键空格<\/button>\';document.querySelector("#insertspace2").onclick=function(){document.querySelector("#postmessage").value=document.querySelector("#postmessage").value+"           ";}'
-                , 200)
+                'document.querySelector("#moreconf").innerHTML=document.querySelector("#moreconf").innerHTML+\'<button type="button" id = "insertspace2" style="float: left;">一键空格<\/button>\';document.querySelector("#insertspace2").onclick=function(){document.querySelector("#postmessage").value=document.querySelector("#postmessage").value+"           ";}', 200)
         }
 
 
@@ -655,71 +691,61 @@
     function dom_modify() {
         try {
             var g = localStorage.blacklist.split(",");
-        } catch (err) {
-        }
+        } catch (err) {}
         try {
             document.addEventListener('DOMNodeInserted', function (e) {
-                var a = document.getElementsByClassName("forumlist_li comiis_znalist bg_f b_t b_b comiis_list_readimgs");//帖子总体
-                var b = document.getElementsByClassName("forumlist_li_time");//板块总体
-                var i = 0, j = 0;
+                var a = document.getElementsByClassName("forumlist_li comiis_znalist bg_f b_t b_b comiis_list_readimgs"); //帖子总体
+                var b = document.getElementsByClassName("forumlist_li_time"); //板块总体
+                var i = 0,
+                    j = 0;
                 for (i = 0; i < a.length; i++) {
                     var c = b[i].textContent;
                     try {
                         var d = c.match(/休闲灌水|求助问答|逆向教程|资源共享|综合交流|编程开发|玩机教程|建议反馈/g)[0];
-                    } catch (err) {
-                    }
+                    } catch (err) {}
                     try {
                         var f = a[i].getElementsByTagName("a")[0].href.match(/\d+/)[0]
-                    } catch (err) {
-                    }//当前for一层的uid
+                    } catch (err) {} //当前for一层的uid
                     switch (d) {
                         case "逆向教程":
                             if (localStorage.v7) {
                                 a[i].remove()
-                            }
-                            ;
+                            };
                             break;
                         case "资源共享":
                             if (localStorage.v8) {
                                 a[i].remove()
-                            }
-                            ;
+                            };
                             break;
                         case "休闲灌水":
                             if (localStorage.v9) {
                                 a[i].remove()
-                            }
-                            ;
+                            };
                             break;
                         case "求助问答":
                             if (localStorage.v10) {
                                 a[i].remove()
-                            }
-                            ;
+                            };
                             break;
                         case "综合交流":
                             if (localStorage.v11) {
                                 a[i].remove()
-                            }
-                            ;
+                            };
                             break;
                         case "编程开发":
                             if (localStorage.v12) {
                                 a[i].remove()
-                            }
-                            ;
+                            };
                             break;
                         case "玩机教程":
                             if (localStorage.v13) {
                                 a[i].remove()
-                            }
-                            ;
+                            };
                             break;
                         case "建议反馈":
                             if (localStorage.v14) {
                                 a[i].remove()
-                            }
-                            ;
+                            };
                             break;
                     }
                     if (g.length > 0) {
@@ -729,22 +755,21 @@
                             }
                         }
                     }
-                }//for处
-            }, false);//function(e)处
+                } //for处
+            }, false); //function(e)处
 
 
-        } catch (err) {
-        }
+        } catch (err) {}
     }
 
-    function insert_blacklist() {//在个人信息页面添加一个拉黑名单
+    function insert_blacklist() { //在个人信息页面添加一个拉黑名单
         //当前页面是否是个人信息页面
         try {
             var a = document.querySelector("#home > div.comiis_body > div.comiis_bodybox > form > div.comiis_crezz.comiis_input_style.mt15.b_t.bg_f.cl");
             var b = document.createElement("li");
             var c = document.createElement("li");
-            b.className = "comiis_stylitit bg_e b_b f_c cl";//标题
-            c.className = "comiis_styli b_b cl";//输入框
+            b.className = "comiis_stylitit bg_e b_b f_c cl"; //标题
+            c.className = "comiis_styli b_b cl"; //输入框
             b.innerHTML = "黑名单";
             c.innerHTML = `<textarea name="blacklist" id="blacklistall" class="comiis_pxs" style="width:90%;resize:none;opacity: 0.7;" placeholder="输入想要拉黑的用户的uid，多个uid用逗号分隔，如1234,5678,9231"></textarea>`;
             a.appendChild(b);
@@ -752,18 +777,17 @@
             document.getElementById("profilesubmitbtn").addEventListener("click", function () {
                 var a = document.querySelector("#blacklistall").value;
                 localStorage.setItem("blacklist", a)
-            })//给保存追加点击事件本地保存黑名单
+            }) //给保存追加点击事件本地保存黑名单
             document.querySelector("#blacklistall").textContent = localStorage.blacklist;
-        } catch (err) {
-        }
+        } catch (err) {}
     }
 
-    function uid_display() {//显示帖子人的uid
+    function uid_display() { //显示帖子人的uid
         var a = document.getElementsByClassName("comiis_verify");
         var i = 0;
         for (i = 0; i < a.length; i++) {
             var b = document.createElement("a");
-            var c = document.getElementsByClassName("comiis_postli_top bg_f b_t")[i].getElementsByTagName("a")[0].href.match(/\d+/)[0];//每组uid
+            var c = document.getElementsByClassName("comiis_postli_top bg_f b_t")[i].getElementsByTagName("a")[0].href.match(/\d+/)[0]; //每组uid
             b.style = `font: 13px 隶书;background: rgb(255, 118, 0);margin-left: 4px;padding: 0px 3px;color: white;float: left;margin-top: 1px;height: 14px;line-height: 15px;border-radius: 1.5px;`;
             b.innerHTML = "uid：" + c;
             a[i].parentElement.insertBefore(b, a[i]);
@@ -772,17 +796,16 @@
 
     function remove_blacklist_user() {
         try {
-            var a = document.getElementsByClassName("comiis_postli comiis_list_readimgs nfqsqi");//所有评论本体
+            var a = document.getElementsByClassName("comiis_postli comiis_list_readimgs nfqsqi"); //所有评论本体
             var i = 0;
             for (i = 0; i < a.length; i++) {
-                var b = a[i].getElementsByClassName("postli_top_tximg bg_e")[0].href.match(/\d+/)[0];//本体里的href里面的uid
+                var b = a[i].getElementsByClassName("postli_top_tximg bg_e")[0].href.match(/\d+/)[0]; //本体里的href里面的uid
                 if (b == localStorage.blacklist) {
                     a[i].remove();
                 }
             }
 
-        } catch (err) {
-        }
+        } catch (err) {}
     }
 
     function replace_a() {
@@ -791,24 +814,22 @@
         var rul = /space-uid-(.*?).html/;
         for (i = 0; i < a.length; i++) {
             try {
-                var b = a[i].getElementsByTagName("a");//a标签
-            } catch (err) {
-            }
+                var b = a[i].getElementsByTagName("a"); //a标签
+            } catch (err) {}
             var j = 0;
             for (j = 0; j < b.length; j++) {
                 try {
-                    var c = b[j].href.match(rul);//匹配空间链接
+                    var c = b[j].href.match(rul); //匹配空间链接
                     if (c) {
                         b[j].href = "https://bbs.binmt.cc/home.php?mod=space&uid=" + c[1] + "&do=profile&from=space";
                     }
-                } catch (err) {
-                }
+                } catch (err) {}
             }
         }
 
     }
 
-    function img_width() {//图片宽度
+    function img_width() { //图片宽度
         try {
             var img = $("img");
             var img_num = 0;
@@ -877,6 +898,32 @@
                 show_black()
             }
         }
+        if (localStorage.v17) {
+            if (GM_getValue("mt_sign") != getLocalTime()) {
+                if ((location.href == location.origin + "/forum.php?mod=guide&view=hot&mobile=2") || (location.href == location.origin + "/page-1.html")) {
+                    if (document.getElementsByClassName("sidenv_user")[0].href != location.origin + "/member.php?mod=logging&action=login&mobile=2") {
+                        console.log("今天尚未签到，开始签到 mobile")
+                        try {
+                            let getMTFormHash = mt_getFormHash_mobile()
+                            auto_sign(getMTFormHash)
+                        } catch (err) {
+                            console.log("签到失败", err)
+                        }
+
+                    } else {
+                        console.log("当前账号未登录 mobile")
+                    }
+
+                } else {
+                    console.log("当前不在主页 mobile")
+                }
+
+            } else {
+                console.log("已签到")
+            }
+        } else {
+            console.log("尚未开启每日自动签到")
+        }
 
 
     }
@@ -908,7 +955,7 @@
         document.head.appendChild(b);
     }
 
-    function np() {//这是入口
+    function np() { //这是入口
         var usa = navigator.userAgent.match('Windows');
         if (usa != null) {
             try {
@@ -949,6 +996,24 @@
                     user_level()
                 } catch (err) {
                     console.log("user_level()加载失败")
+                }
+                try {
+                    if (GM_getValue("mt_sign") != getLocalTime()) {
+                        if ((location.href == location.origin + "/") || (location.href == location.origin + "/forum.php")) {
+                            if (!document.querySelector("div[class=comiis_dlq]>a")) {
+                                let getMTFormHash = mt_getFormHash_pc()
+                                auto_sign(getMTFormHash)
+                            } else {
+                                console.log("当前账号尚未登录")
+                            }
+                        } else {
+                            console.log("当前不在主页 pc")
+                        }
+                    } else {
+                        console.log("今日已签到")
+                    }
+                } catch (err) {
+                    console.log("auto_sign() pc执行失败")
                 }
             });
         } else {
@@ -1001,8 +1066,7 @@
                 }
                 try {
                     set_select_change_clicked()
-                } catch (err) {
-                }
+                } catch (err) {}
                 try {
                     ios_js_css()
                 } catch (err) {
@@ -1011,7 +1075,7 @@
             })
 
         }
-    }//function np()的结束处
+    } //function np()的结束处
     GM_addStyle(".f_d.y,.top_user.f_b,.comiis_a.comiis_message_table.cl,.f_c.dialog>i,.bg_f.b_ok,.bg_f.f_c.b_ok.comiis_openrebox>i,.bg_f.f_c.b_ok.comiis_openrebox>em,.comiis_font.f_b,.comiis_font.bg_e.b_l{font-weight:100};.comiis_message.bg_f.view_all.cl.message{font-weight:100;padding:0px}");
     $(document).ready(function () {
         np()
