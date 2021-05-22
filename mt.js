@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      1.7.8.0
+// @version      1.7.8.1
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -424,8 +424,8 @@
             f.innerHTML = '<input type="checkbox" class="switch_1">';
             // document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(c);
             // document.getElementsByClassName("comiis_memu_y bg_f nfqsqi comiis_menu_style")[0].children[0].appendChild(f);
-            document.getElementById("comiis_menu_vtr_menu").children.appendChild(c);
-            document.getElementById("comiis_menu_vtr_menu").children.appendChild(f);
+            document.getElementById("comiis_menu_vtr_menu").children[0].appendChild(c);
+            document.getElementById("comiis_menu_vtr_menu").children[0].appendChild(f);
             var a = document.getElementsByClassName("switch_1")[0];
             var b = document.querySelector("#comiis_menu_vtr_menu > ul > li:nth-child(6) > select").value;
             if (localStorage.getItem(b) != null) {
