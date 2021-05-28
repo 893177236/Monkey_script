@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0
+// @version      2.0.1
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -610,6 +610,32 @@
                 ob.className = "comiis_font mt_review";
                 ob.innerHTML = "";
                 oa.appendChild(ob);
+                let review_username = hongbao[cishu2].parentElement.parentElement.getElementsByClassName("top_user f_b")[0].text;
+                oa.onclick = function () {
+                    let click_time = Date.now();
+                    var mt_interval = setInterval(function () {
+                        let run_time = parseInt((Date.now()-click_time)/1000);
+                        if(run_time>=5){
+                            console.log("超时");
+                            clearInterval(mt_interval);
+                        }else if (document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c") != null) {
+                            console.log("存在，清理定时器");
+                            console.log("点评用户：",review_username);
+                            console.log("该对象出现用时:",run_time);
+                            try{
+                                document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c").innerText="点评 "+review_username;
+                                
+                            }catch(err){
+                                console.log("修改点评失败",err);
+                            }
+                            
+                            clearInterval(mt_interval);
+                        }
+                        
+                    },100)
+
+
+                }
                 lm.insertAdjacentElement('afterBegin', oa);
             }
         }
@@ -861,24 +887,24 @@
                 line-height: 15px;
                 border-radius: 1.5px;`;
                 uid_control.innerHTML = "UID:" + mt_uid;
-                uid_control.onclick = function(){
-                    try{
+                uid_control.onclick = function () {
+                    try {
                         GM_setClipboard(mt_uid);
                         iosOverlay({
                             text: mt_uid + "已复制",
                             duration: 2000,
                             icon: "https://whitesev.gitee.io/static_resource/ios_loading/img/check.png"
                         });
-                        console.log("复制:",mt_uid)
-                    }catch(err){
+                        console.log("复制:", mt_uid)
+                    } catch (err) {
                         iosOverlay({
                             text: mt_uid + "复制失败",
                             duration: 2000,
                             icon: "https://whitesev.gitee.io/static_resource/ios_loading/img/cross.png"
                         });
-                        
+
                     }
-                    
+
                 }
                 if (insert_option == "append") {
                     mt_uid_obj[i].parentElement.appendChild(uid_control);
