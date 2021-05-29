@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0.2
+// @version      2.0.2.1
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -1099,12 +1099,12 @@
         // }
         if (localStorage.v1) {
             if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                try{
+                try {
                     remove_post_content_font_special()
-                }catch (err) {
+                } catch (err) {
                     console.log("remove_post_content_font_special()错误:", err);
                 }
-                
+
             }
         }
 
@@ -1120,8 +1120,9 @@
         }
         if (localStorage.v17) {
             if (GM_getValue("mt_sign") != getLocalTime()) {
-                if ((location.href == location.origin + "/forum.php?mod=guide&view=hot&mobile=2") || (location.href == location.origin + "/page-1.html")) {
-                    if (document.getElementsByClassName("sidenv_user")[0].href != location.origin + "/member.php?mod=logging&action=login&mobile=2") {
+                if (location.href.match(/bbs.binmt.cc\/forum.php\?mod=guide&view=hot(|&mobile=2)/g)) {
+                    // if (document.getElementsByClassName("sidenv_user")[0].href != location.origin + "/member.php?mod=logging&action=login&mobile=2") {
+                    if (document.getElementsByClassName("sidenv_user")[0].href.match(/member.php\?mod=logging&action=login(|&mobile=2)/g) == null) {
                         console.log("今天尚未签到，开始签到 mobile")
                         try {
                             let getMTFormHash = mt_getFormHash_mobile()
