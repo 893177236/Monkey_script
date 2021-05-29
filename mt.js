@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0.1
+// @version      2.0.2
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -614,25 +614,25 @@
                 oa.onclick = function () {
                     let click_time = Date.now();
                     var mt_interval = setInterval(function () {
-                        let run_time = parseInt((Date.now()-click_time)/1000);
-                        if(run_time>=5){
+                        let run_time = parseInt((Date.now() - click_time) / 1000);
+                        if (run_time >= 5) {
                             console.log("超时");
                             clearInterval(mt_interval);
-                        }else if (document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c") != null) {
+                        } else if (document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c") != null) {
                             console.log("存在，清理定时器");
-                            console.log("点评用户：",review_username);
-                            console.log("该对象出现用时:",run_time);
-                            try{
-                                document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c").innerText="点评 "+review_username;
-                                
-                            }catch(err){
-                                console.log("修改点评失败",err);
+                            console.log("点评用户：", review_username);
+                            console.log("该对象出现用时:", run_time);
+                            try {
+                                document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c").innerText = "点评 " + review_username;
+
+                            } catch (err) {
+                                console.log("修改点评失败", err);
                             }
-                            
+
                             clearInterval(mt_interval);
                         }
-                        
-                    },100)
+
+                    }, 100)
 
 
                 }
@@ -974,90 +974,148 @@
 
     function mobile_all_setting() {
         if (location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)) {
-            insert_blacklist()
+            try {
+                insert_blacklist()
+            } catch (err) {
+                console.log("插入黑名单错误:", err);
+            }
+
         }
         if (localStorage.v6) {
             if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                reviews()
+                try {
+                    reviews()
+                } catch (err) {
+                    console.log("插入点评错误:", err);
+                }
                 // reviews_all_click();
             }
         }
         if (localStorage.v16) {
             if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                img_width()
+                try {
+                    img_width()
+                } catch (err) {
+                    console.log("恢复图片宽度错误:", err);
+                }
+
             }
         }
         if (localStorage.v2) {
-            link()
+            try {
+                link()
+            } catch (err) {
+                console.log("识别链接错误:", err);
+            }
+
         }
         if (localStorage.v4) {
-            apply_none()
+            try {
+                apply_none()
+            } catch (err) {
+                console.log("添加隐藏内容错误:", err);
+            }
+
         }
         if (localStorage.v5) {
             if (location.href.match(/forum\.php\?mod=post\&action=newthread/g)) {
-                insert_empty_title()
+                try {
+                    insert_empty_title()
+                } catch (err) {
+                    console.log("插入空标题错误:", err);
+                }
+
             }
         }
         if (localStorage.v15) {
             if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                uid_display(mt_config.dom_obj.comiis_verify(), "insert");
-                remove_blacklist_user();
-                remove_blacklist_user()
+                try {
+                    uid_display(mt_config.dom_obj.comiis_verify(), "insert");
+                    remove_blacklist_user();
+                    remove_blacklist_user()
+                } catch (err) {
+                    console.log("显示UID、移除黑名单的人错误:", err);
+                }
+
             }
             if (location.href.match(/bbs.binmt.cc\/forum.php\?mod=guide/g)) {
-                comiis_list_page = function () {
-                    comiis_ispage = 1;
-                    if (comiis_page < 12) {
-                        $('.comiis_multi_box').html('<div class="comiis_loadbtn f_d">正在加载...</div>');
-                        $.ajax({
-                            type: 'GET',
-                            url: 'forum.php?mod=guide&view=newthread&index=1&page=' + (comiis_page + 1) + '&inajax=1',
-                            dataType: 'xml',
-                        }).success(function (s) {
-                            if (typeof (s.lastChild.firstChild.nodeValue) != "undefined") {
-                                comiis_page++;
-                                $('#list_new').append(s.lastChild.firstChild.nodeValue);
-                                uid_display(mt_config.dom_obj.comiis_formlist(), "append");
-                                remove_blacklist_user();
-                                remove_blacklist_user();
-                                if (comiis_page >= 12) {
-                                    $('.comiis_multi_box').html('<div class="comiis_loadbtn f_d">亲，已经到底了！</div>');
+                try {
+                    comiis_list_page = function () {
+                        comiis_ispage = 1;
+                        if (comiis_page < 12) {
+                            $('.comiis_multi_box').html('<div class="comiis_loadbtn f_d">正在加载...</div>');
+                            $.ajax({
+                                type: 'GET',
+                                url: 'forum.php?mod=guide&view=newthread&index=1&page=' + (comiis_page + 1) + '&inajax=1',
+                                dataType: 'xml',
+                            }).success(function (s) {
+                                if (typeof (s.lastChild.firstChild.nodeValue) != "undefined") {
+                                    comiis_page++;
+                                    $('#list_new').append(s.lastChild.firstChild.nodeValue);
+                                    uid_display(mt_config.dom_obj.comiis_formlist(), "append");
+                                    remove_blacklist_user();
+                                    remove_blacklist_user();
+                                    if (comiis_page >= 12) {
+                                        $('.comiis_multi_box').html('<div class="comiis_loadbtn f_d">亲，已经到底了！</div>');
+                                    } else {
+                                        $('.comiis_multi_box').html('<a href="javascript:;" onclick="comiis_list_page()" class="comiis_loadbtn bg_e f_d">点击加载更多</a>');
+                                    }
+                                    comiis_redata_function();
                                 } else {
-                                    $('.comiis_multi_box').html('<a href="javascript:;" onclick="comiis_list_page()" class="comiis_loadbtn bg_e f_d">点击加载更多</a>');
+                                    comiis_page--;
+                                    $('.comiis_multi_box').html('<a href="javascript:;" onclick="comiis_list_page()" class="comiis_loadbtn bg_e f_d">重新加载</a>');
                                 }
-                                comiis_redata_function();
-                            } else {
+                                comiis_ispage = 0;
+                            }).error(function () {
                                 comiis_page--;
                                 $('.comiis_multi_box').html('<a href="javascript:;" onclick="comiis_list_page()" class="comiis_loadbtn bg_e f_d">重新加载</a>');
-                            }
-                            comiis_ispage = 0;
-                        }).error(function () {
-                            comiis_page--;
-                            $('.comiis_multi_box').html('<a href="javascript:;" onclick="comiis_list_page()" class="comiis_loadbtn bg_e f_d">重新加载</a>');
-                            comiis_ispage = 0;
-                        });
+                                comiis_ispage = 0;
+                            });
+                        }
                     }
+                } catch (err) {
+                    console.log("当前页面不存在该方法");
                 }
-                uid_display(mt_config.dom_obj.comiis_formlist(), "append");
-                remove_blacklist_user();
-                remove_blacklist_user()
+                try {
+                    uid_display(mt_config.dom_obj.comiis_formlist(), "append");
+                    remove_blacklist_user();
+                    remove_blacklist_user()
+                } catch (err) {
+                    console.log("显示UID、移除黑名单的人错误:", err);
+                }
+
             }
         }
         if (location.href.match(/bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g)) {
-            dom_modify()
+            try {
+                dom_modify()
+            } catch (err) {
+                console.log("移除黑名单中需要隐藏的隐藏的帖子错误:", err);
+            }
+
         }
         // if (location.href.match(/forum.php\?mod=guide&view/g)) {
         //     document.querySelector("#forum > div.comiis_body > div.comiis_bodybox > div:nth-child(2)").remove()
         // }
         if (localStorage.v1) {
             if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                remove_post_content_font_special()
+                try{
+                    remove_post_content_font_special()
+                }catch (err) {
+                    console.log("remove_post_content_font_special()错误:", err);
+                }
+                
             }
         }
 
         if (localStorage.v3) {
             if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
-                show_black()
+                try {
+                    show_black()
+                } catch (err) {
+                    console.log("显示黑色字体错误:", err);
+                }
+
             }
         }
         if (localStorage.v17) {
