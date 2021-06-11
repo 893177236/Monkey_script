@@ -38,6 +38,28 @@
             comiis_postli: function () { //帖子内评论，包括帖子内容主体，第一个就是主体【list】
                 return document.getElementsByClassName("comiis_postli comiis_list_readimgs nfqsqi")
             }
+        },
+        rexp: {
+            home_url: /home.php\?mod=spacecp&ac=profile&op=info/g,
+            home_kmisign_url: /bbs.binmt.cc\/(forum.php\?mod=guide&view=hot(|&mobile=2)|k_misign-sign.html)/g, //主页和签到页链接
+            home_space_url: /bbs\.binmt\.cc\/home\.php\?mod=space/g, //【我的】 个人信息页链接
+            home_space_pc_uid_url: /space-uid-(.*?).html/, //PC 个人空间链接uid
+            reply_url: "",
+            sign_url: "",
+            navigation_url: "",
+            forum_post: /bbs.binmt.cc\/thread/g, //帖子链接
+            forum_post_pc: /.*:\/\/bbs.binmt.cc\/thread.*/, //帖子链接-PC
+            forum_guide_url: /bbs.binmt.cc\/forum.php\?mod=guide/g, // 导航链接
+            forum_post_reply: /forum.php\?mod=post&action=reply/g, //帖子中回复的链接
+            forum_post_page: '&page=(.*)', //帖子链接的当前所在页 page
+            forum_post_pc_page: 'thread-(.*?)-', //PC帖子链接的当前所在页 page
+            forum_plate_text: /休闲灌水|求助问答|逆向教程|资源共享|综合交流|编程开发|玩机教程|建议反馈/g, //各版块名称
+            formhash: /formhash=(.*)&/, //论坛账号的凭证
+            font_special: /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g, //帖子内特殊字体格式
+            forum_post_guide_url: /bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g, //帖子链接和导航链接
+            mt_uid: /uid=(\d+)/,
+            nologin: /member.php\?mod=logging&action=login(|&mobile=2)/g, //未登录
+            pc_useragent: 'Windows', //pc识别
         }
     }
 
@@ -71,7 +93,7 @@
     }
 
     function remove_post_content_font_special() {
-        var rule = /<br>|&nbsp;|<font.*?>|<\/font>|<strike>|<strong>|<i>|<u>|align=".*?"/g;
+        var rule = mt_config.rexp.font_special;
         var h_content = document.getElementsByClassName("comiis_a comiis_message_table cl");
         h_content[0].innerHTML = h_content[0].innerHTML.replace(rule, '');
     }
@@ -92,7 +114,7 @@
     }
 
     function mt_getFormHash_mobile() {
-        let mt_formhash = document.querySelector("div[class=sidenv_exit]>a").href.match(/formhash=(.*)&/)[1]
+        let mt_formhash = document.querySelector("div[class=sidenv_exit]>a").href.match(mt_config.rexp.formhash)[1]
         return mt_formhash;
     }
 
@@ -112,7 +134,7 @@
 
     function apply_none() {
 
-        if (location.href.match(/bbs.binmt.cc\/thread/g) != null) {
+        if (location.href.match(mt_config.rexp.forum_post) != null) {
             var a = document.createElement("span");
             var b = document.querySelector("#fastpostform > div.comiis_post_ico.comiis_minipost_icot.f_c.cl");
             a.id = "fastpostsubmitline2";
@@ -123,7 +145,7 @@
                 document.querySelector("#needmessage").value = document.querySelector("#needmessage").value + "🤣🤣🤣🤣🤣";
             }
         }
-        if (location.href.match(/forum.php\?mod=post&action=reply/g) != null) {
+        if (location.href.match(mt_config.rexp.forum_post_reply) != null) {
             var c = document.createElement("span");
             var d = document.getElementsByClassName("swiper-wrapper comiis_post_ico")[0];
             c.id = "fastpostsubmitline2";
@@ -426,7 +448,7 @@
     }
 
     function insert_checked_select() {
-        if (location.href.match(/bbs\.binmt\.cc\/home\.php\?mod=space/g) != null) {
+        if (location.href.match(mt_config.rexp.home_space_url) != null) {
             var setting_content = document.createElement("li");
             // var setting_combobox = document.createElement("li");
             setting_content.className = "f_b";
@@ -437,6 +459,7 @@
                 '<option value="v2">开启识别链接<\/option>' +
                 '<option value="v17">开启自动签到<\/option>' +
                 '<option value="v3">移除评论区字体效果<\/option>' +
+                '<option value="v18">自动展开帖子<\/option>' +
                 '<option value="v4">开启回复一键隐藏<\/option>' +
                 '<option value="v5">开启灌水帖隐藏标题<\/option>' +
                 '<option value="v6">开启点评<\/option>' +
@@ -592,7 +615,7 @@
         if (hongbao.length == 0) {} else {
             var cishu2 = 0;
             var replyhref = hongbao[cishu2].getElementsByTagName('a')[0].href;
-            var page = replyhref.match('&page=(.*)')[1];
+            var page = replyhref.match(mt_config.rexp.forum_post_page)[1];
             //console.log(page);
             for (cishu2 = 0; cishu2 < hongbao.length; cishu2++) {
                 var rewardhref = hongbao[cishu2].getElementsByTagName('a')[0].href.replace('mod=post&', 'mod=misc&');
@@ -676,7 +699,7 @@
 
     function collect() {
         var own_formhash = document.querySelector("#scform > input[type=hidden]:nth-child(1)").value;
-        var collect_href_id = window.location.href.match('thread-(.*?)-')[1];
+        var collect_href_id = window.location.href.match(mt_config.rexp.forum_post_pc_page)[1];
         var collect_href = 'https:\/\/bbs.binmt.cc\/home.php?mod=spacecp&ac=favorite&type=thread&id=' + collect_href_id + '&formhash=' + own_formhash;
         var new_collect = document.createElement('span');
         var old_Suspended = document.getElementById("scrolltop");
@@ -771,10 +794,10 @@
                 for (let i = 0; i < form_list.length; i++) {
                     var form_list_plate_text = form_list_plate[i].textContent;
                     try {
-                        var plate_name = form_list_plate_text.match(/休闲灌水|求助问答|逆向教程|资源共享|综合交流|编程开发|玩机教程|建议反馈/g)[0];
+                        var plate_name = form_list_plate_text.match(mt_config.rexp.forum_plate_text)[0];
                     } catch (err) {}
                     try {
-                        var mt_uid = form_list[i].getElementsByTagName("a")[0].href.match(/\d+/)[0]
+                        var mt_uid = form_list[i].getElementsByTagName("a")[0].href.match(mt_config.rexp.mt_uid)[1]
                     } catch (err) {} //当前for一层的uid
                     switch (plate_name) {
                         case "逆向教程":
@@ -872,9 +895,13 @@
         // }
         for (let i = 0; i < mt_uid_obj.length; i++) {
             if (mt_uid_obj[i].parentElement.getElementsByClassName("mt_uid_set").length == 0) {
-                let mt_uid = mt_uid_obj[i].parentElement.getElementsByTagName("a")[0].href.match(/\d+/)[0]; //获取href中uid
+                let mt_uid = mt_uid_obj[i].parentElement.getElementsByTagName("a")[0].href.match(mt_config.rexp.mt_uid)[1]; //获取href中uid
                 let uid_control = document.createElement("a");
                 uid_control.className = "mt_uid_set";
+                let uid_control_margin_top = "1px;";
+                if (insert_option == "append") {
+                    uid_control_margin_top = "2px;"
+                }
                 uid_control.style = `
                 font: 13px 隶书;
                 background: rgb(255, 118, 0);
@@ -882,7 +909,7 @@
                 padding: 0px 3px;
                 color: white;
                 float: left;
-                margin-top: 1px;
+                margin-top: ${uid_control_margin_top}
                 height: 14px;
                 line-height: 15px;
                 border-radius: 1.5px;`;
@@ -922,7 +949,7 @@
         try {
             // var a = document.getElementsByClassName("comiis_postli comiis_list_readimgs nfqsqi"); //所有评论本体
             for (let i = 0; i < mt_config.dom_obj.comiis_postli().length; i++) {
-                var mt_uid = mt_config.dom_obj.comiis_postli()[i].getElementsByClassName("postli_top_tximg bg_e")[0].href.match(/\d+/)[0]; //本体里的href里面的uid
+                var mt_uid = mt_config.dom_obj.comiis_postli()[i].getElementsByClassName("postli_top_tximg bg_e")[0].href.match(mt_config.rexp.mt_uid)[1]; //本体里的href里面的uid
                 if (mt_uid == localStorage.blacklist) {
                     mt_config.dom_obj.comiis_postli()[i].remove();
                 }
@@ -934,7 +961,6 @@
     function replace_a() {
         var i = 0;
         var a = document.getElementsByClassName("comiis_messages comiis_aimg_show cl");
-        var rul = /space-uid-(.*?).html/;
         for (i = 0; i < a.length; i++) {
             try {
                 var b = a[i].getElementsByTagName("a"); //a标签
@@ -942,7 +968,7 @@
             var j = 0;
             for (j = 0; j < b.length; j++) {
                 try {
-                    var c = b[j].href.match(rul); //匹配空间链接
+                    var c = b[j].href.match(mt_config.rexp.home_space_pc_uid_url); //匹配空间链接
                     if (c) {
                         b[j].href = "https://bbs.binmt.cc/home.php?mod=space&uid=" + c[1] + "&do=profile&from=space";
                     }
@@ -950,6 +976,16 @@
             }
         }
 
+    }
+
+    function auto_open() {//自动展开
+        var comiis_lookfulltext_box = $('.view_one .comiis_messages,div.display:first,.view_body');
+        $('.comiis_lookfulltext_key,.comiis_lookfulltext_bg').remove();
+        comiis_lookfulltext_box.css({
+            'max-height': 'inherit',
+            'overflow-y': 'inherit',
+            'position': 'inherit'
+        });
     }
 
     function img_width() { //图片宽度
@@ -973,7 +1009,7 @@
     }
 
     function mobile_all_setting() {
-        if (location.href.match(/home.php\?mod=spacecp&ac=profile&op=info/g)) {
+        if (location.href.match(mt_config.rexp.home_url)) {
             try {
                 insert_blacklist()
             } catch (err) {
@@ -982,7 +1018,7 @@
 
         }
         if (localStorage.v6) {
-            if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
+            if (location.href.match(mt_config.rexp.forum_post)) {
                 try {
                     reviews()
                 } catch (err) {
@@ -992,7 +1028,7 @@
             }
         }
         if (localStorage.v16) {
-            if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
+            if (location.href.match(mt_config.rexp.forum_post)) {
                 try {
                     img_width()
                 } catch (err) {
@@ -1028,7 +1064,7 @@
             }
         }
         if (localStorage.v15) {
-            if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
+            if (location.href.match(mt_config.rexp.forum_post)) {
                 try {
                     uid_display(mt_config.dom_obj.comiis_verify(), "insert");
                     remove_blacklist_user();
@@ -1038,7 +1074,7 @@
                 }
 
             }
-            if (location.href.match(/bbs.binmt.cc\/forum.php\?mod=guide/g)) {
+            if (location.href.match(mt_config.rexp.forum_guide_url)) {
                 try {
                     comiis_list_page = function () {
                         comiis_ispage = 1;
@@ -1086,7 +1122,7 @@
 
             }
         }
-        if (location.href.match(/bbs.binmt.cc\/page-[1-5].html|bbs.binmt.cc\/forum.php\?mod=guide/g)) {
+        if (location.href.match(mt_config.rexp.forum_post_guide_url)) {
             try {
                 dom_modify()
             } catch (err) {
@@ -1098,7 +1134,7 @@
         //     document.querySelector("#forum > div.comiis_body > div.comiis_bodybox > div:nth-child(2)").remove()
         // }
         if (localStorage.v1) {
-            if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
+            if (location.href.match(mt_config.rexp.forum_post)) {
                 try {
                     remove_post_content_font_special()
                 } catch (err) {
@@ -1109,7 +1145,7 @@
         }
 
         if (localStorage.v3) {
-            if (location.href.match(/bbs.binmt.cc\/thread-/g)) {
+            if (location.href.match(mt_config.rexp.forum_post)) {
                 try {
                     show_black()
                 } catch (err) {
@@ -1120,9 +1156,9 @@
         }
         if (localStorage.v17) {
             if (GM_getValue("mt_sign") != getLocalTime()) {
-                if (location.href.match(/bbs.binmt.cc\/forum.php\?mod=guide&view=hot(|&mobile=2)/g)) {
+                if (location.href.match(mt_config.rexp.home_kmisign_url)) {
                     // if (document.getElementsByClassName("sidenv_user")[0].href != location.origin + "/member.php?mod=logging&action=login&mobile=2") {
-                    if (document.getElementsByClassName("sidenv_user")[0].href.match(/member.php\?mod=logging&action=login(|&mobile=2)/g) == null) {
+                    if (document.getElementsByClassName("sidenv_user")[0].href.match(mt_config.rexp.nologin) == null) {
                         console.log("今天尚未签到，开始签到 mobile")
                         try {
                             let getMTFormHash = mt_getFormHash_mobile()
@@ -1144,6 +1180,14 @@
             }
         } else {
             console.log("尚未开启每日自动签到")
+        }
+        if(localStorage.v18){
+            try{
+                auto_open()
+            }catch(err){
+                console.log("自动展开失败",err);
+            }
+            
         }
 
 
@@ -1177,7 +1221,7 @@
     }
 
     function np() { //这是入口
-        var usa = navigator.userAgent.match('Windows');
+        var usa = navigator.userAgent.match(mt_config.rexp.pc_useragent);
         if (usa != null) {
             try {
                 set_PC_js()
@@ -1195,7 +1239,7 @@
                 } catch (err) {
                     console.log("link()加载失败")
                 }
-                if (window.location.href.match(/.*:\/\/bbs.binmt.cc\/thread.*/)) {
+                if (window.location.href.match(mt_config.rexp.forum_post_pc)) {
                     //online_status();//开启探测在线状态,不需要显示在线状态就注释此行,默认不开启
                 }
                 try {
