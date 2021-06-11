@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0.3
+// @version      2.0.3.1
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -1183,7 +1183,15 @@
         }
         if(localStorage.v18){
             try{
-                auto_open()
+                var mt_tz_loadtimes = 0;
+                var mt_tz_loadInterval = setInterval(function(){
+                    auto_open();
+                    mt_tz_loadtimes=mt_tz_loadtimes+1;
+                    if(mt_tz_loadtimes>=3){
+                        clearInterval(mt_tz_loadInterval);
+                    }
+                },800)
+               
             }catch(err){
                 console.log("自动展开失败",err);
             }
