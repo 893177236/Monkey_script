@@ -1182,19 +1182,22 @@
             console.log("尚未开启每日自动签到")
         }
         if(localStorage.v18){
-            try{
-                var mt_tz_loadtimes = 0;
-                var mt_tz_loadInterval = setInterval(function(){
-                    auto_open();
-                    mt_tz_loadtimes=mt_tz_loadtimes+1;
-                    if(mt_tz_loadtimes>=3){
-                        clearInterval(mt_tz_loadInterval);
-                    }
-                },800)
-               
-            }catch(err){
-                console.log("自动展开失败",err);
+            if (location.href.match(mt_config.rexp.forum_post)) {
+                try{
+                    var mt_tz_loadtimes = 0;
+                    var mt_tz_loadInterval = setInterval(function(){
+                        auto_open();
+                        mt_tz_loadtimes=mt_tz_loadtimes+1;
+                        if(mt_tz_loadtimes>=3){
+                            clearInterval(mt_tz_loadInterval);
+                        }
+                    },800)
+                   
+                }catch(err){
+                    console.log("自动展开失败",err);
+                }
             }
+            
             
         }
 
