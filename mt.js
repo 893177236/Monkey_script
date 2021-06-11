@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0.3.2
+// @version      2.0.3.3
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -47,7 +47,7 @@
             reply_url: "",
             sign_url: "",
             navigation_url: "",
-            forum_post: /bbs.binmt.cc\/thread/g, //帖子链接
+            forum_post: /bbs.binmt.cc\/thread-/g, //帖子链接
             forum_post_pc: /.*:\/\/bbs.binmt.cc\/thread.*/, //帖子链接-PC
             forum_guide_url: /bbs.binmt.cc\/forum.php\?mod=guide/g, // 导航链接
             forum_post_reply: /forum.php\?mod=post&action=reply/g, //帖子中回复的链接
@@ -978,7 +978,7 @@
 
     }
 
-    function auto_open() {//自动展开
+    function auto_open() { //自动展开
         var comiis_lookfulltext_box = $('.view_one .comiis_messages,div.display:first,.view_body');
         $('.comiis_lookfulltext_key,.comiis_lookfulltext_bg').remove();
         comiis_lookfulltext_box.css({
@@ -1181,24 +1181,20 @@
         } else {
             console.log("尚未开启每日自动签到")
         }
-        if(localStorage.v18){
-            if (location.href.match(mt_config.rexp.forum_post)) {
-                try{
-                    var mt_tz_loadtimes = 0;
-                    var mt_tz_loadInterval = setInterval(function(){
-                        auto_open();
-                        mt_tz_loadtimes=mt_tz_loadtimes+1;
-                        if(mt_tz_loadtimes>=3){
-                            clearInterval(mt_tz_loadInterval);
-                        }
-                    },800)
-                   
-                }catch(err){
-                    console.log("自动展开失败",err);
-                }
+        if (localStorage.v18 && location.href.match(mt_config.rexp.forum_post)) {
+            try {
+                var mt_tz_loadtimes = 0;
+                var mt_tz_loadInterval = setInterval(function () {
+                    auto_open();
+                    mt_tz_loadtimes = mt_tz_loadtimes + 1;
+                    if (mt_tz_loadtimes >= 3) {
+                        clearInterval(mt_tz_loadInterval);
+                    }
+                }, 800)
+            } catch (err) {
+                console.log("自动展开失败", err);
             }
-            
-            
+
         }
 
 
