@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0.3.3
+// @version      2.0.4
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -475,7 +475,7 @@
                 '<option value="v16">恢复图片宽度<\/option>' +
                 '<input type="checkbox" class="switch_1" style="float:right;position:relative;margin-top: revert;">' +
                 '<\/select>';
-            setting_content.style = " top;padding: 8px 0px 8px 8px;margin: 0px 15px;";
+            setting_content.style = " top;padding: 8px 0px 8px 8px;margin: 0px 15px;border-top:1px solid #efefef !important;";
             // setting_combobox.innerHTML = '<input type="checkbox" class="switch_1">';
             let mt_commis_menu = document.getElementsByClassName("comiis_myinfo_list bg_f cl")[1];
             mt_commis_menu.appendChild(setting_content);
