@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0.4
+// @version      2.0.5
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -40,6 +40,7 @@
             }
         },
         rexp: {
+            search_url: /bbs.binmt.cc\/search.php/g,
             home_url: /home.php\?mod=spacecp&ac=profile&op=info/g,
             home_kmisign_url: /bbs.binmt.cc\/(forum.php\?mod=guide&view=hot(|&mobile=2)|k_misign-sign.html)/g, //主页和签到页链接
             home_space_url: /bbs\.binmt\.cc\/home\.php\?mod=space/g, //【我的】 个人信息页链接
@@ -130,6 +131,43 @@
             console.log("获取账号formhash失败")
         }
 
+    }
+
+    function add_search_history() { //搜索界面添加搜索历史记录
+        $("#scform_srchtxt").attr("list", "search_history");
+        var search_history_list = GM_getValue("search_history");
+        var dom_datalist = document.createElement("datalist");
+        dom_datalist.id = "search_history";
+        var option_text = "";
+        if (search_history_list) {
+            for (var i = 0; i < search_history_list.length; i++) {
+                option_text = option_text + '<option value="' + search_history_list[i] + '">';
+            }
+            dom_datalist.innerHTML = option_text;
+            $(".comiis_flex").append(dom_datalist);
+        }
+
+    }
+
+    function search_event() {
+        //搜索界面增加关闭按钮事件，清空input内容
+        //点击搜索保存搜索记录
+        $(".ssclose.bg_e.f_e").click(function () {
+            $("#scform_srchtxt").val("")
+
+        })
+        $("#scform_submit").click(function () {
+            let getsearchtext = $("#scform_srchtxt").val();
+            if ((getsearchtext != null) && (getsearchtext != "")) {
+                let search_history_array = new Array(getsearchtext);
+                let has_history = GM_getValue("search_history");
+                if (has_history != null) {
+                    search_history_array = search_history_array.concat(has_history);
+                }
+                GM_setValue("search_history", search_history_array);
+            }
+
+        })
     }
 
     function apply_none() {
@@ -458,6 +496,7 @@
                 '<option value="v1">移除帖子字体效果<\/option>' +
                 '<option value="v2">开启识别链接<\/option>' +
                 '<option value="v17">开启自动签到<\/option>' +
+                '<option value="v19">显示搜索历史<\/option>' +
                 '<option value="v3">移除评论区字体效果<\/option>' +
                 '<option value="v18">自动展开帖子<\/option>' +
                 '<option value="v4">开启回复一键隐藏<\/option>' +
@@ -1196,6 +1235,14 @@
             }
 
         }
+        if (localStorage.v19 && location.href.match(mt_config.rexp.search_url)) {
+            try {
+                search_event();
+                add_search_history();
+            } catch (err) {
+                console.log("搜索界面错误", err);
+            }
+        }
 
 
     }
@@ -1360,6 +1407,7 @@
                     console.log("添加点击事件失败insert_blacklist()");
                     console.log(err);
                 }
+
 
 
             })
