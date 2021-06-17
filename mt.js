@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0.5.1
+// @version      2.0.5.3
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -169,8 +169,8 @@
             min-width: 20vw;
             width: 20vw;
         ">清理记录</button></div>`;
-
-        $(".comiis_p12.f14.bg_f.f_c.b_b.cl").before(clear_history_innerHTML);
+        let insertdom = $(".comiis_p12.f14.bg_f.f_c.b_b.cl,.comiis_tagtit.b_b.f_c");
+        insertdom.before(clear_history_innerHTML);
         $(".btn_clear_search_history").click(function(){
             GM_deleteValue("search_history");
             window.location.reload();
