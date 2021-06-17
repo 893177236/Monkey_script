@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0.5
+// @version      2.0.5.1
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -12,6 +12,7 @@
 // @grant        GM_addStyle
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @grant        GM_deleteValue
 // @grant        GM_setClipboard
 // @run-at       document-start
 // @supportURL   https://github.com/893177236/Monkey_script
@@ -147,6 +148,33 @@
             $(".comiis_flex").append(dom_datalist);
         }
 
+    }
+
+    function add_clear_history() { //搜索界面添加清理历史记录和历史记录个数
+        let search_history_list = GM_getValue("search_history");
+        let search_history_nums = 0;
+        if(search_history_list!=null){
+            search_history_nums = search_history_list.length;
+        }
+        let clear_history_innerHTML =
+        `<div class="comiis_p12 f14 bg_f f_c b_b cl" style="padding-bottom:10px">搜索记录个数: `+
+        search_history_nums+
+        `<button class="btn_clear_search_history" style="
+            border: none;
+            float: right;
+            background: red;
+            color: #fff;
+            border-radius: 3px;
+            font-weight: 600;
+            min-width: 20vw;
+            width: 20vw;
+        ">清理记录</button></div>`;
+
+        $(".comiis_p12.f14.bg_f.f_c.b_b.cl").before(clear_history_innerHTML);
+        $(".btn_clear_search_history").click(function(){
+            GM_deleteValue("search_history");
+            window.location.reload();
+        })
     }
 
     function search_event() {
@@ -1239,6 +1267,7 @@
             try {
                 search_event();
                 add_search_history();
+                add_clear_history();
             } catch (err) {
                 console.log("搜索界面错误", err);
             }
