@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛优化
-// @version      2.0.5.3
+// @version      2.0.5.4
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -49,7 +49,7 @@
             reply_url: "",
             sign_url: "",
             navigation_url: "",
-            forum_post: /bbs.binmt.cc\/thread-/g, //帖子链接
+            forum_post: /(bbs.binmt.cc\/thread-|bbs.binmt.cc\/forum.php\?mod=viewthread)/g, //帖子链接
             forum_post_pc: /.*:\/\/bbs.binmt.cc\/thread.*/, //帖子链接-PC
             forum_guide_url: /bbs.binmt.cc\/forum.php\?mod=guide/g, // 导航链接
             forum_post_reply: /forum.php\?mod=post&action=reply/g, //帖子中回复的链接
