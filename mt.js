@@ -17,6 +17,8 @@
 // @run-at       document-start
 // @supportURL   https://github.com/893177236/Monkey_script
 // @require	     http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js
+// @require https://greasyfork.org/scripts/428273-nanogallery/code/nanogallery.js?version=942794
+// @require https://greasyfork.org/scripts/428274-jsonp/code/jsonp.js?version=942742
 // ==/UserScript==
 
 (function () {
@@ -38,11 +40,15 @@
             },
             comiis_postli: function () { //帖子内评论，包括帖子内容主体，第一个就是主体【list】
                 return document.getElementsByClassName("comiis_postli comiis_list_readimgs nfqsqi")
+            },
+            post_bottom_controls: function () { // 帖子底部一栏控件
+                return document.getElementsByClassName("comiis_znalist_bottom b_t cl")
+
             }
         },
         rexp: {
-            search_url: /bbs.binmt.cc\/search.php/g,
-            home_url: /home.php\?mod=spacecp&ac=profile&op=info/g,
+            search_url: /bbs.binmt.cc\/search.php/g,//搜索页
+            home_url: /home.php\?mod=spacecp&ac=profile&op=info/g, //个人空间页
             home_kmisign_url: /bbs.binmt.cc\/(forum.php\?mod=guide&view=hot(|&mobile=2)|k_misign-sign.html)/g, //主页和签到页链接
             home_space_url: /bbs\.binmt\.cc\/home\.php\?mod=space/g, //【我的】 个人信息页链接
             home_space_pc_uid_url: /space-uid-(.*?).html/, //PC 个人空间链接uid
@@ -153,13 +159,13 @@
     function add_clear_history() { //搜索界面添加清理历史记录和历史记录个数
         let search_history_list = GM_getValue("search_history");
         let search_history_nums = 0;
-        if(search_history_list!=null){
+        if (search_history_list != null) {
             search_history_nums = search_history_list.length;
         }
         let clear_history_innerHTML =
-        `<div class="comiis_p12 f14 bg_f f_c b_b cl" style="padding-bottom:10px">搜索记录个数: `+
-        search_history_nums+
-        `<button class="btn_clear_search_history" style="
+            `<div class="comiis_p12 f14 bg_f f_c b_b cl" style="padding-bottom:10px">搜索记录个数: ` +
+            search_history_nums +
+            `<button class="btn_clear_search_history" style="
             border: none;
             float: right;
             background: red;
@@ -171,7 +177,7 @@
         ">清理记录</button></div>`;
         let insertdom = $(".comiis_p12.f14.bg_f.f_c.b_b.cl,.comiis_tagtit.b_b.f_c");
         insertdom.before(clear_history_innerHTML);
-        $(".btn_clear_search_history").click(function(){
+        $(".btn_clear_search_history").click(function () {
             GM_deleteValue("search_history");
             window.location.reload();
         })
@@ -527,9 +533,12 @@
                 '<option value="v19">显示搜索历史<\/option>' +
                 '<option value="v3">移除评论区字体效果<\/option>' +
                 '<option value="v18">自动展开帖子<\/option>' +
+                '<option value="v15">显示帖子的uid<\/option>' +
+                '<option value="v20">导读页预览图片<\/option>' +
+                '<option value="v16">恢复图片宽度<\/option>' +
+                '<option value="v6">开启点评<\/option>' +
                 '<option value="v4">开启回复一键隐藏<\/option>' +
                 '<option value="v5">开启灌水帖隐藏标题<\/option>' +
-                '<option value="v6">开启点评<\/option>' +
                 '<option value="v7">关闭逆向教程<\/option>' +
                 '<option value="v8">关闭资源共享<\/option>' +
                 '<option value="v9">关闭休闲灌水<\/option>' +
@@ -538,8 +547,6 @@
                 '<option value="v12">关闭编程开发<\/option>' +
                 '<option value="v13">关闭玩机教程<\/option>' +
                 '<option value="v14">关闭建议反馈<\/option>' +
-                '<option value="v15">显示帖子的uid<\/option>' +
-                '<option value="v16">恢复图片宽度<\/option>' +
                 '<input type="checkbox" class="switch_1" style="float:right;position:relative;margin-top: revert;">' +
                 '<\/select>';
             setting_content.style = " top;padding: 8px 0px 8px 8px;margin: 0px 15px;border-top:1px solid #efefef !important;";
@@ -962,7 +969,19 @@
         // }
         for (let i = 0; i < mt_uid_obj.length; i++) {
             if (mt_uid_obj[i].parentElement.getElementsByClassName("mt_uid_set").length == 0) {
-                let mt_uid = mt_uid_obj[i].parentElement.getElementsByTagName("a")[0].href.match(mt_config.rexp.mt_uid)[1]; //获取href中uid
+                let mt_uid_master = mt_uid_obj[i].parentElement.getElementsByTagName("a");
+                let mt_uid = null;
+                for (let j = 0; j < mt_uid_master.length; j++) {
+                    let mt_uid_url = mt_uid_master[j].href;
+                    let match_uid = mt_uid_url.match(mt_config.rexp.mt_uid);
+                    if (match_uid) {
+                        mt_uid = match_uid[1]
+                    }
+                }
+                if (mt_uid == null) {
+                    continue;
+                }
+                // let mt_uid = mt_uid_obj[i].parentElement.getElementsByTagName("a")[1].href.match(mt_config.rexp.mt_uid)[1]; //获取href中uid
                 let uid_control = document.createElement("a");
                 uid_control.className = "mt_uid_set";
                 let uid_control_margin_top = "1px;";
@@ -1072,6 +1091,92 @@
         } catch (err) {
             console.log(err);
         }
+
+    }
+
+    function preview_picture() { //在帖子外部预览帖子内高清图片
+        GM_addStyle(`
+        .comiis_znalist_bottom li{
+            width:24% !important;
+        };`);
+        let master_dom = mt_config.dom_obj.post_bottom_controls();
+        let pre_dom = document.createElement("div");
+        pre_dom.id = "picture_review";
+        document.body.append(pre_dom);
+        for (var i = 0; i < master_dom.length; i++) {
+            let ul_dom = master_dom[i].getElementsByTagName("ul")[0];
+            let topre = document.createElement("li");
+            let comiss_listimg = master_dom[i].parentElement.getElementsByClassName("comiis_pyqlist_img");
+            let comiss_listimgs = master_dom[i].parentElement.getElementsByClassName("comiis_pyqlist_imgs");
+            let comiss_img = null;
+            if (comiss_listimg.length) {
+                comiss_img = comiss_listimg[0]
+            } else if (comiss_listimgs.length) {
+                comiss_img = comiss_listimgs[0]
+            } else {
+                console.log("该帖子内无图片");
+                topre.className = "f_c";
+                topre.style = "border-left:1px solid #efefef";
+                topre.innerHTML = `
+                    <a class="nopicturepre">无图预览</a>
+                    `;
+                ul_dom.append(topre);
+                continue;
+            }
+            topre.className = "f_c";
+            topre.style = "border-left:1px solid #efefef";
+            topre.innerHTML = `
+                <a class="topreimg">预览图片</a>
+                <div class="haspicture" style="display:none">` + comiss_img.innerHTML + `</div>
+                `;
+            ul_dom.append(topre);
+
+        }
+        $(".topreimg").click(function () {
+            let img_list = $(this)[0].nextElementSibling.getElementsByTagName("img");
+            let img_items = [];
+            let now_picture_num = 1;
+            for (var k = 0; k < img_list.length; k++) {
+                let img_url = img_list[k].src;
+                let img_dict = {};
+                let full_picture = null;
+
+                if (img_url.match(/mt2.cn/g)) {
+                    full_picture = img_url.replace(/_[\d]*_[\d]*.jpg/, "_600_1000.jpg");
+                    console.log("oss图");
+                } else if (img_url.match(/forum.php/g)) {
+                    full_picture = img_url.replace(/size=[\d]*x[\d]*/, "size=600x1000");
+                    console.log("帖子图");
+                } else {
+                    console.log("原缩略图");
+                    full_picture = img_url;
+                }
+                img_dict["src"] = full_picture;
+                img_dict["srct"] = img_url;
+                img_dict["title"] = "图片" + now_picture_num.toString();
+                img_items.push(img_dict);
+                now_picture_num = now_picture_num + 1;
+
+            }
+            console.log(img_items);
+            $("#picture_review").children().remove();
+            jQuery("#picture_review").nanoGallery({
+                thumbnailWidth: 100,
+                thumbnailHeight: 100,
+                items: img_items
+            });
+            var openpicture = setInterval(function () {
+                try {
+                    $(".container")[0].click();
+                    clearInterval(openpicture);
+                } catch (err) {
+                    console.log("图片暂未生成");
+                }
+
+            }, 100)
+
+        })
+
 
     }
 
@@ -1272,8 +1377,36 @@
                 console.log("搜索界面错误", err);
             }
         }
+        if(localStorage.v20 && location.href.match(mt_config.rexp.forum_guide_url)){
+            try{
+                img_js_css();
+                preview_picture();
+            }catch(err){
+                console.log("预览图片插件加载失败",err);
+            }
+        }
 
 
+    }
+
+    function img_js_css() { //加载预览图片的插件
+        var img_js_nanogallery = document.createElement("script");
+        var img_js_jsonp = document.createElement("script");
+        var img_css = document.createElement("link");
+
+        img_js_nanogallery.src = "https://cdn.jsdelivr.net/gh/893177236/Monkey_script/jquery.nanogallery.js";
+        img_js_jsonp.src = "https://cdn.jsdelivr.net/gh/893177236/Monkey_script/jquery.jsonp.js";
+
+        img_js_nanogallery.type = "text/javascript";
+        img_js_jsonp.type = "text/javascript";
+
+        img_css.rel = "stylesheet";
+        img_css.type = "text/css";
+        img_css.href = "https://cdn.jsdelivr.net/gh/893177236/Monkey_script/css/nanogallery.css";
+
+        // document.head.appendChild(img_js_jsonp);
+        // document.head.appendChild(img_js_nanogallery);
+        document.head.appendChild(img_css);
     }
 
     function ios_js_css() {
@@ -1428,7 +1561,6 @@
                             console.log("修改");
                             window.location.href = "/home.php?mod=spacecp&ac=profile&op=info";
                         })
-
                     }
 
 
@@ -1436,14 +1568,26 @@
                     console.log("添加点击事件失败insert_blacklist()");
                     console.log(err);
                 }
-
-
-
             })
 
         }
     } //function np()的结束处
-    GM_addStyle(".f_d.y,.top_user.f_b,.comiis_a.comiis_message_table.cl,.f_c.dialog>i,.bg_f.b_ok,.bg_f.f_c.b_ok.comiis_openrebox>i,.bg_f.f_c.b_ok.comiis_openrebox>em,.comiis_font.f_b,.comiis_font.bg_e.b_l{font-weight:100};.comiis_message.bg_f.view_all.cl.message{font-weight:100;padding:0px}");
+    GM_addStyle(`
+    .f_d.y,
+    .top_user.f_b,
+    .comiis_a.comiis_message_table.cl,
+    .f_c.dialog>i,
+    .bg_f.b_ok,
+    .bg_f.f_c.b_ok.comiis_openrebox>i,
+    .bg_f.f_c.b_ok.comiis_openrebox>em,
+    .comiis_font.f_b,
+    .comiis_font.bg_e.b_l{
+        font-weight:100;
+    };
+    .comiis_message.bg_f.view_all.cl.message{
+        font-weight:100;
+        padding:0px;
+    }`);
     $(document).ready(function () {
         np()
     });
