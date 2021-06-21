@@ -47,7 +47,7 @@
             }
         },
         rexp: {
-            search_url: /bbs.binmt.cc\/search.php/g,//搜索页
+            search_url: /bbs.binmt.cc\/search.php/g, //搜索页
             home_url: /home.php\?mod=spacecp&ac=profile&op=info/g, //个人空间页
             home_kmisign_url: /bbs.binmt.cc\/(forum.php\?mod=guide&view=hot(|&mobile=2)|k_misign-sign.html)/g, //主页和签到页链接
             home_space_url: /bbs\.binmt\.cc\/home\.php\?mod=space/g, //【我的】 个人信息页链接
@@ -1095,87 +1095,91 @@
     }
 
     function preview_picture() { //在帖子外部预览帖子内高清图片
-        GM_addStyle(`
-        .comiis_znalist_bottom li{
-            width:24% !important;
-        };`);
         let master_dom = mt_config.dom_obj.post_bottom_controls();
-        let pre_dom = document.createElement("div");
-        pre_dom.id = "picture_review";
-        document.body.append(pre_dom);
-        for (var i = 0; i < master_dom.length; i++) {
-            let ul_dom = master_dom[i].getElementsByTagName("ul")[0];
-            let topre = document.createElement("li");
-            let comiss_listimg = master_dom[i].parentElement.getElementsByClassName("comiis_pyqlist_img");
-            let comiss_listimgs = master_dom[i].parentElement.getElementsByClassName("comiis_pyqlist_imgs");
-            let comiss_img = null;
-            if (comiss_listimg.length) {
-                comiss_img = comiss_listimg[0]
-            } else if (comiss_listimgs.length) {
-                comiss_img = comiss_listimgs[0]
-            } else {
-                console.log("该帖子内无图片");
+        if (master_dom.length) {
+            GM_addStyle(`
+            .comiis_znalist_bottom li{
+                width:24% !important;
+            };`);
+            img_js_css();
+            let pre_dom = document.createElement("div");
+            pre_dom.id = "picture_review";
+            document.body.append(pre_dom);
+            for (var i = 0; i < master_dom.length; i++) {
+                let ul_dom = master_dom[i].getElementsByTagName("ul")[0];
+                let topre = document.createElement("li");
+                let comiss_listimg = master_dom[i].parentElement.getElementsByClassName("comiis_pyqlist_img");
+                let comiss_listimgs = master_dom[i].parentElement.getElementsByClassName("comiis_pyqlist_imgs");
+                let comiss_img = null;
+                if (comiss_listimg.length) {
+                    comiss_img = comiss_listimg[0]
+                } else if (comiss_listimgs.length) {
+                    comiss_img = comiss_listimgs[0]
+                } else {
+                    console.log("该帖子内无图片");
+                    topre.className = "f_c";
+                    topre.style = "border-left:1px solid #efefef";
+                    topre.innerHTML = `
+                        <a class="nopicturepre">无图预览</a>
+                        `;
+                    ul_dom.append(topre);
+                    continue;
+                }
                 topre.className = "f_c";
                 topre.style = "border-left:1px solid #efefef";
                 topre.innerHTML = `
-                    <a class="nopicturepre">无图预览</a>
+                    <a class="topreimg">预览图片</a>
+                    <div class="haspicture" style="display:none">` + comiss_img.innerHTML + `</div>
                     `;
                 ul_dom.append(topre);
-                continue;
-            }
-            topre.className = "f_c";
-            topre.style = "border-left:1px solid #efefef";
-            topre.innerHTML = `
-                <a class="topreimg">预览图片</a>
-                <div class="haspicture" style="display:none">` + comiss_img.innerHTML + `</div>
-                `;
-            ul_dom.append(topre);
 
+            }
+            $(".topreimg").click(function () {
+                let img_list = $(this)[0].nextElementSibling.getElementsByTagName("img");
+                let img_items = [];
+                let now_picture_num = 1;
+                for (var k = 0; k < img_list.length; k++) {
+                    let img_url = img_list[k].src;
+                    let img_dict = {};
+                    let full_picture = null;
+
+                    if (img_url.match(/mt2.cn/g)) {
+                        full_picture = img_url.replace(/_[\d]*_[\d]*.jpg/, "_600_1000.jpg");
+                        console.log("oss图");
+                    } else if (img_url.match(/forum.php/g)) {
+                        full_picture = img_url.replace(/size=[\d]*x[\d]*/, "size=600x1000");
+                        console.log("帖子图");
+                    } else {
+                        console.log("原缩略图");
+                        full_picture = img_url;
+                    }
+                    img_dict["src"] = full_picture;
+                    img_dict["srct"] = img_url;
+                    img_dict["title"] = "图片" + now_picture_num.toString();
+                    img_items.push(img_dict);
+                    now_picture_num = now_picture_num + 1;
+
+                }
+                console.log(img_items);
+                $("#picture_review").children().remove();
+                jQuery("#picture_review").nanoGallery({
+                    thumbnailWidth: 100,
+                    thumbnailHeight: 100,
+                    items: img_items
+                });
+                var openpicture = setInterval(function () {
+                    try {
+                        $(".container")[0].click();
+                        clearInterval(openpicture);
+                    } catch (err) {
+                        console.log("图片暂未生成");
+                    }
+
+                }, 100)
+
+            })
         }
-        $(".topreimg").click(function () {
-            let img_list = $(this)[0].nextElementSibling.getElementsByTagName("img");
-            let img_items = [];
-            let now_picture_num = 1;
-            for (var k = 0; k < img_list.length; k++) {
-                let img_url = img_list[k].src;
-                let img_dict = {};
-                let full_picture = null;
 
-                if (img_url.match(/mt2.cn/g)) {
-                    full_picture = img_url.replace(/_[\d]*_[\d]*.jpg/, "_600_1000.jpg");
-                    console.log("oss图");
-                } else if (img_url.match(/forum.php/g)) {
-                    full_picture = img_url.replace(/size=[\d]*x[\d]*/, "size=600x1000");
-                    console.log("帖子图");
-                } else {
-                    console.log("原缩略图");
-                    full_picture = img_url;
-                }
-                img_dict["src"] = full_picture;
-                img_dict["srct"] = img_url;
-                img_dict["title"] = "图片" + now_picture_num.toString();
-                img_items.push(img_dict);
-                now_picture_num = now_picture_num + 1;
-
-            }
-            console.log(img_items);
-            $("#picture_review").children().remove();
-            jQuery("#picture_review").nanoGallery({
-                thumbnailWidth: 100,
-                thumbnailHeight: 100,
-                items: img_items
-            });
-            var openpicture = setInterval(function () {
-                try {
-                    $(".container")[0].click();
-                    clearInterval(openpicture);
-                } catch (err) {
-                    console.log("图片暂未生成");
-                }
-
-            }, 100)
-
-        })
 
 
     }
@@ -1377,12 +1381,11 @@
                 console.log("搜索界面错误", err);
             }
         }
-        if(localStorage.v20 && location.href.match(mt_config.rexp.forum_guide_url)){
-            try{
-                img_js_css();
+        if (localStorage.v20 && location.href.match(mt_config.rexp.forum_guide_url)) {
+            try {
                 preview_picture();
-            }catch(err){
-                console.log("预览图片插件加载失败",err);
+            } catch (err) {
+                console.log("预览图片插件加载失败", err);
             }
         }
 
