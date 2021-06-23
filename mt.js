@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
-// @description  MT论坛优化
-// @version      2.0.7
+// @description  MT论坛效果增强，如自动签到、自动展开帖子、显示uid、屏蔽用户等
+// @version      2.0.7.1
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -196,7 +196,15 @@
                 let search_history_array = new Array(getsearchtext);
                 let has_history = GM_getValue("search_history");
                 if (has_history != null) {
-                    search_history_array = search_history_array.concat(has_history);
+                    if ($.inArray(getsearchtext, has_history) != -1) {
+                        console.log("已有该搜索历史记录")
+                        search_history_array = has_history
+                    } else {
+                        console.log("无该记录，追加");
+                        search_history_array = search_history_array.concat(has_history);
+                    }
+                }else{
+                    console.log("空记录，添加")
                 }
                 GM_setValue("search_history", search_history_array);
             }
