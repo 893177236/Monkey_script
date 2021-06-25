@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛效果增强，如自动签到、自动展开帖子、显示uid、屏蔽用户等
-// @version      2.0.7.1
+// @version      2.0.8
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -44,6 +44,12 @@
             post_bottom_controls: function () { // 帖子底部一栏控件
                 return document.getElementsByClassName("comiis_znalist_bottom b_t cl")
 
+            },
+            post_list_of_comments: function () { //帖子内评论列表
+                return $(".comiis_postlist.kqide");
+            },
+            post_next_commect: function () { //帖子内评论下一页的按钮
+                return document.querySelector("div.comiis_page.bg_f>a:nth-child(3)");
             }
         },
         rexp: {
@@ -203,7 +209,7 @@
                         console.log("无该记录，追加");
                         search_history_array = search_history_array.concat(has_history);
                     }
-                }else{
+                } else {
                     console.log("空记录，添加")
                 }
                 GM_setValue("search_history", search_history_array);
@@ -700,49 +706,54 @@
             var page = replyhref.match(mt_config.rexp.forum_post_page)[1];
             //console.log(page);
             for (cishu2 = 0; cishu2 < hongbao.length; cishu2++) {
-                var rewardhref = hongbao[cishu2].getElementsByTagName('a')[0].href.replace('mod=post&', 'mod=misc&');
-                rewardhref = rewardhref.replace("action=reply&", "action=comment&");
-                var reviews_href = rewardhref + '&extra=page%3D1&page=' + page;
-                let reviews_pid = hongbao[cishu2].parentElement.parentElement.id.replace("pid", "&pid=");
-                reviews_href = reviews_href + reviews_pid;
-                //console.log(rewardhref)
-                var oa = document.createElement('a');
-                var ob = document.createElement('i');
-                var lm = document.getElementsByClassName("bottom_zhan y")[cishu2];
-                oa.href = reviews_href;
-                oa.className = "f_c dialog";
-                ob.style = "content: url(https://s1.ax1x.com/2020/04/26/Jcq8VU.png);height: 15px;";
-                ob.className = "comiis_font mt_review";
-                ob.innerHTML = "";
-                oa.appendChild(ob);
-                let review_username = hongbao[cishu2].parentElement.parentElement.getElementsByClassName("top_user f_b")[0].text;
-                oa.onclick = function () {
-                    let click_time = Date.now();
-                    var mt_interval = setInterval(function () {
-                        let run_time = parseInt((Date.now() - click_time) / 1000);
-                        if (run_time >= 5) {
-                            console.log("超时");
-                            clearInterval(mt_interval);
-                        } else if (document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c") != null) {
-                            console.log("存在，清理定时器");
-                            console.log("点评用户：", review_username);
-                            console.log("该对象出现用时:", run_time);
-                            try {
-                                document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c").innerText = "点评 " + review_username;
+                if (hongbao[cishu2].children.length == 1) {
+                    var rewardhref = hongbao[cishu2].getElementsByTagName('a')[0].href.replace('mod=post&', 'mod=misc&');
+                    rewardhref = rewardhref.replace("action=reply&", "action=comment&");
+                    var reviews_href = rewardhref + '&extra=page%3D1&page=' + page;
+                    let reviews_pid = hongbao[cishu2].parentElement.parentElement.id.replace("pid", "&pid=");
+                    reviews_href = reviews_href + reviews_pid;
+                    //console.log(rewardhref)
+                    var oa = document.createElement('a');
+                    var ob = document.createElement('i');
+                    var lm = document.getElementsByClassName("bottom_zhan y")[cishu2];
+                    oa.href = reviews_href;
+                    oa.className = "f_c dialog";
+                    ob.style = "content: url(https://s1.ax1x.com/2020/04/26/Jcq8VU.png);height: 15px;";
+                    ob.className = "comiis_font mt_review";
+                    ob.innerHTML = "";
+                    oa.appendChild(ob);
+                    let review_username = hongbao[cishu2].parentElement.parentElement.getElementsByClassName("top_user f_b")[0].text;
+                    oa.onclick = function () {
+                        let click_time = Date.now();
+                        var mt_interval = setInterval(function () {
+                            let run_time = parseInt((Date.now() - click_time) / 1000);
+                            if (run_time >= 5) {
+                                console.log("超时");
+                                clearInterval(mt_interval);
+                            } else if (document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c") != null) {
+                                console.log("存在，清理定时器");
+                                console.log("点评用户：", review_username);
+                                console.log("该对象出现用时:", run_time);
+                                try {
+                                    document.querySelector("div[id=ntcmsg_popmenu]>div>span.f_c").innerText = "点评 " + review_username;
 
-                            } catch (err) {
-                                console.log("修改点评失败", err);
+                                } catch (err) {
+                                    console.log("修改点评失败", err);
+                                }
+
+                                clearInterval(mt_interval);
                             }
 
-                            clearInterval(mt_interval);
-                        }
-
-                    }, 100)
+                        }, 100)
 
 
+                    }
+                    lm.insertAdjacentElement('afterBegin', oa);
+                }else{
+                    console.log("已有点评按钮，无需再次添加");
                 }
-                lm.insertAdjacentElement('afterBegin', oa);
             }
+
         }
     }
     // function reviews_all_click(){//全局监听点击事件修改点评的名字
@@ -1192,6 +1203,109 @@
 
     }
 
+    function post_setting_js() { //帖子内需要重复加载的脚本
+        if (localStorage.v6) {
+            if (location.href.match(mt_config.rexp.forum_post)) {
+                try {
+                    reviews()
+                } catch (err) {
+                    console.log("插入点评错误:", err);
+                }
+                // reviews_all_click();
+            }
+        }
+        if (localStorage.v2) {
+            try {
+                link()
+            } catch (err) {
+                console.log("识别链接错误:", err);
+            }
+
+        }
+        if (localStorage.v15) {
+            if (location.href.match(mt_config.rexp.forum_post)) {
+                try {
+                    uid_display(mt_config.dom_obj.comiis_verify(), "insert");
+                    remove_blacklist_user();
+                    remove_blacklist_user()
+                } catch (err) {
+                    console.log("显示UID、移除黑名单的人错误:", err);
+                }
+
+            }
+            if (location.href.match(mt_config.rexp.forum_post_guide_url)) {
+                try {
+                    dom_modify()
+                } catch (err) {
+                    console.log("移除黑名单中需要隐藏的隐藏的帖子错误:", err);
+                }
+
+            }
+        }
+        if (localStorage.v3) {
+            if (location.href.match(mt_config.rexp.forum_post)) {
+                try {
+                    show_black()
+                } catch (err) {
+                    console.log("显示黑色字体错误:", err);
+                }
+
+            }
+        }
+    }
+
+    function auto_load_all_comment() { //自动加载所有的评论
+        var post_comments_list = $(".comiis_page.bg_f"); //评论列表
+        if (post_comments_list.length) {
+            var next_page_url = $(".comiis_page.bg_f").children()[2].href;
+            var isloding_flag = false;
+            console.log("初始下一页url", next_page_url);
+            let tip_html = `<div class="comiis_multi_box bg_f b_t" style="display:none">
+            <label class="comiis_loadbtn bg_e f_d" id="loading-comment-tip"></label></div>`;
+            let comment_list = $(".comiis_multi_box.bg_f.b_t.b_b.mb10"); //
+            comment_list.hide();
+            $(".comiis_bodybox").append($(tip_html));
+            $(window).bind("scroll",function(){
+                // scroll at bottom
+                if (Math.ceil($(window).scrollTop() + $(window).height()) >= $(document).height()) {
+                    // load data
+                    if (isloding_flag == false) {
+                        isloding_flag = true;
+                        $("#loading-comment-tip").text("正在加载评论中...");
+                        $("#loading-comment-tip")[0].parentElement.style.display = "";
+                        $.get(next_page_url, function (data, status, xhr) {
+                            console.log("正在请求的下一页url", next_page_url);
+                            let postlist = $(data);
+                            let kqideSourceNode = $(".comiis_postlist.kqide");
+                            let postDOM = postlist.find(".comiis_postlist.kqide").html();
+                            let get_next_page_url = postlist.find(".nxt");
+                            if (get_next_page_url.length != 0) {
+                                console.log("成功获取到下一页-评论");
+                                next_page_url = get_next_page_url.attr("href");
+                                $("#loading-comment-tip")[0].parentElement.style.display = "none";
+                            } else {
+                                console.log("评论全部加载完毕，关闭监听事件");
+                                $("#loading-comment-tip").text("已加载完所有评论")
+                                $("#loading-comment-tip")[0].parentElement.style.display = "";
+                                $(window).unbind();
+                            }
+                            isloding_flag = false;
+                            kqideSourceNode.append(postDOM);
+                            post_setting_js();
+                        })
+
+                    } else {
+                        console.log("正在加载中请稍后");
+                    }
+
+
+                }
+            })
+        } else {
+            console.log("无多页评论");
+        }
+    }
+
     function mobile_all_setting() {
         if (location.href.match(mt_config.rexp.home_url)) {
             try {
@@ -1322,7 +1436,7 @@
                 try {
                     remove_post_content_font_special()
                 } catch (err) {
-                    console.log("remove_post_content_font_special()错误:", err);
+                    console.log("移除帖子内容特殊字体错误:", err);
                 }
 
             }
@@ -1578,6 +1692,13 @@
                 } catch (err) {
                     console.log("添加点击事件失败insert_blacklist()");
                     console.log(err);
+                }
+                try {
+                    if (window.location.href.match(mt_config.rexp.forum_post_pc)) {
+                        auto_load_all_comment()
+                    }
+                } catch (err) {
+                    console.log("自动加载评论失败", err)
                 }
             })
 
