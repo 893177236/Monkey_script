@@ -547,6 +547,7 @@
                 '<option value="v19">显示搜索历史<\/option>' +
                 '<option value="v3">移除评论区字体效果<\/option>' +
                 '<option value="v18">自动展开帖子<\/option>' +
+                '<option value="v21">自动加载帖内评论<\/option>' +
                 '<option value="v15">显示帖子的uid<\/option>' +
                 '<option value="v20">导读页预览图片<\/option>' +
                 '<option value="v16">恢复图片宽度<\/option>' +
@@ -749,7 +750,7 @@
 
                     }
                     lm.insertAdjacentElement('afterBegin', oa);
-                }else{
+                } else {
                     console.log("已有点评按钮，无需再次添加");
                 }
             }
@@ -1265,7 +1266,7 @@
             let comment_list = $(".comiis_multi_box.bg_f.b_t.b_b.mb10"); //
             comment_list.hide();
             $(".comiis_bodybox").append($(tip_html));
-            $(window).bind("scroll",function(){
+            $(window).bind("scroll", function () {
                 // scroll at bottom
                 if (Math.ceil($(window).scrollTop() + $(window).height()) >= $(document).height()) {
                     // load data
@@ -1510,6 +1511,13 @@
                 console.log("预览图片插件加载失败", err);
             }
         }
+        if (localStorage.v21 && window.location.href.match(mt_config.rexp.forum_post_pc)) {
+            try {
+                auto_load_all_comment()
+            } catch (err) {
+                console.log("自动加载评论失败", err)
+            }
+        }
 
 
     }
@@ -1693,13 +1701,7 @@
                     console.log("添加点击事件失败insert_blacklist()");
                     console.log(err);
                 }
-                try {
-                    if (window.location.href.match(mt_config.rexp.forum_post_pc)) {
-                        auto_load_all_comment()
-                    }
-                } catch (err) {
-                    console.log("自动加载评论失败", err)
-                }
+
             })
 
         }
