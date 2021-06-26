@@ -2,7 +2,7 @@
 // @name         MT论坛
 // @namespace    http://tampermonkey.net/
 // @description  MT论坛效果增强，如自动签到、自动展开帖子、显示uid、屏蔽用户等
-// @version      2.0.8
+// @version      2.0.9
 // @author       MT-戒酒的李白染
 // @icon         https://bbs.binmt.cc/favicon.ico
 // @match        *://bbs.binmt.cc/*
@@ -93,15 +93,38 @@
 
     function insert_empty_title() {
         if (location.href.match(/mod=post&action=newthread&fid=50/g) != null) {
-            var a = document.createElement("div");
-            var b = document.querySelector("#postform > div > div:nth-child(5)");
-            a.className = "comiis_btnbox cl";
-            a.innerHTML = '<button class="comiis_btn formdialog bg_c f_f" id="postsubmit2">发表(空标题)<\/button>';
-            b.parentElement.insertBefore(a, b);
-            document.getElementById("postsubmit2").onclick = function () {
-                document.getElementsByClassName("flex f17")[0].children[0].parentNode.hidden = true;
-                document.getElementsByClassName("flex f17")[0].children[0].value = "😊";
-            }
+            var insert_empty_title_dom = document.createElement("div");
+            var post_form_btn = $("#postsubmit");
+            insert_empty_title_dom.className = "comiis_btnbox cl";
+            insert_empty_title_dom.style = "padding-bottom:0px;"
+            insert_empty_title_dom.innerHTML = `
+            <button style="
+            padding-bottom:0px;    
+            -webkit-appearance: none;
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            height: 44px;
+            line-height: 44px;
+            font-size: 16px;
+            border: none;
+            outline: none;
+            text-align: center;
+            text-decoration: none;
+            overflow: hidden;
+            border-radius: 4px;
+            background: #99db5e !important;
+            color: #fff !important;
+            "
+            id="post_forum_nonetitle">插入空标题<\/button>`;
+            post_form_btn.parent().before(insert_empty_title_dom);
+            $("#post_forum_nonetitle").bind("click",function(){
+                $(".styli_tit.f_c").parent().hide();
+                $("#needsubject").val("😊");
+
+                return false;
+            })
+
 
         }
     }
